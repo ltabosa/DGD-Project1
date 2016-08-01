@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<List xmlns:ows="Microsoft SharePoint" Title="File" FolderCreation="FALSE" Direction="$Resources:Direction;" Url="Lists/File" BaseType="0" xmlns="http://schemas.microsoft.com/sharepoint/">
+  <MetaData>
+    <ContentTypes>
+
+
+      <ContentType ID="0x01007bc79ca084624bd484674c862869761f" Name="ListFieldsContentType">
+        <FieldRefs>
+
+          <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" />
+          <FieldRef ID="{016afb28-ba41-47d0-851e-40b725cfa4f0}" Name="InternalReference" />
+          <FieldRef ID="{b9495326-8de0-4b2d-9b03-4976ffe83f32}" Name="DocumentType" />
+          <FieldRef ID="{9b9d595b-c092-4b58-ad13-240b7c261a37}" Name="Project1" />
+          <FieldRef ID="{AB065451-14D6-485a-88C3-414C908D50D3}" Name="CategoryDescription" />
+          <FieldRef ID="{9F8B4EE0-84B7-42c6-A094-5CBDE2115EB9}" Name="_DCDateCreated" />
+          <FieldRef ID="{b745365d-ba2c-41f4-b5c8-8750036bed35}" Name="DiffusionDate" />
+          <FieldRef ID="{df7cd1af-4f48-42b3-8014-d48dbd06cd5d}" Name="ExternalReference" />
+          <FieldRef ID="{288F5F32-8462-4175-8F09-DD7BA29359A9}" Name="Location" />
+          <FieldRef ID="{9f95ce16-5e0f-460b-bbc2-01a7620840b5}" Name="Form" />
+          <FieldRef ID="{1DAB9B48-2D1A-47b3-878C-8E84F0D211BA}" Name="_Status" />
+          <FieldRef ID="{4bc57eb6-8355-4286-aa38-5687b356f516}" Name="IdAgency" />
+          <FieldRef ID="{6ff851f4-d52e-4583-8a44-0526bd505a75}" Name="Project" />
+          <FieldRef ID="{ab73b087-470c-4327-b74a-76a9137adbcd}" Name="Type" />
+          <FieldRef ID="{80a04e56-e9fc-4d93-be37-7b8468269982}" Name="OrderNumber" />
+          <FieldRef ID="{48d0b15e-6166-40a9-b618-876e88247849}" Name="Version" />
+          <FieldRef ID="{cca9511c-3139-435c-8dbc-e81027cc71f6}" Name="Revision" />
+          <FieldRef ID="{0137c569-3bf5-4a6a-a5e3-a8f9d08f2e8f}" Name="ProjectType" />
+        </FieldRefs>
+      </ContentType>
+      <ContentTypeRef ID="0x01">
+        <Folder TargetName="Item" />
+      </ContentTypeRef>
+      <ContentTypeRef ID="0x0120" />
+    </ContentTypes>
+    <Fields>
+      <Field Hidden="TRUE" ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Title" Required="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
+      <Field Name="InternalReference" ID="{016afb28-ba41-47d0-851e-40b725cfa4f0}" DisplayName="Internal Reference" Type="Text" />
+      <Field Name="DocumentType" ID="{b9495326-8de0-4b2d-9b03-4976ffe83f32}" DisplayName="DocumentType" Type="Text" />
+      <Field Type="Lookup" DisplayName="Project" Required="FALSE" EnforceUniqueValues="FALSE" List="Lists/Projets" WebId="" ShowField="ID" UnlimitedLengthInDocumentLibrary="FALSE" Group="Parts Database Columns" ID="{9b9d595b-c092-4b58-ad13-240b7c261a37}" Name="Project1" Overwrite="TRUE" />
+      <Field ID="{AB065451-14D6-485a-88C3-414C908D50D3}" Name="CategoryDescription" DisplayName="$Resources:spscore,CategoriesList_DescFieldName;" Type="Text" SourceID="http://schemas.microsoft.com/sharepoint.v3" DisplaceOnUpgrade="TRUE" Hidden="FALSE" Sealed="FALSE" AllowDeletion="FALSE" />
+      <Field ID="{9F8B4EE0-84B7-42c6-A094-5CBDE2115EB9}" Type="DateTime" Format="DateTime" Group="$Resources:core,Document_Columns;" Name="_DCDateCreated" DisplayName="$Resources:core,_DCDateCreated;" SourceID="http://schemas.microsoft.com/sharepoint/v3/fields" StaticName="_DCDateCreated" Description="$Resources:core,_DCDateCreatedDesc;" />
+      <Field Name="DiffusionDate" ID="{b745365d-ba2c-41f4-b5c8-8750036bed35}" DisplayName="Diffusion Date" Type="DateTime" />
+      <Field Name="ExternalReference" ID="{df7cd1af-4f48-42b3-8014-d48dbd06cd5d}" DisplayName="External Reference" Type="Text" Required="FALSE">
+        <Default>n/a</Default>
+      </Field>
+      <Field ID="{288F5F32-8462-4175-8F09-DD7BA29359A9}" Type="Text" Group="$Resources:core,Person_Event_Columns;" Name="Location" DisplayName="$Resources:core,Location;" Sealed="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3/fields" StaticName="Location" AllowDeletion="TRUE" />
+      <Field Name="Form" ID="{9f95ce16-5e0f-460b-bbc2-01a7620840b5}" DisplayName="Form" Type="Choice" />
+      <Field ID="{1DAB9B48-2D1A-47b3-878C-8E84F0D211BA}" Name="_Status" Group="$Resources:core,Document_Columns;" Type="Choice" DisplayName="$Resources:core,Status;" SourceID="http://schemas.microsoft.com/sharepoint/v3/fields" StaticName="_Status" FillInChoice="FALSE">
+        <CHOICES>
+          <CHOICE>In Progress</CHOICE>
+          <CHOICE>Validated</CHOICE>
+          <CHOICE>Archived</CHOICE>
+          <CHOICE>Deleted</CHOICE>
+        </CHOICES>
+        <Default>In Progress</Default>
+      </Field>
+      <Field Name="IdAgency" ID="{4bc57eb6-8355-4286-aa38-5687b356f516}" DisplayName="Id Agency" Type="Text" />
+      <Field Name="Project" ID="{6ff851f4-d52e-4583-8a44-0526bd505a75}" DisplayName="Project Type" Type="Choice" />
+      <Field Name="Type" ID="{ab73b087-470c-4327-b74a-76a9137adbcd}" DisplayName="Type" Type="Text" />
+      <Field Name="OrderNumber" ID="{80a04e56-e9fc-4d93-be37-7b8468269982}" DisplayName="Order Number" Type="Text" />
+      <Field Name="Version" ID="{48d0b15e-6166-40a9-b618-876e88247849}" DisplayName="Version" Type="Text" />
+      <Field Name="Revision" ID="{cca9511c-3139-435c-8dbc-e81027cc71f6}" DisplayName="Revision" Type="Text" />
+      <Field Name="ProjectType" ID="{0137c569-3bf5-4a6a-a5e3-a8f9d08f2e8f}" DisplayName="ProjectType" Type="Text" />
+    </Fields>
+    
+    
+      <Views>
+      <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+
+
+
+          <FieldRef Name="LinkTitleNoMenu"></FieldRef>
+        </ViewFields>
+        <Query>
+          <OrderBy>
+
+
+
+            <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
+          </OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="AddNewAnnouncement" Location="Resource(wss,addnewitem)" />
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_ONET_HOME)" />
+        </ParameterBindings>
+      </View>
+      <View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <JSLink>clienttemplates.js</JSLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <FieldRef Name="LinkTitle"></FieldRef>
+          <FieldRef Name="InternalReference" />
+          <FieldRef Name="CategoryDescription" />
+          <FieldRef Name="_DCDateCreated" />
+          <FieldRef Name="DiffusionDate" />
+          <FieldRef Name="ExternalReference" />
+          <FieldRef Name="Location" />
+          <FieldRef Name="Form" />
+          <FieldRef Name="_Status" />
+          <FieldRef Name="IdAgency" />
+          <FieldRef Name="Project" />
+          <FieldRef Name="Project1" />
+          <FieldRef Name="DocumentType" />
+          <FieldRef Name="Type" />
+          <FieldRef Name="OrderNumber" />
+          <FieldRef Name="Version" />
+          <FieldRef Name="Revision" />
+          <FieldRef Name="ProjectType" />
+        </ViewFields>
+        <Query>
+          <OrderBy>
+
+
+
+            <FieldRef Name="ID"></FieldRef>
+          </OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" />
+        </ParameterBindings>
+      </View>
+      <View BaseViewID="2" Name="b673ef5a-6099-4d0d-a514-efa226d1b143" DisplayName="MyView" Type="HTML" WebPartZoneID="Main" SetupPath="pages\viewpage.aspx" Url="MyView.aspx">
+        <ViewFields>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <FieldRef Name="InternalReference" />
+          <FieldRef Name="DocumentType" />
+          <FieldRef Name="CategoryDescription" />
+          <FieldRef Name="_DCDateCreated" />
+          <FieldRef Name="DiffusionDate" />
+          <FieldRef Name="ExternalReference" />
+          <FieldRef Name="Location" />
+          <FieldRef Name="Form" />
+          <FieldRef Name="_Status" />
+        </ViewFields>
+        <Query />
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <JSLink>clienttemplates.js</JSLink>
+      </View>
+    </Views>
+    <Forms>
+      <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="NewForm" Url="NewForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+    </Forms>
+  </MetaData>
+</List>

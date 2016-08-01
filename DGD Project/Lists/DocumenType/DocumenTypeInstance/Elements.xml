@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="Document Type" OnQuickLaunch="TRUE" TemplateType="100" Url="Lists/Document Type" Description="My List Instance">
+    <Data>
+      <Rows>
+        <Row>
+          <Field Name="Title">Analysis Report</Field>
+          <Field Name="Trigram">AR</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">Audit</Field>
+          <Field Name="Trigram">AUD</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            BID proposal
+          </Field>
+          <Field Name="Trigram">BID</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Dashboard
+          </Field>
+          <Field Name="Trigram">DB</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Delivery Acceptance Note
+          </Field>
+          <Field Name="Trigram">DAN</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Delivery Support (CD, USB, DVD)
+          </Field>
+          <Field Name="Trigram">DS</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Documentation management dossier
+          </Field>
+          <Field Name="Trigram">DGD</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Dossier
+          </Field>
+          <Field Name="Trigram">DOS</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Final Decision
+          </Field>
+          <Field Name="Trigram">FD</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Guideline
+          </Field>
+          <Field Name="Trigram">GUI</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Internal Quotation
+          </Field>
+          <Field Name="Trigram">QUO</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Incoming Document
+          </Field>
+          <Field Name="Trigram">INC</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Management Plan
+          </Field>
+          <Field Name="Trigram">MP</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Matrix
+          </Field>
+          <Field Name="Trigram">MAT</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Minutes of Meeting
+          </Field>
+          <Field Name="Trigram">MOM</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Planning
+          </Field>
+          <Field Name="Trigram">PLN</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Project Note
+          </Field>
+          <Field Name="Trigram">PN</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Proofreading Sheet
+          </Field>
+          <Field Name="Trigram">PR</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Purchase Request
+          </Field>
+          <Field Name="Trigram">PUR</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Review
+          </Field>
+          <Field Name="Trigram">REV</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Sampling
+          </Field>
+          <Field Name="Trigram">SAM</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Technical Document
+          </Field>
+          <Field Name="Trigram">DOC</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Template
+          </Field>
+          <Field Name="Trigram">TPL</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">
+            Test Report
+          </Field>
+          <Field Name="Trigram">TR</Field>
+        </Row>
+      </Rows>
+    </Data>
+  </ListInstance>
+</Elements>
