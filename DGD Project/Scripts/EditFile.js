@@ -186,6 +186,7 @@ function updateFile(){
     var internalReference = "";
     //get Id, if not exists return to projects page
     //var projectId = GetUrlKeyValue('ID', false);
+    //teste
 
     var documentType = $("#DocumentType option:selected").text();
     var description = $('#Description').val();
