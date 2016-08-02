@@ -14,7 +14,7 @@
     <link href="../Content/bootstrap.min.css" rel="Stylesheet" type="text/css" />
 
     <!-- Add your JavaScript to the following file -->
-    <script type="text/javascript" src="../Scripts/NewProject.js"></script>
+    <script type="text/javascript" src="../Scripts/EditProject.js"></script>
 
     <!-- Add SPService jQuery library for SharePoint Web Services -->
     <script type="text/javascript" src="../Scripts/jquery.SPServices-2014.02.min.js"></script>
@@ -55,6 +55,13 @@
                 <input type="text" name="IdAgency" id="IdAgency" placeholder="e.g. X0" class="form-control" />
             </div>
         </div>
+         <!--
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <input type="hidden" name="ProjectType" id="ProjectType" class="form-control" />
+            </div>
+        </div>
+       
         <div class="form-group row">
             <label class="col-sm-2" for="ProjectType">Project Type:</label>
             <div class="col-sm-4">
@@ -65,7 +72,7 @@
                 </select>
             </div>
         </div>
-        
+        -->
         <div id="ProjectTypeDiv"></div>
         <p id="errorValidate" class="bg-danger"></p>
 

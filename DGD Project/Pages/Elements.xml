@@ -6,5 +6,6 @@
     <File Path="Pages\NewFile.aspx" Url="Pages/NewFile.aspx" ReplaceContent="TRUE" />
     <File Path="Pages\EditFile.aspx" Url="Pages/EditFile.aspx" ReplaceContent="TRUE" />
     <File Path="Pages\NewProject.aspx" Url="Pages/NewProject.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\EditProject.aspx" Url="Pages/EditProject.aspx" ReplaceContent="TRUE" />
   </Module>
 </Elements>

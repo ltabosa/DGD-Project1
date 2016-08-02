@@ -100,6 +100,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Pages\EditFile.aspx" />
+    <Content Include="Pages\EditProject.aspx" />
     <Content Include="Pages\File.aspx" />
     <Content Include="Pages\Elements.xml" />
     <Content Include="Pages\Default.aspx" />
@@ -123,6 +124,7 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery.SPServices-2014.02.min.js" />
+    <Content Include="Scripts\EditProject.js" />
     <Content Include="Scripts\NewProject.js" />
     <Content Include="Scripts\NewFile.js" />
     <Content Include="Scripts\_references.js" />

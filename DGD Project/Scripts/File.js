@@ -59,10 +59,10 @@ function onQuerySucceeded2(sender, args) {
         "</tr>";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        var dateCreated = oListItem.get_item('_DCDateCreated').getDate() +"/"+ ((oListItem.get_item('_DCDateCreated').getMonth())+1) +"/"+ oListItem.get_item('_DCDateCreated').getFullYear();
+        var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + ((oListItem.get_item('_DCDateCreated').getMonth()) + 1) + "/" + oListItem.get_item('_DCDateCreated').getDate();
         var diffusionDate = oListItem.get_item('DiffusionDate');
         if (diffusionDate != null) {
-            diffusionDate = diffusionDate.getDate() + "/" + diffusionDate.getMonth()+1 + "/" + diffusionDate.getFullYear();
+            diffusionDate = diffusionDate.getFullYear() + "/" + diffusionDate.getMonth() + 1 + "/" + diffusionDate.getDate();
         }
         listInfo +=
         "<tr>" +

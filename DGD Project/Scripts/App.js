@@ -46,9 +46,9 @@ function onQuerySucceeded(sender, args) {
 
 function ShowDialog(ID) {
     var options = {
-        url: "../Lists/Projets/EditForm.aspx?ID=" + ID,
+        url: "../Pages/EditProject.aspx?ID=" + ID,
         allowMaximize: true,
-        title: "Edit Project Name",
+        title: "Edit Project",
         dialogReturnValueCallback: scallback
     };
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
