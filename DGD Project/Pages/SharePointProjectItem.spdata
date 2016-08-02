@@ -6,5 +6,6 @@
     <ProjectItemFile Source="File.aspx" Target="Pages\" Type="ElementFile" />
     <ProjectItemFile Source="NewFile.aspx" Target="Pages\" Type="ElementFile" />
     <ProjectItemFile Source="EditFile.aspx" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="NewProject.aspx" Target="Pages\" Type="ElementFile" />
   </Files>
 </ProjectItem>

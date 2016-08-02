@@ -168,21 +168,21 @@ function onQuerySucceeded(sender, args) {
         '<p id="errorValidate" class="bg-danger"></p>'+
          '<input type="hidden" name="projectID" id="projectID" value="' + oListItem.get_item('Project1') + '"/>' +
          '<input type="hidden" name="ID" id="ID" value="' + oListItem.get_id() + '"/>' +
-        '<input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" onSubmit="updateFile();"/>' +
+        '<input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg"/>' +
         
         '</form>';
           }
     
     $("#results").html(listInfo);
-    $("#ProjectTypeDiv").html(listProjectType);
+    //$("#ProjectTypeDiv").html(listProjectType);
     //$("#errorValidate").html(errorMsg);
     
 }
     //function update file
-//$("#Submit").click(function () {
-    function updateFile() {
+$("#Submit").click(function () {
+    //  function updateFile() {
     alert("Submitted");
-}
+});
 function updateFile2(){
     projectId = $('#projectID').val();
     //input variables

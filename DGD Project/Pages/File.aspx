@@ -27,7 +27,7 @@
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
-
+    
     <div id="results"></div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

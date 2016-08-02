@@ -113,6 +113,7 @@
       <SharePointProjectItemId>{e7e4f21a-eda4-4cb1-874b-fbbb1d73d1f8}</SharePointProjectItemId>
     </None>
     <Content Include="Pages\NewFile.aspx" />
+    <Content Include="Pages\NewProject.aspx" />
     <Content Include="Scripts\EditFile.js" />
     <Content Include="Scripts\File.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -122,6 +123,7 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery.SPServices-2014.02.min.js" />
+    <Content Include="Scripts\NewProject.js" />
     <Content Include="Scripts\NewFile.js" />
     <Content Include="Scripts\_references.js" />
   </ItemGroup>

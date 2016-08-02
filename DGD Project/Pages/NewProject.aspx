@@ -14,25 +14,55 @@
     <link href="../Content/bootstrap.min.css" rel="Stylesheet" type="text/css" />
 
     <!-- Add your JavaScript to the following file -->
-    <script type="text/javascript" src="../Scripts/EditFile.js"></script>
+    <script type="text/javascript" src="../Scripts/NewProject.js"></script>
 
     <!-- Add SPService jQuery library for SharePoint Web Services -->
     <script type="text/javascript" src="../Scripts/jquery.SPServices-2014.02.min.js"></script>
+
 </asp:Content>
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server">
-    Edit File
+    New Project
 </asp:Content>
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
-     <div id="ProjectTypeDiv"></div>
-     <div id="results"></div>
-   
+
+    <form action="/" method="post" class="form-horizontal">
+        <div class="form-group row">
+            <label class="col-sm-2" for="ProjectName">Project Name:</label>
+            <div class="col-sm-4">
+                <input type="text" name="ProjectName" id="ProjectName" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2" for="ProjectCode">Project Code:</label>
+            <div class="col-sm-4">
+                <input type="number" name="ProjectCode" id="ProjectCode" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2" for="Avenant">Avenant:</label>
+            <div class="col-sm-4">
+                <input type="number" name="Avenant" id="Avenant" class="form-control" />
+            </div>
+        </div>    
+        <div class="form-group row">
+            <label class="col-sm-2" for="IdAgency">Id Agency:</label>
+            <div class="col-sm-4">
+                <input type="text" name="IdAgency" id="IdAgency" placeholder="e.g. X0" class="form-control" />
+            </div>
+        </div>
+        
+        <div id="ProjectTypeDiv"></div>
+        <p id="errorValidate" class="bg-danger"></p>
+
+        <input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" />
+        
+    </form>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
 </asp:Content>
-

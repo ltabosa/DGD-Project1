@@ -36,14 +36,11 @@
       <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="$Resources:core,Title;" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
       <Field Name="ProjectCode" ID="{af7e4fd0-f4b5-4210-ae16-0731bcc65e2d}" DisplayName="Project Code" Type="Number" />
       <Field Name="Avenant" ID="{790ca1ce-b69c-4396-865c-3b8f73f621a5}" DisplayName="Avenant" Type="Number" />
-      <Field Name="IdAgency" ID="{d90bcaea-8340-48a0-b6b7-d7fa2466bfd4}" DisplayName="Id Agency" Type="Text">
-         <Field-validator type="regex">
-            <param name="regex"><![CDATA[/^[A-Z][0-9]$/]]></param>
-           <message>Please enter a valid agency ID (e.g. X1)</message>
-          </Field-validator>
-      </Field>
+      <Field Name="IdAgency" ID="{d90bcaea-8340-48a0-b6b7-d7fa2466bfd4}" DisplayName="Id Agency" Type="Text"/>
+
     </Fields>
-    
+
+
     <Views>
 
       <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">

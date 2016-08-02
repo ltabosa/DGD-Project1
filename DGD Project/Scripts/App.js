@@ -84,7 +84,7 @@ function AddDGDTab() {
     var sManageHtml = "";
     sTitleHtml += "<a href='../Lists/File/MyView.aspx' >' ";
     sTitleHtml += "<img src='../images/ViewIcon.png' /></a><br/>My Files";
-    sManageHtml += "<a href='../Lists/Projets/NewForm.aspx' >";
+    sManageHtml += "<a href='../Pages/NewProject.aspx' >";
     sManageHtml += "<img src='../images/CreateIcon.png' /></a><br/>Create New Project";
     var ribbon = SP.Ribbon.PageManager.get_instance().get_ribbon();
     if (ribbon !== null) {
