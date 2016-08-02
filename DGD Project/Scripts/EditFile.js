@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGDs);
     fileId = GetUrlKeyValue('ID', false);
+
     
 });//ready function ends
 function retrieveDGDs() {
@@ -167,7 +168,7 @@ function onQuerySucceeded(sender, args) {
         '<p id="errorValidate" class="bg-danger"></p>'+
          '<input type="hidden" name="projectID" id="projectID" value="' + oListItem.get_item('Project1') + '"/>' +
          '<input type="hidden" name="ID" id="ID" value="' + oListItem.get_id() + '"/>' +
-        '<input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" onclick="return updateFile();"/>' +
+        '<input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" onSubmit="updateFile();"/>' +
         
         '</form>';
           }
@@ -177,16 +178,17 @@ function onQuerySucceeded(sender, args) {
     //$("#errorValidate").html(errorMsg);
     
 }
-
-//function update file
+    //function update file
 //$("#Submit").click(function () {
-function updateFile(){
+    function updateFile() {
+    alert("Submitted");
+}
+function updateFile2(){
     projectId = $('#projectID').val();
     //input variables
     var internalReference = "";
     //get Id, if not exists return to projects page
     //var projectId = GetUrlKeyValue('ID', false);
-    //teste
 
     var documentType = $("#DocumentType option:selected").text();
     var description = $('#Description').val();
@@ -208,7 +210,7 @@ function updateFile(){
     var ID = $('#ID').val();
     var listProjectType = "";
     errorMsg = "";
-    
+
 
     //Validate form 
     //Validate ID Agency
@@ -252,7 +254,7 @@ function updateFile(){
         if (errorMsg == "") {
             internalReference = documentType + "-" + projectId + "-" + idAgency + "-0000-00-00";
             //alert(internalReference + ' ' + documentType + ' ' + description + ' ' + dateCreated + ' ' + diffusionDate + ' ' + externalReference + ' ' + localization + ' ' + form + ' ' + status + ' ' + idAgency + ' ' + projectType);
-            updateListItem(ID);
+            // updateListItem(ID);
             //createListItem(project, type, projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, idAgency, projectType);
         }
     } else if (projectType == "Full") {
@@ -265,7 +267,7 @@ function updateFile(){
             if (errorMsg == "") {
                 internalReference = documentType + "-" + projectId + "-" + type + "-" + project + "-" + idAgency + "-0000-00-00";
                 //call the function to add in list
-                updateListItem(ID);
+                //updateListItem(ID);
                 //alert("submit full");
                 //createListItem(project, type, projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, idAgency, projectType);
             }
@@ -285,7 +287,7 @@ function updateFile(){
                 internalReference = documentType + "-" + projectId + "-" + type + "-" + idAgency + "-0000-00-00";
                 //call the function to add in list
                 //alert("submit full without project");
-                updateListItem(ID);
+                //updateListItem(ID);
                 //createListItem(project, type, projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, idAgency, projectType);
             }
         } else errorMsg = "You must fill <b>type</b> field";
@@ -295,7 +297,7 @@ function updateFile(){
     //$("#errorValidate").html(errorMsg);
     if (errorMsg != "") {
         alert(errorMsg);
-    } 
+    } else { alert('Sucess!! Can edit now!'); }
 }//click button function ends
 
 /*
@@ -325,4 +327,4 @@ function onQueryFailed(sender, args) {
 }
  
 
-*/
+ */

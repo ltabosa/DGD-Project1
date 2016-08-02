@@ -6,9 +6,9 @@ function retrieveDGDs() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /></ViewFields></View>');
+    camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /><FieldRef Name=\'ProjectCode\' /><FieldRef Name=\'Avenant\' /><FieldRef Name=\'IdAgency\' /></ViewFields></View>');
     window.collListItem = oList.getItems(camlQuery);
-    context.load(collListItem, 'Include(Id, Title)');
+    context.load(collListItem, 'Include(IdAgency, Id, Title, Avenant, ProjectCode)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
@@ -23,6 +23,9 @@ function onQuerySucceeded(sender, args) {
             "<tr>" +
                 "<th class='col-md-1'></th>" +
                 "<th>Project Name</th>" +
+                "<th>Project Code</th>" +
+                "<th>Avenant</th>" +
+                "<th>Id Agency</th>" +
             "</tr>";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
@@ -32,6 +35,9 @@ function onQuerySucceeded(sender, args) {
         "<td>" +
             "<a href='../Pages/File.aspx?ID=" + oListItem.get_id() + "&Title=" + oListItem.get_item('Title') + "'>" + oListItem.get_item('Title') + "</a>"+
         "</td>" +
+        "<td>" + oListItem.get_item('ProjectCode') + "</td>" +
+        "<td>" + oListItem.get_item('Avenant') + "</td>" +
+        "<td>" + oListItem.get_item('IdAgency') + "</td>" +
         "</tr>";
     }
     listInfo +="</table>";

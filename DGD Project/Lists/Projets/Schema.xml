@@ -4,6 +4,23 @@
     <ContentTypes>
 
 
+
+
+
+
+
+      <ContentType ID="0x0100ed17cd4aadc9488685968c7264a3f2a3" Name="ListFieldsContentType">
+        <FieldRefs>
+
+
+
+
+          <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" />
+          <FieldRef ID="{af7e4fd0-f4b5-4210-ae16-0731bcc65e2d}" Name="ProjectCode" />
+          <FieldRef ID="{790ca1ce-b69c-4396-865c-3b8f73f621a5}" Name="Avenant" />
+          <FieldRef ID="{d90bcaea-8340-48a0-b6b7-d7fa2466bfd4}" Name="IdAgency" />
+        </FieldRefs>
+      </ContentType>
       <ContentTypeRef ID="0x01">
         <Folder TargetName="Item" />
       </ContentTypeRef>
@@ -11,10 +28,23 @@
     </ContentTypes>
     <Fields>
 
-      <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="$Resources:core,Title;" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
-    </Fields>
-    <Views>
 
+
+
+
+
+      <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="$Resources:core,Title;" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
+      <Field Name="ProjectCode" ID="{af7e4fd0-f4b5-4210-ae16-0731bcc65e2d}" DisplayName="Project Code" Type="Number" />
+      <Field Name="Avenant" ID="{790ca1ce-b69c-4396-865c-3b8f73f621a5}" DisplayName="Avenant" Type="Number" />
+      <Field Name="IdAgency" ID="{d90bcaea-8340-48a0-b6b7-d7fa2466bfd4}" DisplayName="Id Agency" Type="Text">
+         <Field-validator type="regex">
+            <param name="regex"><![CDATA[/^[A-Z][0-9]$/]]></param>
+           <message>Please enter a valid agency ID (e.g. X1)</message>
+          </Field-validator>
+      </Field>
+    </Fields>
+    
+    <Views>
 
       <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
         <Toolbar Type="Standard" />
@@ -22,10 +52,14 @@
         <RowLimit Paged="TRUE">30</RowLimit>
         <ViewFields>
 
+
+
           <FieldRef Name="LinkTitleNoMenu"></FieldRef>
         </ViewFields>
         <Query>
           <OrderBy>
+
+
 
             <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
           </OrderBy>
@@ -43,10 +77,20 @@
         <RowLimit Paged="TRUE">30</RowLimit>
         <ViewFields>
 
+
+
+
+
+
           <FieldRef Name="LinkTitle"></FieldRef>
+          <FieldRef Name="ProjectCode" />
+          <FieldRef Name="Avenant" />
+          <FieldRef Name="IdAgency" />
         </ViewFields>
         <Query>
           <OrderBy>
+
+
 
             <FieldRef Name="ID"></FieldRef>
           </OrderBy>

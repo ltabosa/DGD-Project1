@@ -4,10 +4,16 @@
     <Data>
       <Rows>
         <Row>
-          <Field Name="Title">Project 1</Field>
+          <Field Name="Title">TBD</Field>
+          <Field Name="ProjectCode">29</Field>
+          <Field Name="Avenant">01</Field>
+          <Field Name="IdAgency">M9</Field>
         </Row>
         <Row>
-          <Field Name="Title">Project 2</Field>
+          <Field Name="Title">DGD</Field>
+          <Field Name="ProjectCode">30</Field>
+          <Field Name="Avenant">01</Field>
+          <Field Name="IdAgency">M8</Field>
         </Row>
       </Rows>
     </Data>
