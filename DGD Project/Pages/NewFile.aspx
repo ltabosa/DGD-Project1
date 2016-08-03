@@ -115,12 +115,14 @@
                 </select>
             </div>
         </div>
+        <!--
         <div class="form-group row">
             <label class="col-sm-2" for="IdAgency">Id Agency:</label>
             <div class="col-sm-4">
                 <input type="text" name="IdAgency" id="IdAgency" placeholder="e.g. X0" class="form-control" />
             </div>
         </div>
+        
         <div class="form-group row">
             <label class="col-sm-2" for="ProjectType">Project Type:</label>
             <div class="col-sm-4">
@@ -131,6 +133,7 @@
                 </select>
             </div>
         </div>
+        -->
         <div id="ProjectTypeDiv"></div>
         <p id="errorValidate" class="bg-danger"></p>
         

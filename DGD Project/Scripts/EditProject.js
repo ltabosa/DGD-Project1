@@ -10,7 +10,7 @@
         var projectCode = $('#ProjectCode').val();
         var avenant = $('#Avenant').val();
         var idAgency = $('#IdAgency').val();
-        //var projectType = $('#ProjectType').val();
+        var projectType = $('#ProjectType').val();
         errorMsg = "";
 
         //Validate form 
@@ -33,8 +33,8 @@
             if (!validateAvenant(avenant)) errorMsg += "Avenant must be a number<br>";
         }
 
-        //if (projectType == "Full") {
-        if (!(avenant == null || avenant == undefined || avenant == "")) {
+        if (projectType == "Full") {
+        //if (!(avenant == null || avenant == undefined || avenant == "")) {
             $('.notShow').show();
             if ((!(projectName == null || projectName == undefined || projectName == ""))
              || (!(projectCode == null || projectCode == undefined || projectCode == ""))
@@ -80,10 +80,11 @@ function retrieveDGDs() {
                 '<FieldRef Name=\'ProjectCode\' />' +
                 '<FieldRef Name=\'Avenant\' />' +
                 '<FieldRef Name=\'IdAgency\' />' +
+                '<FieldRef Name=\'ProjectType\' />' +
             '</ViewFields>' +
         '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    context.load(collListItem, 'Include(Title, ProjectCode, Avenant, IdAgency)');
+    context.load(collListItem, 'Include(Title, ProjectCode, Avenant, IdAgency, ProjectType)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryEditSucceeded),
     Function.createDelegate(this, window.onQueryEditFailed));
 }
@@ -100,7 +101,9 @@ function onQueryEditSucceeded(sender, args) {
         document.getElementById('ProjectCode').value = oListItem.get_item('ProjectCode');
         document.getElementById('Avenant').value = oListItem.get_item('Avenant');
         document.getElementById('IdAgency').value = oListItem.get_item('IdAgency');
+        document.getElementById('ProjectType').value = oListItem.get_item('ProjectType');
         if (oListItem.get_item('Avenant') == null || oListItem.get_item('Avenant') == undefined || oListItem.get_item('Avenant') == "") {
+        //if (!(oListItem.get_item('ProjectType') == "Full")) {
             $('.notShow').hide();
         } 
     }

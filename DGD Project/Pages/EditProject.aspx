@@ -55,13 +55,13 @@
                 <input type="text" name="IdAgency" id="IdAgency" placeholder="e.g. X0" class="form-control" />
             </div>
         </div>
-         <!--
+        
         <div class="form-group row">
             <div class="col-sm-4">
                 <input type="hidden" name="ProjectType" id="ProjectType" class="form-control" />
             </div>
         </div>
-       
+        <!--
         <div class="form-group row">
             <label class="col-sm-2" for="ProjectType">Project Type:</label>
             <div class="col-sm-4">

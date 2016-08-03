@@ -2,7 +2,7 @@
     //get Id, if not exists return to projects page
     projectId = GetUrlKeyValue('ID', false);
     projectTitle = GetUrlKeyValue('Title', false);
-    //prevent
+    //prevent add without project ID
     if (projectId == undefined || projectId == null || projectId == "") {
         window.location.href = '../Pages/Default.aspx';
     }
