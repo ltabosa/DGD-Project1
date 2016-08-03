@@ -115,14 +115,32 @@
                 </select>
             </div>
         </div>
-        <!--
-        <div class="form-group row">
-            <label class="col-sm-2" for="IdAgency">Id Agency:</label>
+       <div class="form-group row">
             <div class="col-sm-4">
-                <input type="text" name="IdAgency" id="IdAgency" placeholder="e.g. X0" class="form-control" />
+                <input type="hidden" name="ProjectName" id="ProjectName" class="form-control" />
             </div>
         </div>
-        
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <input type="hidden" name="ProjectCode" id="ProjectCode" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <input type="hidden" name="Avenant" id="Avenant" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <input type="hidden" name="ProjectType" id="ProjectType" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <input type="hidden" name="IdAgency" id="IdAgency" class="form-control" />
+            </div>
+        </div>
+         <!--
         <div class="form-group row">
             <label class="col-sm-2" for="ProjectType">Project Type:</label>
             <div class="col-sm-4">
