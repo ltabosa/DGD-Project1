@@ -16,12 +16,10 @@
         documentType = $("#DocumentType option:selected").text();
         description = $('#Description').val();
         //Take today date if the input is not set
-        dateCreated = $('#DateCreated').val();
-        if (dateCreated == undefined || dateCreated == null || dateCreated == "") {
-            //dateCreated = new Date().toISOString().slice(0, 10);
-            dateCreated = new Date();
-        }
-        diffusionDate = $('#DiffusionDate').val();
+        //dateCreated = $('#DateCreated').val();
+        dateCreated = document.getElementById('DateCreated').value;
+        //diffusionDate = $('#DiffusionDate').val();
+        diffusionDate = document.getElementById('DiffusionDate').value;
         externalReference = $('#ExternalReference').val();
         localization = $('#Localization').val();
         form = $('#Form').val();
@@ -56,8 +54,11 @@ function createListItem(projectId, internalReference, documentType, description,
     oListItem.set_item('InternalReference', internalReference);
     oListItem.set_item('DocumentType', documentType);
     oListItem.set_item('CategoryDescription', description);
+    if ((dateCreated == undefined)||(dateCreated == null)||(dateCreated == "")) {
+        dateCreated = new Date();
+    }
     oListItem.set_item('_DCDateCreated', dateCreated);
-    if (!diffusionDate == undefined) {
+    if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
         oListItem.set_item('DiffusionDate', diffusionDate);
     }
     oListItem.set_item('ExternalReference', externalReference);
