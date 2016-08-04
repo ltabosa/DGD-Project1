@@ -59,10 +59,10 @@ function onQuerySucceeded2(sender, args) {
         "</tr>";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + ((oListItem.get_item('_DCDateCreated').getMonth()) + 1) + "/" + oListItem.get_item('_DCDateCreated').getDate();
-        var diffusionDate = oListItem.get_item('DiffusionDate');
-        if (diffusionDate != null) {
-            diffusionDate = diffusionDate.getFullYear() + "/" + diffusionDate.getMonth() + 1 + "/" + diffusionDate.getDate();
+        var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate());
+        //var diffusionDate = oListItem.get_item('DiffusionDate');
+        if (!((oListItem.get_item('DiffusionDate') == null) || (oListItem.get_item('DiffusionDate') == undefined) || (oListItem.get_item('DiffusionDate') == ""))) {
+            var diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getDate())+1));
         }
         listInfo +=
         "<tr>" +
@@ -146,4 +146,13 @@ function AddDGDTab() {
     $("span:contains('Views')").prev("span").html(sTitleHtml);
     $("span:contains('Actions')").prev("span").html(sManageHtml);
     SelectRibbonTab('Ribbon.Read', true);
+}
+
+function padToFour(number) {
+    if (number <= 9999) { number = ("000" + number).slice(-4); }
+    return number;
+}
+function padToTwo(number) {
+    if (number <= 99) { number = ("0" + number).slice(-2); }
+    return number;
 }

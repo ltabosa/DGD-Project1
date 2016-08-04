@@ -27,24 +27,24 @@
         var avenant = $('#Avenant').val();
         var projectCode = $('#ProjectCode').val();
         var projectName = $('#ProjectName').val();
-        var orderNumber = $('#OrderNumber').val();
-        var revision = $('#Revision').val();
-        var version = $('#Version').val();
+        var orderNumber = padToFour($('#OrderNumber').val());
+        var revision = padToTwo($('#Revision').val());
+        var version = padToTwo($('#Version').val());
         //Internal Reference as Basic
         if (projectType == "Basic") {
             //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
 
-            internalReference = idAgency + "-" + orderNumber + "-" + version + "-" + revision;
+            internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
             updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status);
             //Internal Reference as Full
         } else if (projectType == "Full") {
 
-            internalReference = documentType + "-" + projectCode + "-" + avenant + "-" + idAgency + "-" + orderNumber + "-" + version + "-" + revision;
+            internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
             updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
             //Internal Reference as Full Without Project 
         } else {
 
-            internalReference = documentType + "-" + idAgency + "-" + orderNumber + "-" + version + "-" + revision;
+            internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
             updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
         }
     });//click button function ends
@@ -100,8 +100,10 @@ function onQuerySucceeded(sender, args) {
         var oListItem = listEnumerator.get_current();
         localStorage.setItem("documentType", oListItem.get_item('DocumentType'));
         localStorage.setItem("description", oListItem.get_item('CategoryDescription'));
-        localStorage.setItem("dateCreated", oListItem.get_item('_DCDateCreated'));
-        localStorage.setItem("diffusionDate", oListItem.get_item('DiffusionDate'));
+        localStorage.setItem("dateCreated", new Date(oListItem.get_item('_DCDateCreated')));
+        if (!(oListItem.get_item('DiffusionDate')==null)||(oListItem.get_item('DiffusionDate')==undefined)||(oListItem.get_item('DiffusionDate')=="")){
+            localStorage.setItem("diffusionDate", new Date(oListItem.get_item('DiffusionDate')));
+        }
         localStorage.setItem("externalReference", oListItem.get_item('ExternalReference'));
         localStorage.setItem("localization", oListItem.get_item('Location'));
         localStorage.setItem("form", oListItem.get_item('Form'));
@@ -155,8 +157,11 @@ function onQueryEditSucceeded(sender, args) {
         //alert("retrieve Project: "+localStorage.getItem('description'));
         document.getElementById('DocumentType').value = localStorage.getItem('documentType');
         document.getElementById('Description').value = localStorage.getItem('description');
+
+        //dateCreated = new Date(localStorage.getItem('dateCreated'));
         document.getElementById('DateCreated').value = localStorage.getItem('dateCreated');
         document.getElementById('DiffusionDate').value = localStorage.getItem('diffusionDate');
+
         document.getElementById('ExternalReference').value = localStorage.getItem('externalReference');
         document.getElementById('Localization').value = localStorage.getItem('localization');
         document.getElementById('Form').value = localStorage.getItem('form');
@@ -211,8 +216,9 @@ function updateListItem(fileId,internalReference,documentType,description,dateCr
 }
 
 function onQueryUpdateSucceeded() {
-
-    alert('Item updated!');
+    var popData = "";
+    SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
+    //alert('Item updated!');
 }
 
 function onQueryUpdateFailed(sender, args) {
@@ -221,4 +227,11 @@ function onQueryUpdateFailed(sender, args) {
 }
  
 
- 
+function padToFour(number) {
+    if (number <= 9999) { number = ("000" + number).slice(-4); }
+    return number;
+}
+function padToTwo(number) {
+    if (number <= 99) { number = ("0" + number).slice(-2); }
+    return number;
+}

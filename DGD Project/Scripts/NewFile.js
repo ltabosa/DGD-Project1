@@ -66,8 +66,8 @@ function createListItem(projectId, internalReference, documentType, description,
     oListItem.set_item('Form', form);
     oListItem.set_item('_Status', status);
     oListItem.set_item('OrderNumber', orderNumber);
-    oListItem.set_item('Version', 1);
-    oListItem.set_item('Revision', 1);
+    oListItem.set_item('Version', 01);
+    oListItem.set_item('Revision', 01);
 
     oListItem.update();
 
@@ -169,12 +169,12 @@ function onQueryDocOrderSucceeded(sender, args) {
     if (count > 0) {
         orderNumber = count + 1;
     } else { orderNumber = 1; }
-
+    
     //Internal Reference as Basic
     if (projectType == "Basic") {
         //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
 
-        internalReference = idAgency + "-" + orderNumber + "-" + version + "-" + revision;
+        internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
         //alert(internalReference);
         //alert(internalReference + ' ' + documentType + ' ' + description + ' ' + dateCreated + ' ' + diffusionDate + ' ' + externalReference + ' ' + localization + ' ' + form + ' ' + status + ' ' + idAgency + ' ' + projectType);
         createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber);
@@ -183,7 +183,7 @@ function onQueryDocOrderSucceeded(sender, args) {
     } else if (projectType == "Full") {
 
         //getDocOrderNumber(documentType);
-        internalReference = documentType + "-" + projectCode + "-" + avenant + "-" + idAgency + "-" + orderNumber + "-" + version + "-" + revision;
+        internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
         //alert(internalReference);
         //call the function to add in list
         //alert("submit full");
@@ -192,7 +192,7 @@ function onQueryDocOrderSucceeded(sender, args) {
     } else {
 
         //getDocOrderNumber(documentType);
-        internalReference = documentType + "-" + idAgency + "-" + orderNumber + "-" + version + "-" + revision;
+        internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
         //alert(internalReference);
         //call the function to add in list
         // alert("submit full without project");
@@ -200,4 +200,13 @@ function onQueryDocOrderSucceeded(sender, args) {
 
     }
     
+}
+
+function padToFour(number) {
+    if (number <= 9999) { number = ("000" + number).slice(-4); }
+    return number;
+}
+function padToTwo(number) {
+    if (number <= 99) { number = ("0" + number).slice(-2); }
+    return number;
 }
