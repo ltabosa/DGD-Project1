@@ -33,14 +33,14 @@
         version = 1;
         getDocOrderNumber(documentType);
         //alert(orderNumber);
-       
-       
+
+
     });//click button function ends
-    
+
 });//ready function ends
 
 
-function createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status,orderNumber) {
+function createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber) {
 
     //var context = new SP.ClientContext.get_current();
     var clientContext = new SP.ClientContext.get_current();
@@ -54,7 +54,7 @@ function createListItem(projectId, internalReference, documentType, description,
     oListItem.set_item('InternalReference', internalReference);
     oListItem.set_item('DocumentType', documentType);
     oListItem.set_item('CategoryDescription', description);
-    if ((dateCreated == undefined)||(dateCreated == null)||(dateCreated == "")) {
+    if ((dateCreated == undefined) || (dateCreated == null) || (dateCreated == "")) {
         dateCreated = new Date();
     }
     oListItem.set_item('_DCDateCreated', dateCreated);
@@ -131,8 +131,8 @@ function onQuerySucceeded(sender, args) {
         document.getElementById('IdAgency').value = oListItem.get_item('IdAgency');
         document.getElementById('ProjectType').value = oListItem.get_item('ProjectType');
         //if (oListItem.get_item('Avenant') == null || oListItem.get_item('Avenant') == undefined || oListItem.get_item('Avenant') == "") {
-            //if (!(oListItem.get_item('ProjectType') == "Full")) {
-            //$('.notShow').hide();
+        //if (!(oListItem.get_item('ProjectType') == "Full")) {
+        //$('.notShow').hide();
         //}
     }
 }
@@ -166,40 +166,36 @@ function onQueryDocOrderFailed(sender, args) {
 }
 function onQueryDocOrderSucceeded(sender, args) {
     var count = window.collListItem.get_count();
+    errorMsg = "";
+    //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
     if (count > 0) {
         orderNumber = count + 1;
     } else { orderNumber = 1; }
-    
-    //Internal Reference as Basic
-    if (projectType == "Basic") {
-        //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
 
-        internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-        //alert(internalReference);
-        //alert(internalReference + ' ' + documentType + ' ' + description + ' ' + dateCreated + ' ' + diffusionDate + ' ' + externalReference + ' ' + localization + ' ' + form + ' ' + status + ' ' + idAgency + ' ' + projectType);
-        createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber);
-        //}
-        //Internal Reference as Full
-    } else if (projectType == "Full") {
-
-        //getDocOrderNumber(documentType);
-        internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-        //alert(internalReference);
-        //call the function to add in list
-        //alert("submit full");
-        createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber);
-        //Internal Reference as Full Without Project 
+    //Valider if the URL is valid in case of form eletronic
+    if (form == "E") {
+        //valider URL
+        if (validateUrl(localization)) {
+            createFile();
+        } else errorMsg = "You must enter a valid URL.";
     } else {
-
-        //getDocOrderNumber(documentType);
-        internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-        //alert(internalReference);
-        //call the function to add in list
-        // alert("submit full without project");
-        createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber);
-
+        createFile();
     }
-    
+    //Internal Reference as Basic
+    function createFile() {
+        if (projectType == "Basic") {
+            internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
+            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber);
+        } else if (projectType == "Full") {
+            internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
+            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber);
+            //Internal Reference as Full Without Project 
+        } else {
+            internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
+            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber);
+        }
+    }
+    $("#errorValidate").html(errorMsg);
 }
 
 function padToFour(number) {
@@ -209,4 +205,8 @@ function padToFour(number) {
 function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
+}
+function validateUrl(url) {
+    var re = new RegExp(/^(((ftp|http|https):\/\/)|(\/))(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/);
+    return url.match(re);
 }

@@ -30,7 +30,17 @@
         var orderNumber = $('#OrderNumber').val();
         var revision = $('#Revision').val();
         var version = $('#Version').val();
+        errorMsg = "";
+        if (form == "E") {
+            //valider URL
+            if (validateUrl(localization)) {
+                createFile();
+            } else errorMsg = "You must enter a valid URL.";
+        } else {
+            createFile();
+        }
         //Internal Reference as Basic
+        function createFile(){
         if (projectType == "Basic") {
             //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
 
@@ -47,6 +57,8 @@
             internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
             updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
         }
+        }
+        $("#errorValidate").html(errorMsg);
     });//click button function ends
 
 });//ready function ends
@@ -236,4 +248,8 @@ function padToFour(number) {
 function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
+}
+function validateUrl(url) {
+    var re = new RegExp(/^(((ftp|http|https):\/\/)|(\/))(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/);
+    return url.match(re);
 }

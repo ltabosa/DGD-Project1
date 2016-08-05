@@ -31,7 +31,7 @@
         var revision = parseInt($('#Revision').val(),10);
         var version = parseInt($('#Version').val(),10);
         var versionOuRevision = document.querySelector('input[name=versionRevision]:checked').value;//$('input[name="versionRevision"]:checked').val();
-        alert(versionOuRevision);
+        //alert(versionOuRevision);
 
         if (versionOuRevision == "version") {
             version += 1;
