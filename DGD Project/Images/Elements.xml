@@ -5,5 +5,6 @@
     <File Path="Images\CreateIcon.png" Url="Images/CreateIcon.png" ReplaceContent="TRUE" />
     <File Path="Images\ViewIcon.png" Url="Images/ViewIcon.png" ReplaceContent="TRUE" />
     <File Path="Images\EditIcon.png" Url="Images/EditIcon.png" ReplaceContent="TRUE" />
+    <File Path="Images\CopyIcon.png" Url="Images/CopyIcon.png" ReplaceContent="TRUE" />
   </Module>
 </Elements>

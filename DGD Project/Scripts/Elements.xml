@@ -13,5 +13,6 @@
     <File Path="Scripts\EditFile.js" Url="Scripts/EditFile.js" ReplaceContent="TRUE" />
     <File Path="Scripts\NewProject.js" Url="Scripts/NewProject.js" ReplaceContent="TRUE" />
     <File Path="Scripts\EditProject.js" Url="Scripts/EditProject.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\CopyFile.js" Url="Scripts/CopyFile.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

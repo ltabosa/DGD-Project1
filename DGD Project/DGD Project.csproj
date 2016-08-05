@@ -79,6 +79,7 @@
     <Content Include="Features\Feature3\Feature3.Template.xml">
       <DependentUpon>Feature3.feature</DependentUpon>
     </Content>
+    <Content Include="Images\CopyIcon.png" />
     <Content Include="Images\CreateIcon.png" />
     <Content Include="Images\EditIcon.png" />
     <Content Include="Images\ViewIcon.png" />
@@ -99,6 +100,7 @@
     <Content Include="Lists\Projets\Schema.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Pages\CopyFile.aspx" />
     <Content Include="Pages\EditFile.aspx" />
     <Content Include="Pages\EditProject.aspx" />
     <Content Include="Pages\File.aspx" />
@@ -115,6 +117,7 @@
     </None>
     <Content Include="Pages\NewFile.aspx" />
     <Content Include="Pages\NewProject.aspx" />
+    <Content Include="Scripts\CopyFile.js" />
     <Content Include="Scripts\EditFile.js" />
     <Content Include="Scripts\File.js" />
     <Content Include="Scripts\bootstrap.min.js" />

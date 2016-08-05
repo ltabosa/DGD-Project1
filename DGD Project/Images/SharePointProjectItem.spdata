@@ -6,5 +6,6 @@
     <ProjectItemFile Source="CreateIcon.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="ViewIcon.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="EditIcon.png" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="CopyIcon.png" Target="Images\" Type="ElementFile" />
   </Files>
 </ProjectItem>

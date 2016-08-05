@@ -46,7 +46,8 @@ function onQuerySucceeded2(sender, args) {
     var listInfo = "<h1>" + projectTitle + "</h1>" +
     "<table class='table table-striped'>" +
         "<tr>" +
-            "<th></th>" +
+            "<th>Edit</th>" +
+            "<th>Copy</th>" +
             "<th>Internal Reference</th>" +
             "<th>Document Type</th>" +
             "<th>Description</th>" +
@@ -67,6 +68,7 @@ function onQuerySucceeded2(sender, args) {
         listInfo +=
         "<tr>" +
             "<td><a href='#' onclick='ShowDialog(" + oListItem.get_id() + ")'><img src='../Images/EditIcon.png' /></a></td>" +
+            "<td><a href='#' onclick='ShowDialogCopy(" + oListItem.get_id() + ")'><img src='../Images/CopyIcon.png' /></a></td>" +
             "<td>" + oListItem.get_item('InternalReference') + "</td>" +
             "<td>" + oListItem.get_item('DocumentType') + "</td>" +
             "<td>" + oListItem.get_item('CategoryDescription') + "</td>" +
@@ -82,6 +84,7 @@ function onQuerySucceeded2(sender, args) {
     $("#results").html(listInfo);
 }
 //end function
+//new window for edit file
 function ShowDialog(ID) {
     var options = {
         url: "../Pages/EditFile.aspx?ID=" + ID,
@@ -100,6 +103,20 @@ function scallback(dialogResult, returnValue) {
         SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.OK);
     }
 }
+
+//new window for copy file and create new with diferent version or revision
+function ShowDialogCopy(ID) {
+        var options = {
+            url: "../Pages/CopyFile.aspx?ID=" + ID,
+            width: 600,
+            height: 600,
+            allowMaximize: true,
+            title: "Copy File",
+            dialogReturnValueCallback: scallback
+        };
+        SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
+        return false;
+    }
 
 // Methods for the ribbon
 function ModifyRibbon() {

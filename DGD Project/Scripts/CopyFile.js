@@ -9,12 +9,11 @@
         //input variables
         var internalReference = "";
 
-        var documentType = $("#DocumentType option:selected").text();
+        var documentType = $("#DocumentType").val();
         var description = $('#Description').val();
         //Take today date if the input is not set
         //var dateCreated = $('#DateCreated').val();
         var dateCreated = document.getElementById('DateCreated').value;
-        
         //var diffusionDate = $('#DiffusionDate').val();
         var diffusionDate = document.getElementById('DiffusionDate').value;
         //alert(diffusionDate);
@@ -26,26 +25,41 @@
         var projectType = $('#ProjectType').val();
         var avenant = $('#Avenant').val();
         var projectCode = $('#ProjectCode').val();
+        var projectId = $('#ProjectID').val();
         var projectName = $('#ProjectName').val();
         var orderNumber = $('#OrderNumber').val();
-        var revision = $('#Revision').val();
-        var version = $('#Version').val();
+        var revision = parseInt($('#Revision').val(),10);
+        var version = parseInt($('#Version').val(),10);
+        var versionOuRevision = document.querySelector('input[name=versionRevision]:checked').value;//$('input[name="versionRevision"]:checked').val();
+        alert(versionOuRevision);
+
+        if (versionOuRevision == "version") {
+            version += 1;
+            revision = 1;
+        } else { revision += 1;}
+        
         //Internal Reference as Basic
         if (projectType == "Basic") {
             //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
 
             internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-            updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status);
+            //alert(internalReference);
+            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+            //updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status);
             //Internal Reference as Full
         } else if (projectType == "Full") {
 
             internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-            updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
+            //alert(internalReference);
+            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+            //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
             //Internal Reference as Full Without Project 
         } else {
 
             internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-            updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
+            //alert(internalReference);
+            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+            //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
         }
     });//click button function ends
 
@@ -113,6 +127,7 @@ function onQuerySucceeded(sender, args) {
         localStorage.setItem("orderNumber", oListItem.get_item('OrderNumber'));
         localStorage.setItem("version", oListItem.get_item('Version'));
         localStorage.setItem("revision", oListItem.get_item('Revision'));
+        localStorage.setItem("ProjectID", oListItem.get_item('Project1'));
         retrieveProject(oListItem.get_item('Project1'));
     }
 }
@@ -171,6 +186,9 @@ function onQueryEditSucceeded(sender, args) {
         document.getElementById('OrderNumber').value = localStorage.getItem('orderNumber');
         document.getElementById('Version').value = localStorage.getItem('version');
         document.getElementById('Revision').value = localStorage.getItem('revision');
+        
+        //get project informations
+        document.getElementById('ProjectID').value = localStorage.getItem('ProjectID');
         document.getElementById('ProjectName').value = oListItem.get_item('Title');
         document.getElementById('ProjectCode').value = oListItem.get_item('ProjectCode');
         document.getElementById('Avenant').value = oListItem.get_item('Avenant');
@@ -183,9 +201,54 @@ function onQueryEditSucceeded(sender, args) {
     }
 }
 
+function createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber,version,revision) {
+
+    //var context = new SP.ClientContext.get_current();
+    var clientContext = new SP.ClientContext.get_current();
+    var oList = clientContext.get_web().get_lists().getByTitle('File');
+
+    var itemCreateInfo = new SP.ListItemCreationInformation();
+    this.oListItem = oList.addItem(itemCreateInfo);
+
+
+    oListItem.set_item('Project1', projectId);
+    oListItem.set_item('InternalReference', internalReference);
+    oListItem.set_item('DocumentType', documentType);
+    oListItem.set_item('CategoryDescription', description);
+    if ((dateCreated == undefined) || (dateCreated == null) || (dateCreated == "")) {
+        dateCreated = new Date();
+    }
+    oListItem.set_item('_DCDateCreated', dateCreated);
+    if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
+        oListItem.set_item('DiffusionDate', diffusionDate);
+    }
+    oListItem.set_item('ExternalReference', externalReference);
+    oListItem.set_item('Location', localization);
+    oListItem.set_item('Form', form);
+    oListItem.set_item('_Status', status);
+    oListItem.set_item('OrderNumber', orderNumber);
+    oListItem.set_item('Version', version);
+    oListItem.set_item('Revision', revision);
+
+    oListItem.update();
+
+    clientContext.load(oListItem);
+
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
+}//createListItem ends
+function onQueryCreateSucceeded() {
+    //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectName;
+    //alert('Item created');
+    var popData = "";
+    SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
+}
+function onQueryCreateFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
 
 //function edit file
-
+/*
 function updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status){
 //function updateListItem(ID) {
     var clientContext = new SP.ClientContext.get_current();
@@ -207,11 +270,11 @@ function updateListItem(fileId,internalReference,documentType,description,dateCr
     oListItem.set_item('Location', localization);
     oListItem.set_item('Form', form);
     oListItem.set_item('_Status', status);
-    /*
+    
     oListItem.set_item('OrderNumber', orderNumber);
     oListItem.set_item('Version', 1);
     oListItem.set_item('Revision', 1);
-    */
+    
     oListItem.update();
 
     clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryUpdateSucceeded), Function.createDelegate(this, this.onQueryUpdateFailed));
@@ -228,7 +291,7 @@ function onQueryUpdateFailed(sender, args) {
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
  
-
+*/
 function padToFour(number) {
     if (number <= 9999) { number = ("000" + number).slice(-4); }
     return number;
