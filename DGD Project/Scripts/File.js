@@ -48,7 +48,14 @@ function onQuerySucceeded(sender, args) {
             "<th>Edit</th>" +
             "<th>Copy</th>" +
             "<th>Internal Reference</th>" +
-            "<th class='dropdown'><a href='' class='dropdown-toggle' data-toggle='dropdown'>Document Type<span class='caret'></span></a></th>" +
+            "<th class='dropdown'><a href='/' class='dropdown-toggle' data-toggle='dropdown'>Document Type<span class='caret'></span></a>" +
+                "<ul class='dropdown-menu'>"+
+                '<div id="resultsDocTypes"></div>';
+            retrieveListDocTypes();
+           /*listInfo += "<li><a href='#'>HTML</a></li>" +
+                "<li><a href='#'>CSS</a></li>" +
+                "<li><a href='#'>JavaScript</a></li>";*/    
+           listInfo += "</ul></th>" +
             "<th>Description</th>" +
             "<th>Date Created</th>" +
             "<th>Diffusion Date</th>" +
@@ -179,4 +186,50 @@ function padToFour(number) {
 function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
+}
+
+function retrieveListDocTypes() {
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('File');
+    var camlQuery = new SP.CamlQuery();
+    projectID = GetUrlKeyValue('ID', false);
+    projectTitle = GetUrlKeyValue('Title', false);
+    camlQuery.set_viewXml(
+        '<View>' +
+         '<Query>' +
+            '<Where>' +
+                    '<Eq>' +
+                        '<FieldRef Name=\'Project1\'/>' +
+                        '<Value Type=\'Lookup\'>' + projectID + '</Value>' +
+                    '</Eq>' +
+             '</Where>' +
+             '<OrderBy>' +
+                '<FieldRef Name=\'DocumentType\' ' + 'Ascending=\'TRUE\' />' +
+             '</OrderBy>' +
+             '<GroupBy collapse="true">'+
+                '<FieldRef Name=\'DocumentType\' />' +
+             '</GroupBy>'+
+         '</Query>' +
+            '<ViewFields>' +
+                '<FieldRef Name=\'DocumentType\' />' +
+            '</ViewFields>' +
+        '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(DocumentType)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQueryListDocTypesSucceeded),
+    Function.createDelegate(this, window.onQueryListDocTypesFailed));
+
+}
+function onQueryListDocTypesSucceeded(sender, args) {
+    var listEnumerator = collListItem.getEnumerator();
+    var listDocTypes = "";
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        listDocTypes += "<li><a href='#'>" + oListItem.get_item('DocumentType') + "</a></li>";
+    }
+    $("#resultsDocTypes").html(listDocTypes);
+}
+function onQueryListDocTypesFailed(sender, args) {
+    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
+    args.get_stackTrace(), true);
 }
