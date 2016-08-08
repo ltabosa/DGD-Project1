@@ -6,7 +6,7 @@
     if (projectId == undefined || projectId == null || projectId == "") {
         window.location.href = '../Pages/Default.aspx';
     } else {
-        SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGDs);
+        SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGD);
     }
     $("#Submit").click(function () {
 
@@ -58,6 +58,9 @@ function createListItem(projectId, internalReference, documentType, description,
         dateCreated = new Date();
     }
     oListItem.set_item('_DCDateCreated', dateCreated);
+    /*if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))&&(status=="Validated")) {
+        diffusionDate = new Date();
+    }*/
     if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
         oListItem.set_item('DiffusionDate', diffusionDate);
     }
@@ -86,7 +89,7 @@ function onQueryCreateFailed(sender, args) {
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 
-function retrieveDGDs() {
+function retrieveDGD() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
@@ -172,15 +175,16 @@ function onQueryDocOrderSucceeded(sender, args) {
         orderNumber = count + 1;
     } else { orderNumber = 1; }
 
-    //Valider if the URL is valid in case of form eletronic
-    if (form == "E") {
-        //valider URL
+    //Validation if the URL is valid in case of form eletronic
+    if (localization == null || localization == undefined || localization == "") {
+        if (status == "Validated") {
+            errorMsg = "You must fill the field <b>Localization</b>";
+        } else createFile();
+    }else if (form == "E") {
         if (validateUrl(localization)) {
             createFile();
-        } else errorMsg = "You must enter a valid URL.";
-    } else {
-        createFile();
-    }
+        } else errorMsg = "You must enter a valid URL in localization";
+    } else createFile();
     //Internal Reference as Basic
     function createFile() {
         if (projectType == "Basic") {
@@ -206,6 +210,12 @@ function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
 }
+/**
+* Shape is an abstract base class. It is defined simply
+* to have something to inherit from for geometric 
+* subclasses
+* @constructor
+*/
 function validateUrl(url) {
     var re = new RegExp(/^(((ftp|http|https):\/\/)|(\/))(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/);
     return url.match(re);

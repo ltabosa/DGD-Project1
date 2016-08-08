@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
-    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGDs);
+    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGD);
     SP.SOD.executeOrDelayUntilScriptLoaded(ModifyRibbon, 'sp.ribbon.js');
 });
-function retrieveDGDs() {
+function retrieveDGD() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
@@ -88,20 +88,20 @@ function AddDGDTab() {
     sManageHtml += "<img src='../images/CreateIcon.png' /></a><br/>Create New Project";
     var ribbon = SP.Ribbon.PageManager.get_instance().get_ribbon();
     if (ribbon !== null) {
-        var tab = new CUI.Tab(ribbon, 'DGDs.Tab', 'DGDs',
+        var tab = new CUI.Tab(ribbon, 'DGD.Tab', 'DGD',
         'Use this tab to view and modify the DGD list',
-        'DGDs.Tab.Command', false, '', null);
+        'DGD.Tab.Command', false, '', null);
         ribbon.addChildAtIndex(tab, 1);
-       // var group = new CUI.Group(ribbon, 'DGDs.Tab.Group', 'Views',
+       // var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Views',
        // 'Use this group to view a list of titles',
-       // 'DGDs.Group.Command', null);
+       // 'DGD.Group.Command', null);
        // tab.addChild(group);
-        var group = new CUI.Group(ribbon, 'DGDs.Tab.Group', 'Actions',
-        'Use this group to add/update/delete DGDs',
-        'DGDs.Group.Command', null);
+        var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Actions',
+        'Use this group to add/update/delete DGD',
+        'DGD.Group.Command', null);
         tab.addChild(group);
     }
-    SelectRibbonTab('DGDs.Tab', true);
+    SelectRibbonTab('DGD.Tab', true);
     //$("span:contains('Views')").prev("span").html(sTitleHtml);
     $("span:contains('Actions')").prev("span").html(sManageHtml);
     SelectRibbonTab('Ribbon.Read', true);

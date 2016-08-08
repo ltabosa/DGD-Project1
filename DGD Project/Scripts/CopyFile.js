@@ -1,12 +1,11 @@
 ﻿$(document).ready(function () {
-    //SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGDs);
+    
     fileId = GetUrlKeyValue('ID', false);
     if (!(fileId == "" || fileId == undefined || fileId == null)) {
-        SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveFiles);
+        SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveFile);
     }
     $("#Submit").click(function () {
-        //alert("Submit button: " + localStorage.getItem('description'));
-        //input variables
+       
         var internalReference = "";
 
         var documentType = $("#DocumentType").val();
@@ -36,35 +35,49 @@
         if (versionOuRevision == "version") {
             version += 1;
             revision = 1;
-        } else { revision += 1;}
+        } else { revision += 1; }
+
+        //Validation if the URL is valid in case of form eletronic
+        if (localization == null || localization == undefined || localization == "") {
+            if (status == "Validated") {
+                errorMsg = "You must fill the field <b>Localization</b>";
+            } else createFile();
+        }else if (form == "E") {
+            if (validateUrl(localization)) {
+                createFile();
+            } else errorMsg = "You must enter a valid URL in localization";
+        } else createFile();
         
         //Internal Reference as Basic
-        if (projectType == "Basic") {
-            //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
+        function createFile(){
+            if (projectType == "Basic") {
+                //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
 
-            internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-            //alert(internalReference);
-            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
-            //updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status);
-            //Internal Reference as Full
-        } else if (projectType == "Full") {
+                internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
+                //alert(internalReference);
+                createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+                //updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status);
+                //Internal Reference as Full
+            } else if (projectType == "Full") {
 
-            internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-            //alert(internalReference);
-            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
-            //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
-            //Internal Reference as Full Without Project 
-        } else {
+                internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
+                //alert(internalReference);
+                createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+                //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
+                //Internal Reference as Full Without Project 
+            } else {
 
-            internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
-            //alert(internalReference);
-            createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
-            //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
-        }
+                internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
+                //alert(internalReference);
+                createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+                //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
+            }
+        } $("#errorValidate").html(errorMsg);
     });//click button function ends
 
 });//ready function ends
-function retrieveFiles() {
+function retrieveFile() {
+   
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -219,6 +232,9 @@ function createListItem(projectId, internalReference, documentType, description,
         dateCreated = new Date();
     }
     oListItem.set_item('_DCDateCreated', dateCreated);
+    /*if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == "")) && (status == "Validated")) {
+        diffusionDate = new Date();
+    }*/
     if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
         oListItem.set_item('DiffusionDate', diffusionDate);
     }
@@ -247,51 +263,6 @@ function onQueryCreateFailed(sender, args) {
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 
-//function edit file
-/*
-function updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status){
-//function updateListItem(ID) {
-    var clientContext = new SP.ClientContext.get_current();
-   // var clientContext = new SP.ClientContext(siteUrl);
-    var oList = clientContext.get_web().get_lists().getByTitle('File');
-
-    this.oListItem = oList.getItemById(fileId);
-
-    oListItem.set_item('InternalReference', internalReference);
-    oListItem.set_item('DocumentType', documentType);
-    oListItem.set_item('CategoryDescription', description);
-    if (!((dateCreated == undefined)||(dateCreated == null)||(dateCreated == ""))){
-        oListItem.set_item('_DCDateCreated', dateCreated);
-    }
-    if (!((diffusionDate == undefined)||(diffusionDate == null)||(diffusionDate == ""))) {
-        oListItem.set_item('DiffusionDate', diffusionDate);
-    }
-    oListItem.set_item('ExternalReference', externalReference);
-    oListItem.set_item('Location', localization);
-    oListItem.set_item('Form', form);
-    oListItem.set_item('_Status', status);
-    
-    oListItem.set_item('OrderNumber', orderNumber);
-    oListItem.set_item('Version', 1);
-    oListItem.set_item('Revision', 1);
-    
-    oListItem.update();
-
-    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryUpdateSucceeded), Function.createDelegate(this, this.onQueryUpdateFailed));
-}
-
-function onQueryUpdateSucceeded() {
-    var popData = "";
-    SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
-    //alert('Item updated!');
-}
-
-function onQueryUpdateFailed(sender, args) {
-
-    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
-}
- 
-*/
 function padToFour(number) {
     if (number <= 9999) { number = ("000" + number).slice(-4); }
     return number;

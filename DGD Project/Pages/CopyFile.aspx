@@ -55,6 +55,12 @@
             </div>
         </div>
         <div class="form-group row">
+            <label class="col-sm-2" for="Localization">Localization:</label>
+            <div class="col-sm-4">
+                <input type="text" name="Localization" id="Localization" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
             <label class="col-sm-2" for="Status">Status:</label>
             <div class="col-sm-4">
                 <select name="Status" id="Status" class="form-control">
@@ -67,7 +73,6 @@
         </div>
                 <input type="hidden" name="DocumentType" id="DocumentType" class="form-control" />
                 <input type="hidden" name="ExternalReference" id="ExternalReference" value="n/a" class="form-control" />
-                <input type="hidden" name="Localization" id="Localization" class="form-control" />
                 <input type="hidden" name="Form" id="Form" class="form-control" />
                 <input type="hidden" name="OrderNumber" id="OrderNumber" class="form-control" />
                 <input type="hidden" name="Version" id="Version" class="form-control" />
@@ -78,7 +83,7 @@
                 <input type="hidden" name="Avenant" id="Avenant" class="form-control" />
                 <input type="hidden" name="ProjectType" id="ProjectType" class="form-control" />
                 <input type="hidden" name="IdAgency" id="IdAgency" class="form-control" />
-            
+        <p id="errorValidate" class="bg-danger"></p>  
         <input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" />
         
     </form>

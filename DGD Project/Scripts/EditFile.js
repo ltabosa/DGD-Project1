@@ -31,14 +31,24 @@
         var revision = $('#Revision').val();
         var version = $('#Version').val();
         errorMsg = "";
-        if (form == "E") {
+        //Validation if the URL is valid in case of form eletronic
+        if (localization == null || localization == undefined || localization == "") {
+            if (status == "Validated") {
+                errorMsg = "You must fill the field <b>Localization</b>";
+            } else createFile();
+        }else if (form == "E") {
+            if (validateUrl(localization)) {
+                createFile();
+            } else errorMsg = "You must enter a valid URL in localization";
+        } else createFile();
+        /*if (form == "E") {
             //valider URL
             if (validateUrl(localization)) {
                 createFile();
             } else errorMsg = "You must enter a valid URL.";
         } else {
             createFile();
-        }
+        }*/
         //Internal Reference as Basic
         function createFile(){
         if (projectType == "Basic") {
@@ -212,6 +222,9 @@ function updateListItem(fileId,internalReference,documentType,description,dateCr
     if (!((dateCreated == undefined)||(dateCreated == null)||(dateCreated == ""))){
         oListItem.set_item('_DCDateCreated', dateCreated);
     }
+    /*if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == "")) && (status == "Validated")) {
+        diffusionDate = new Date();
+    }*/
     if (!((diffusionDate == undefined)||(diffusionDate == null)||(diffusionDate == ""))) {
         oListItem.set_item('DiffusionDate', diffusionDate);
     }

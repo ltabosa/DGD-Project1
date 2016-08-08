@@ -37,11 +37,10 @@ function retrieveProject() {
         '</View>');
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(Id, InternalReference,DocumentType,CategoryDescription,_DCDateCreated,DiffusionDate,ExternalReference,Location,Form,_Status)');
-    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded2),
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-
-function onQuerySucceeded2(sender, args) {
+function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     var listInfo = "<h1>" + projectTitle + "</h1>" +
     "<table class='table table-striped'>" +
@@ -49,7 +48,7 @@ function onQuerySucceeded2(sender, args) {
             "<th>Edit</th>" +
             "<th>Copy</th>" +
             "<th>Internal Reference</th>" +
-            "<th>Document Type</th>" +
+            "<th class='dropdown'><a href='' class='dropdown-toggle' data-toggle='dropdown'>Document Type<span class='caret'></span></a></th>" +
             "<th>Description</th>" +
             "<th>Date Created</th>" +
             "<th>Diffusion Date</th>" +
@@ -63,10 +62,12 @@ function onQuerySucceeded2(sender, args) {
         var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate());
         //var diffusionDate = oListItem.get_item('DiffusionDate');
         if (!((oListItem.get_item('DiffusionDate') == null) || (oListItem.get_item('DiffusionDate') == undefined) || (oListItem.get_item('DiffusionDate') == ""))) {
-            var diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getDate())+1));
+            var diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo((oListItem.get_item('DiffusionDate').getDate()));
         }
+        if (oListItem.get_item('_Status') == "Deleted") {
+            listInfo += '<tr class="bold" role="alert">';
+        } else listInfo += "<tr>";
         listInfo +=
-        "<tr>" +
             "<td><a href='#' onclick='ShowDialog(" + oListItem.get_id() + ")'><img src='../Images/EditIcon.png' /></a></td>" +
             "<td><a href='#' onclick='ShowDialogCopy(" + oListItem.get_id() + ")'><img src='../Images/CopyIcon.png' /></a></td>" +
             "<td>" + oListItem.get_item('InternalReference') + "</td>" +
@@ -77,11 +78,17 @@ function onQuerySucceeded2(sender, args) {
             "<td>" + oListItem.get_item('ExternalReference') + "</td>" +
             "<td>" + oListItem.get_item('Location') + "</td>" +
             "<td>" + oListItem.get_item('Form') + "</td>" +
-            "<td>" + oListItem.get_item('_Status') + "</td>" +
-        "</tr>";
+            "<td>" + oListItem.get_item('_Status') + "</td>";
+        if (oListItem.get_item('_Status') == "Deleted") {
+            listInfo += '</tr>';
+        }
     }
     listInfo += "</table>";
     $("#results").html(listInfo);
+}
+function onQueryFailed(sender, args) {
+    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
+    args.get_stackTrace(), true);
 }
 //end function
 //new window for edit file
@@ -146,20 +153,20 @@ function AddDGDTab() {
     sManageHtml += "<img src='../images/CreateIcon.png' /></a><br/>New File";
     var ribbon = SP.Ribbon.PageManager.get_instance().get_ribbon();
     if (ribbon !== null) {
-        var tab = new CUI.Tab(ribbon, 'DGDs.Tab', 'DGDs',
+        var tab = new CUI.Tab(ribbon, 'DGD.Tab', 'DGD',
         'Use this tab to view and modify the DGD list',
-        'DGDs.Tab.Command', false, '', null);
+        'DGD.Tab.Command', false, '', null);
         ribbon.addChildAtIndex(tab, 1);
-        var group = new CUI.Group(ribbon, 'DGDs.Tab.Group', 'Views',
+        var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Views',
         'Use this group to view a list of titles',
-        'DGDs.Group.Command', null);
+        'DGD.Group.Command', null);
         tab.addChild(group);
-        var group = new CUI.Group(ribbon, 'DGDs.Tab.Group', 'Actions',
-        'Use this group to add/update/delete DGDs',
-        'DGDs.Group.Command', null);
+        var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Actions',
+        'Use this group to add/update/delete DGD',
+        'DGD.Group.Command', null);
         tab.addChild(group);
     }
-    SelectRibbonTab('DGDs.Tab', true);
+    SelectRibbonTab('DGD.Tab', true);
     $("span:contains('Views')").prev("span").html(sTitleHtml);
     $("span:contains('Actions')").prev("span").html(sManageHtml);
     SelectRibbonTab('Ribbon.Read', true);
