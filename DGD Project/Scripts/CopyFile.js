@@ -30,6 +30,7 @@
         var revision = parseInt($('#Revision').val(),10);
         var version = parseInt($('#Version').val(),10);
         var versionOuRevision = document.querySelector('input[name=versionRevision]:checked').value;//$('input[name="versionRevision"]:checked').val();
+        var errorMsg = "";
         //alert(versionOuRevision);
 
         if (versionOuRevision == "version") {
@@ -55,23 +56,23 @@
 
                 internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
                 //alert(internalReference);
-                createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+                //createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
                 //updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status);
                 //Internal Reference as Full
             } else if (projectType == "Full") {
 
                 internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
                 //alert(internalReference);
-                createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+                //createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
                 //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
                 //Internal Reference as Full Without Project 
             } else {
 
                 internalReference = documentType + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
                 //alert(internalReference);
-                createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
+                //createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
                 //updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
-            }
+            } createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber, version, revision);
         } $("#errorValidate").html(errorMsg);
     });//click button function ends
 
@@ -255,10 +256,36 @@ function createListItem(projectId, internalReference, documentType, description,
 function onQueryCreateSucceeded() {
     //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectName;
     //alert('Item created');
+    updateLastFile();
+    //var popData = "";
+    //SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
+}
+function onQueryCreateFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+function updateLastFile() {
+
+    var clientContext = new SP.ClientContext.get_current();
+    // var clientContext = new SP.ClientContext(siteUrl);
+    var oList = clientContext.get_web().get_lists().getByTitle('File');
+
+    this.oListItem = oList.getItemById(fileId);
+
+    oListItem.set_item('Copy', true);
+
+    oListItem.update();
+
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryUpdateSucceeded), Function.createDelegate(this, this.onQueryUpdateFailed));
+}//createListItem ends
+function onQueryUpdateSucceeded() {
+    //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectName;
+    //alert('Item created');
     var popData = "";
     SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
 }
-function onQueryCreateFailed(sender, args) {
+function onQueryUpdateFailed(sender, args) {
 
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
@@ -270,4 +297,8 @@ function padToFour(number) {
 function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
+}
+function validateUrl(url) {
+    var re = new RegExp(/^(((ftp|http|https):\/\/)|(\/))(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/);
+    return url.match(re);
 }

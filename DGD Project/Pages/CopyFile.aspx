@@ -33,7 +33,7 @@
              <label class="col-sm-2" for="versionRevision">What do you want to change?</label>
              <div class="col-sm-4">
                 <label class="radio-inline"><input type="radio" name="versionRevision" value="version"/>Version</label>
-                <label class="radio-inline"><input type="radio" name="versionRevision" value="revision"/>Revision</label>
+                <label class="radio-inline"><input type="radio" name="versionRevision" value="revision" checked/>Revision</label>
             </div>
          </div>
         <div class="form-group row">

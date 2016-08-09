@@ -33,10 +33,11 @@ function retrieveProject() {
                 '<FieldRef Name=\'Location\' />' +
                 '<FieldRef Name=\'Form\' />' +
                 '<FieldRef Name=\'_Status\' />' +
+                '<FieldRef Name=\'Copy\' />' +
             '</ViewFields>' +
         '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    context.load(collListItem, 'Include(Id, InternalReference,DocumentType,CategoryDescription,_DCDateCreated,DiffusionDate,ExternalReference,Location,Form,_Status)');
+    context.load(collListItem, 'Include(Id, InternalReference,DocumentType,CategoryDescription,_DCDateCreated,DiffusionDate,ExternalReference,Location,Form,_Status,Copy)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
@@ -49,20 +50,23 @@ function onQuerySucceeded(sender, args) {
             "<th>Copy</th>" +
             "<th>Internal Reference</th>" +
             "<th class='dropdown'><a href='/' class='dropdown-toggle' data-toggle='dropdown'>Document Type<span class='caret'></span></a>" +
-                "<ul class='dropdown-menu'>"+
+                "<ul class='dropdown-menu'>" +
                 '<div id="resultsDocTypes"></div>';
-            retrieveListDocTypes();
-           /*listInfo += "<li><a href='#'>HTML</a></li>" +
-                "<li><a href='#'>CSS</a></li>" +
-                "<li><a href='#'>JavaScript</a></li>";*/    
-           listInfo += "</ul></th>" +
-            "<th>Description</th>" +
-            "<th>Date Created</th>" +
-            "<th>Diffusion Date</th>" +
-            "<th>External Reference</th>" +
-            "<th>Localization</th>" +
-            "<th>Format</th>" +
-            "<th>Status</th>" +
+                retrieveListDocTypes();
+                listInfo += "</ul></th>" +
+             "<th>Description</th>" +
+             "<th class='dropdown'><a href='/' class='dropdown-toggle' data-toggle='dropdown'>Date Created<span class='caret'></span></a>" +
+                 "<ul class='dropdown-menu'>" +
+                 '<div id="resultsDateCreated"></div>' +
+                 "</ul></th>" +
+             "<th>Diffusion Date</th>" +
+             "<th>External Reference</th>" +
+             "<th>Localization</th>" +
+             "<th class='dropdown'><a href='/' class='dropdown-toggle' data-toggle='dropdown'>Format<span class='caret'></span></a>" +
+             "<ul class='dropdown-menu'>" +
+                 '<div id="resultsForm"></div>' +
+                 "</ul></th>" +
+             "<th>Status</th>" +
         "</tr>";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
@@ -76,7 +80,11 @@ function onQuerySucceeded(sender, args) {
         } else listInfo += "<tr>";
         listInfo +=
             "<td><a href='#' onclick='ShowDialog(" + oListItem.get_id() + ")'><img src='../Images/EditIcon.png' /></a></td>" +
-            "<td><a href='#' onclick='ShowDialogCopy(" + oListItem.get_id() + ")'><img src='../Images/CopyIcon.png' /></a></td>" +
+            "<td>";
+        if ((oListItem.get_item('Copy')==null)||(oListItem.get_item('InternalReference')==undefined)||(oListItem.get_item('InternalReference')=="")){
+            listInfo += "<a href='#' onclick='ShowDialogCopy(" + oListItem.get_id() + ")'><img src='../Images/CopyIcon.png' /></a>";
+        }
+        listInfo += "</td>" +
             "<td>" + oListItem.get_item('InternalReference') + "</td>" +
             "<td>" + oListItem.get_item('DocumentType') + "</td>" +
             "<td>" + oListItem.get_item('CategoryDescription') + "</td>" +
@@ -120,17 +128,17 @@ function scallback(dialogResult, returnValue) {
 
 //new window for copy file and create new with diferent version or revision
 function ShowDialogCopy(ID) {
-        var options = {
-            url: "../Pages/CopyFile.aspx?ID=" + ID,
-            width: 600,
-            height: 600,
-            allowMaximize: true,
-            title: "Copy File",
-            dialogReturnValueCallback: scallback
-        };
-        SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
-        return false;
-    }
+    var options = {
+        url: "../Pages/CopyFile.aspx?ID=" + ID,
+        width: 600,
+        height: 600,
+        allowMaximize: true,
+        title: "Copy File",
+        dialogReturnValueCallback: scallback
+    };
+    SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
+    return false;
+}
 
 // Methods for the ribbon
 function ModifyRibbon() {
@@ -156,7 +164,7 @@ function AddDGDTab() {
     var sManageHtml = "";
     sTitleHtml += "<a href='../Pages/Default.aspx' >' ";
     sTitleHtml += "<img src='../images/ViewIcon.png' /></a><br/>My Projects";
-    sManageHtml += "<a href='../Pages/NewFile.aspx?ID=" + projectID + "&Title="+projectTitle+"' >";
+    sManageHtml += "<a href='../Pages/NewFile.aspx?ID=" + projectID + "&Title=" + projectTitle + "' >";
     sManageHtml += "<img src='../images/CreateIcon.png' /></a><br/>New File";
     var ribbon = SP.Ribbon.PageManager.get_instance().get_ribbon();
     if (ribbon !== null) {
@@ -192,8 +200,6 @@ function retrieveListDocTypes() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
-    projectID = GetUrlKeyValue('ID', false);
-    projectTitle = GetUrlKeyValue('Title', false);
     camlQuery.set_viewXml(
         '<View>' +
          '<Query>' +
@@ -204,18 +210,19 @@ function retrieveListDocTypes() {
                     '</Eq>' +
              '</Where>' +
              '<OrderBy>' +
-                '<FieldRef Name=\'DocumentType\' ' + 'Ascending=\'TRUE\' />' +
-             '</OrderBy>' +
-             '<GroupBy collapse="true">'+
                 '<FieldRef Name=\'DocumentType\' />' +
-             '</GroupBy>'+
+                '<FieldRef Name=\'Form\' />' +
+                '<FieldRef Name=\'_DCDateCreated\' />' +
+             '</OrderBy>' +
          '</Query>' +
             '<ViewFields>' +
                 '<FieldRef Name=\'DocumentType\' />' +
+                '<FieldRef Name=\'_DCDateCreated\' />' +
+                '<FieldRef Name=\'Form\' />' +
             '</ViewFields>' +
         '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    context.load(collListItem, 'Include(DocumentType)');
+    context.load(collListItem, 'Include(DocumentType,_DCDateCreated,Form)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryListDocTypesSucceeded),
     Function.createDelegate(this, window.onQueryListDocTypesFailed));
 
@@ -223,13 +230,122 @@ function retrieveListDocTypes() {
 function onQueryListDocTypesSucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     var listDocTypes = "";
+    var listDateCreated = "";
+    var listForm = "";
+    var temp1 = "";
+    var temp2 = "";
+    var temp3 = "";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        listDocTypes += "<li><a href='#'>" + oListItem.get_item('DocumentType') + "</a></li>";
+        if (!(oListItem.get_item('DocumentType') == temp1)) {
+            temp1 = oListItem.get_item('DocumentType');
+            listDocTypes += "<li><a href='#'>" + oListItem.get_item('DocumentType') + "</a></li>";
+        }
+        if (!(oListItem.get_item('_DCDateCreated') == temp2)) {
+            temp2 = oListItem.get_item('_DCDateCreated');
+            listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated') + "</a></li>";
+        }
+        if (!(oListItem.get_item('Form') == temp3)) {
+            temp3 = oListItem.get_item('Form');
+            listForm += "<li><a href='#'>" + oListItem.get_item('Form') + "</a></li>";
+        }
     }
+
     $("#resultsDocTypes").html(listDocTypes);
+    $("#resultsForm").html(listForm);
+    $("#resultsDateCreated").html(listDateCreated);
 }
 function onQueryListDocTypesFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
 }
+/*
+function retrieveDateCreated() {
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('File');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+        '<View>' +
+         '<Query>' +
+            '<Where>' +
+                    '<Eq>' +
+                        '<FieldRef Name=\'Project1\'/>' +
+                        '<Value Type=\'Lookup\'>' + projectID + '</Value>' +
+                    '</Eq>' +
+             '</Where>' +
+             '<OrderBy>' +
+                '<FieldRef Name=\'_DCDateCreated\' Ascending=\'FALSE\' />' +
+             '</OrderBy>' +
+         '</Query>' +
+            '<ViewFields>' +
+                '<FieldRef Name=\'_DCDateCreated\' />' +
+            '</ViewFields>' +
+        '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(_DCDateCreated)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQueryDateCreatedSucceeded),
+    Function.createDelegate(this, window.onQueryDateCreatedFailed));
+
+}
+function onQueryDateCreatedSucceeded(sender, args) {
+    var listEnumerator = collListItem.getEnumerator();
+    var listDateCreated = "";
+    var temp = "";
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        if (!(oListItem.get_item('_DCDateCreated') == temp)) {
+            temp = oListItem.get_item('_DCDateCreated');
+            listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated') + "</a></li>";
+        }
+    }
+    $("#resultsDateCreated").html(listDateCreated);
+}
+function onQueryDateCreatedFailed(sender, args) {
+    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
+    args.get_stackTrace(), true);
+}
+
+function retrieveFormat() {
+        var context = new SP.ClientContext.get_current();
+        var oList = context.get_web().get_lists().getByTitle('File');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(
+            '<View>' +
+             '<Query>' +
+                '<Where>' +
+                        '<Eq>' +
+                            '<FieldRef Name=\'Project1\'/>' +
+                            '<Value Type=\'Lookup\'>' + projectID + '</Value>' +
+                        '</Eq>' +
+                 '</Where>' +
+                 '<OrderBy>' +
+                    '<FieldRef Name=\'Form\' Ascending=\'FALSE\' />' +
+                 '</OrderBy>' +
+             '</Query>' +
+                '<ViewFields>' +
+                    '<FieldRef Name=\'Form\' />' +
+                '</ViewFields>' +
+            '</View>');
+        window.collListItem = oList.getItems(camlQuery);
+        context.load(collListItem, 'Include(Form)');
+        context.executeQueryAsync(Function.createDelegate(this, window.onQueryFormSucceeded),
+        Function.createDelegate(this, window.onQueryFormFailed));
+
+    }
+function onQueryFormSucceeded(sender, args) {
+        var listEnumerator = collListItem.getEnumerator();
+        var listForm = "";
+        var temp = "";
+        while (listEnumerator.moveNext()) {
+            var oListItem = listEnumerator.get_current();
+            if (!(oListItem.get_item('Form') == temp)) {
+                temp = oListItem.get_item('Form');
+                listForm += "<li><a href='#'>" + oListItem.get_item('Form') + "</a></li>";
+            }
+        }
+        $("#resultsForm").html(listForm);
+    }
+function onQueryFormFailed(sender, args) {
+        SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
+        args.get_stackTrace(), true);
+    }*/
