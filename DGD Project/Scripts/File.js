@@ -1,9 +1,14 @@
 ﻿$(document).ready(function () {
+    /// <summary>
+    /// When this page charges take the correct action to display the right rows.
+    /// </summary>
+    /// <returns></returns>
     projectID = GetUrlKeyValue('ID', false);
     projectTitle = GetUrlKeyValue('Title', false);
     DocType = GetUrlKeyValue('DT', false);
-    DateCre = GetUrlKeyValue('DC', false);
+    DateCre = (GetUrlKeyValue('DC', false));
     DateCre = DateCre.replace("%", " ");
+    DateCreat = String.format("{0:s}", new Date(DateCre));
     Form = GetUrlKeyValue('FO', false);
     if (DocType == null || DocType == undefined||DocType=="") {
         if (DateCre == null || DateCre == undefined || DateCre == "") {
@@ -14,9 +19,10 @@
     }else SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveProjectFilterDocType);
     SP.SOD.executeOrDelayUntilScriptLoaded(ModifyRibbon, 'sp.ribbon.js');
 });
-//nouvelle function
-//Query for all Files
 function retrieveProject() {
+    /// <summary>
+    /// Retrieves the project files.
+    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -54,6 +60,9 @@ function retrieveProject() {
 }
 //Query for filter Document Types
 function retrieveProjectFilterDocType() {
+    /// <summary>
+    /// Retrieves a filter of the document type of the project.
+    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -97,6 +106,9 @@ function retrieveProjectFilterDocType() {
 }
 //Query for filter Created Date
 function retrieveProjectDateCreated() {
+    /// <summary>
+    /// Retrieves filter of the project created date.
+    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -111,7 +123,7 @@ function retrieveProjectDateCreated() {
                 '</Eq>' +
                 '<Eq>' +
                     '<FieldRef Name=\'_DCDateCreated\'/>' +
-                    '<Value Type=\'DateTime\'>' + DateCre + '</Value>' +
+                    '<Value IncludeTimeValue=’FALSE’ Type=\'DateTime\'>' + DateCreat + '</Value>' +
                 '</Eq>' +
                 '</And>' +
              '</Where>' +
@@ -140,6 +152,9 @@ function retrieveProjectDateCreated() {
 }
 //Query for filter Format
 function retrieveProjectFormat() {
+    /// <summary>
+    /// Retrieves filter of the format.
+    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -182,6 +197,11 @@ function retrieveProjectFormat() {
     Function.createDelegate(this, window.onQueryFailed));
 }
 function onQuerySucceeded(sender, args) {
+    /// <summary>
+    /// Ons the query succeeded show the rows.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
     var listEnumerator = collListItem.getEnumerator();
     var listInfo = "<h1>" + projectTitle + "</h1>" +
     "<table class='table table-striped'>" +
@@ -242,13 +262,22 @@ function onQuerySucceeded(sender, args) {
     listInfo += "</table>";
     $("#results").html(listInfo);
 }
-function onQueryFailed(sender, args) {
+/*function onQueryFailed(sender, args) {
+    /// <summary>
+    /// Ons the query failed.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 //end function
 //new window for edit file
 function ShowDialog(ID) {
+    /// <summary>
+    /// Shows the dialog For Edit File.
+    /// </summary>
+    /// <param name="ID">The file identifier.</param>
     var options = {
         url: "../Pages/EditFile.aspx?ID=" + ID,
         //url: "../Lists/File/EditForm.aspx?ID=" + ID,
@@ -262,13 +291,22 @@ function ShowDialog(ID) {
     return false;
 }
 function scallback(dialogResult, returnValue) {
+    /// <summary>
+    /// Scallbacks the specified dialog result.
+    /// </summary>
+    /// <param name="dialogResult">The dialog result.</param>
+    /// <param name="returnValue">The return value.</param>
     if (dialogResult == SP.UI.DialogResult.OK) {
         SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.OK);
     }
 }
 
-//new window for copy file and create new with diferent version or revision
 function ShowDialogCopy(ID) {
+    /// <summary>
+    /// Shows the new window for copy file and create new with diferent version or revision.
+    /// </summary>
+    /// <param name="ID">The identifier.</param>
+    /// <returns></returns>
     var options = {
         url: "../Pages/CopyFile.aspx?ID=" + ID,
         width: 600,
@@ -283,6 +321,9 @@ function ShowDialogCopy(ID) {
 
 // Methods for the ribbon
 function ModifyRibbon() {
+    /// <summary>
+    /// Modifies the ribbon.
+    /// </summary>
     var pm = SP.Ribbon.PageManager.get_instance();
     pm.add_ribbonInited(function () {
         AddDGDTab();
@@ -301,6 +342,9 @@ function ModifyRibbon() {
     }
 }
 function AddDGDTab() {
+    /// <summary>
+    /// Adds the DGD tab in the ribbon.
+    /// </summary>
     var sTitleHtml = "";
     var sManageHtml = "";
     sTitleHtml += "<a href='../Pages/Default.aspx' >' ";
@@ -328,16 +372,10 @@ function AddDGDTab() {
     SelectRibbonTab('Ribbon.Read', true);
 }
 
-function padToFour(number) {
-    if (number <= 9999) { number = ("000" + number).slice(-4); }
-    return number;
-}
-function padToTwo(number) {
-    if (number <= 99) { number = ("0" + number).slice(-2); }
-    return number;
-}
-
 function retrieveListDocTypes() {
+    /// <summary>
+    /// Query to take document types, formats and created date .
+    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -365,10 +403,15 @@ function retrieveListDocTypes() {
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(DocumentType,_DCDateCreated,Form)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryListDocTypesSucceeded),
-    Function.createDelegate(this, window.onQueryListDocTypesFailed));
+    Function.createDelegate(this, window.onQueryFailed));
 
 }
 function onQueryListDocTypesSucceeded(sender, args) {
+    /// <summary>
+    /// Ons the query list document types succeeded we create dropdown list for document type, format and created date.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
     var listEnumerator = collListItem.getEnumerator();
     var listDocTypes = "";
     var listDateCreated = "";
@@ -421,11 +464,17 @@ function onQueryListDocTypesSucceeded(sender, args) {
     $("#resultsForm").html(listForm);
     $("#resultsDateCreated").html(listDateCreated);
 }
-function onQueryListDocTypesFailed(sender, args) {
+
+/*function onQueryListDocTypesFailed(sender, args) {
+    /// <summary>
+    /// Ons the query list document types failed.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
 }
-/*
+
 function retrieveDateCreated() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
@@ -514,7 +563,8 @@ function onQueryFormSucceeded(sender, args) {
 function onQueryFormFailed(sender, args) {
         SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
         args.get_stackTrace(), true);
-    }*/
+    }
+
 function padToFour(number) {
     if (number <= 9999) { number = ("000" + number).slice(-4); }
     return number;
@@ -522,4 +572,4 @@ function padToFour(number) {
 function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
-}
+}*/
