@@ -233,9 +233,9 @@ function createListItem(projectId, internalReference, documentType, description,
         dateCreated = new Date();
     }
     oListItem.set_item('_DCDateCreated', dateCreated);
-    /*if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == "")) && (status == "Validated")) {
+    if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == "")) && (status == "Validated")) {
         diffusionDate = new Date();
-    }*/
+    }
     if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
         oListItem.set_item('DiffusionDate', diffusionDate);
     }

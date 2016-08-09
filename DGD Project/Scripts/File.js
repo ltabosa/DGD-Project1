@@ -69,12 +69,13 @@ function onQuerySucceeded(sender, args) {
              "<th>Status</th>" +
         "</tr>";
     while (listEnumerator.moveNext()) {
+        var diffusionDate = "";
         var oListItem = listEnumerator.get_current();
         var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate());
         //var diffusionDate = oListItem.get_item('DiffusionDate');
         if (!((oListItem.get_item('DiffusionDate') == null) || (oListItem.get_item('DiffusionDate') == undefined) || (oListItem.get_item('DiffusionDate') == ""))) {
-            var diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo((oListItem.get_item('DiffusionDate').getDate()));
-        }
+            diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo((oListItem.get_item('DiffusionDate').getDate()));
+        } 
         if (oListItem.get_item('_Status') == "Deleted") {
             listInfo += '<tr class="bold" role="alert">';
         } else listInfo += "<tr>";
@@ -241,10 +242,20 @@ function onQueryListDocTypesSucceeded(sender, args) {
             temp1 = oListItem.get_item('DocumentType');
             listDocTypes += "<li><a href='#'>" + oListItem.get_item('DocumentType') + "</a></li>";
         }
-        if (!(oListItem.get_item('_DCDateCreated') == temp2)) {
-            temp2 = oListItem.get_item('_DCDateCreated');
-            listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated') + "</a></li>";
+        //var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate());
+        var year = oListItem.get_item('_DCDateCreated').getFullYear();
+        var month = oListItem.get_item('_DCDateCreated').getMonth();
+        var day = oListItem.get_item('_DCDateCreated').getDate();
+        if (temp2 == null || temp2 == undefined || temp2 == "") {
+            //listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated') + "</a></li>";
+            listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate()) + "</a></li>";
+        }else if (!((year==temp2.getFullYear())&&(month==temp2.getMonth())&&(day==temp2.getDate()))){
+        //if (!(oListItem.get_item('_DCDateCreated') == temp2)) {
+            //temp2 = oListItem.get_item('_DCDateCreated');
+            //listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated') + "</a></li>";
+            listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate()) + "</a></li>";
         }
+        temp2 = oListItem.get_item('_DCDateCreated');
         if (!(oListItem.get_item('Form') == temp3)) {
             temp3 = oListItem.get_item('Form');
             listForm += "<li><a href='#'>" + oListItem.get_item('Form') + "</a></li>";
@@ -349,3 +360,11 @@ function onQueryFormFailed(sender, args) {
         SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
         args.get_stackTrace(), true);
     }*/
+function padToFour(number) {
+    if (number <= 9999) { number = ("000" + number).slice(-4); }
+    return number;
+}
+function padToTwo(number) {
+    if (number <= 99) { number = ("0" + number).slice(-2); }
+    return number;
+}

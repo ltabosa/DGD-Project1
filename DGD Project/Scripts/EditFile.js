@@ -222,9 +222,9 @@ function updateListItem(fileId,internalReference,documentType,description,dateCr
     if (!((dateCreated == undefined)||(dateCreated == null)||(dateCreated == ""))){
         oListItem.set_item('_DCDateCreated', dateCreated);
     }
-    /*if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == "")) && (status == "Validated")) {
+    if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == "")) && (status == "Validated")) {
         diffusionDate = new Date();
-    }*/
+    }
     if (!((diffusionDate == undefined)||(diffusionDate == null)||(diffusionDate == ""))) {
         oListItem.set_item('DiffusionDate', diffusionDate);
     }
