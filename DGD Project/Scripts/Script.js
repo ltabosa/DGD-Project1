@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿/*$(document).ready(function () {
     /// <summary>
     /// When this page charges take the correct action to display the right rows.
     /// </summary>
@@ -513,12 +513,12 @@ function onQueryDateCreatedSucceeded(sender, args) {
         }
     }
     $("#resultsDateCreated").html(listDateCreated);
-}
-function onQueryDateCreatedFailed(sender, args) {
+}*/
+function onQueryFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
 }
-
+/*
 function retrieveFormat() {
         var context = new SP.ClientContext.get_current();
         var oList = context.get_web().get_lists().getByTitle('File');
