@@ -6,6 +6,10 @@
     $("#Submit").click(function () {
 
         //input variables
+        /// <summary>
+        /// Get inputs from the edit form.
+        /// </summary>
+        /// <returns></returns>
         var projectName = $('#ProjectName').val();
         var projectCode = $('#ProjectCode').val();
         var avenant = $('#Avenant').val();
@@ -13,7 +17,6 @@
         var projectType = $('#ProjectType').val();
         errorMsg = "";
 
-        //Validate form 
         //Validate ID Agency, Avenant and Project Code
         function validateAgency(idAgency) {
             var re = new RegExp(/^[A-Z][0-9]$/);
@@ -34,7 +37,6 @@
         }
 
         if (projectType == "Full") {
-        //if (!(avenant == null || avenant == undefined || avenant == "")) {
             $('.notShow').show();
             if ((!(projectName == null || projectName == undefined || projectName == ""))
              || (!(projectCode == null || projectCode == undefined || projectCode == ""))
@@ -43,7 +45,6 @@
                 getError();
             } else errorMsg = "You must fill all fields";
             if (errorMsg == "") {
-                //alert('create project here');
                 updateListItem(projectName, projectCode, avenant, idAgency);
             }
         } else {
@@ -59,6 +60,10 @@
 });//ready function ends
 
 function retrieveDGDs() {
+    /// <summary>
+    /// Query project by ID.
+    /// </summary>
+    /// <returns></returns>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
@@ -86,15 +91,20 @@ function retrieveDGDs() {
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(Title, ProjectCode, Avenant, IdAgency, ProjectType)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryEditSucceeded),
-    Function.createDelegate(this, window.onQueryEditFailed));
+    Function.createDelegate(this, window.onQueryFailed));
 }
-function onQueryEditFailed(sender, args) {
+/*function onQueryEditFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 function onQueryEditSucceeded(sender, args) {
+    /// <summary>
+    /// On the query succeeded. Fill fields with the informations.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     var listEnumerator = collListItem.getEnumerator();
-    //var listInfo ="";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
         document.getElementById('ProjectName').value = oListItem.get_item('Title');
@@ -103,7 +113,6 @@ function onQueryEditSucceeded(sender, args) {
         document.getElementById('IdAgency').value = oListItem.get_item('IdAgency');
         document.getElementById('ProjectType').value = oListItem.get_item('ProjectType');
         if (oListItem.get_item('Avenant') == null || oListItem.get_item('Avenant') == undefined || oListItem.get_item('Avenant') == "") {
-        //if (!(oListItem.get_item('ProjectType') == "Full")) {
             $('.notShow').hide();
         } 
     }
@@ -112,6 +121,14 @@ function onQueryEditSucceeded(sender, args) {
 
 function updateListItem(projectName, projectCode, avenant, idAgency) {
 
+    /// <summary>
+    /// Updates the list item.
+    /// </summary>
+    /// <param name="projectName">Name of the project.</param>
+    /// <param name="projectCode">The project code.</param>
+    /// <param name="avenant">The avenant.</param>
+    /// <param name="idAgency">The identifier agency.</param>
+    /// <returns></returns>
     var clientContext = new SP.ClientContext.get_current();
     var oList = clientContext.get_web().get_lists().getByTitle('Projets');
 
@@ -133,12 +150,21 @@ function updateListItem(projectName, projectCode, avenant, idAgency) {
 }
 
 function onQueryUpdateSucceeded() {
+    /// <summary>
+    /// On the query update succeeded.
+    /// </summary>
+    /// <returns></returns>
     var popData = "";
     SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
    
 }
 
 function onQueryUpdateFailed(sender, args) {
-
+    /// <summary>
+    /// On the query update failed.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }

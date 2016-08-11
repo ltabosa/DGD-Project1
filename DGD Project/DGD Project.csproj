@@ -120,6 +120,7 @@
     <Content Include="Pages\NewProject.aspx" />
     <Content Include="Scripts\CopyFile.js" />
     <Content Include="Scripts\EditFile.js" />
+    <Content Include="Scripts\Scripts.js" />
     <Content Include="Scripts\File.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Elements.xml" />

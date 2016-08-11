@@ -15,6 +15,7 @@
 
     <!-- Add your JavaScript to the following file -->
     <script type="text/javascript" src="../Scripts/EditFile.js"></script>
+    <script type="text/javascript" src="../Scripts/Scripts.js"></script>
 
     <!-- Add SPService jQuery library for SharePoint Web Services -->
     <script type="text/javascript" src="../Scripts/jquery.SPServices-2014.02.min.js"></script>

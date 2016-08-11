@@ -9,16 +9,16 @@
         SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGD);
     }
     $("#Submit").click(function () {
-
         //input variables
+        /// <summary>
+        /// Get inputs from submit form.
+        /// </summary>
+        /// <returns></returns>
         internalReference = "";
-
         documentType = $("#DocumentType option:selected").text();
         description = $('#Description').val();
         //Take today date if the input is not set
-        //dateCreated = $('#DateCreated').val();
         dateCreated = document.getElementById('DateCreated').value;
-        //diffusionDate = $('#DiffusionDate').val();
         diffusionDate = document.getElementById('DiffusionDate').value;
         externalReference = $('#ExternalReference').val();
         localization = $('#Localization').val();
@@ -32,9 +32,6 @@
         revision = 1;
         version = 1;
         getDocOrderNumber(documentType);
-        //alert(orderNumber);
-
-
     });//click button function ends
 
 });//ready function ends
@@ -42,13 +39,26 @@
 
 function createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber) {
 
-    //var context = new SP.ClientContext.get_current();
+    /// <summary>
+    /// Creates the list item.
+    /// </summary>
+    /// <param name="projectId">The project identifier.</param>
+    /// <param name="internalReference">The internal reference.</param>
+    /// <param name="documentType">Type of the document.</param>
+    /// <param name="description">The description.</param>
+    /// <param name="dateCreated">The date created.</param>
+    /// <param name="diffusionDate">The diffusion date.</param>
+    /// <param name="externalReference">The external reference.</param>
+    /// <param name="localization">The localization.</param>
+    /// <param name="form">The form.</param>
+    /// <param name="status">The status.</param>
+    /// <param name="orderNumber">The order number.</param>
+    /// <returns></returns>
     var clientContext = new SP.ClientContext.get_current();
     var oList = clientContext.get_web().get_lists().getByTitle('File');
 
     var itemCreateInfo = new SP.ListItemCreationInformation();
     this.oListItem = oList.addItem(itemCreateInfo);
-
 
     oListItem.set_item('Project1', projectId);
     oListItem.set_item('InternalReference', internalReference);
@@ -80,16 +90,29 @@ function createListItem(projectId, internalReference, documentType, description,
 }//createListItem ends
 
 function onQueryCreateSucceeded() {
+    /// <summary>
+    /// On the query create succeeded.
+    /// </summary>
+    /// <returns></returns>
     window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
-    //alert('Item created: ' + oListItem.get_id());
 }
 
 function onQueryCreateFailed(sender, args) {
 
+    /// <summary>
+    /// Ons the query create failed.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 
 function retrieveDGD() {
+    /// <summary>
+    /// Query to get project info from ID.
+    /// </summary>
+    /// <returns></returns>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
@@ -119,11 +142,17 @@ function retrieveDGD() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-function onQueryFailed(sender, args) {
+/*function onQueryFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 function onQuerySucceeded(sender, args) {
+    /// <summary>
+    /// On the query succeeded.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     var listEnumerator = collListItem.getEnumerator();
     //var listInfo ="";
     while (listEnumerator.moveNext()) {
@@ -141,6 +170,11 @@ function onQuerySucceeded(sender, args) {
 }
 
 function getDocOrderNumber(documentType) {
+    /// <summary>
+    /// Get the next order number.
+    /// </summary>
+    /// <param name="documentType">Type of the document.</param>
+    /// <returns></returns>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -161,13 +195,19 @@ function getDocOrderNumber(documentType) {
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(InternalReference)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryDocOrderSucceeded),
-    Function.createDelegate(this, window.onQueryDocOrderFailed));
+    Function.createDelegate(this, window.onQueryFailed));
 }
-function onQueryDocOrderFailed(sender, args) {
+/*function onQueryDocOrderFailed(sender, args) {
     SP.UI.Notify.addNotification('Request Doc Order failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 function onQueryDocOrderSucceeded(sender, args) {
+    /// <summary>
+    /// On the query document order succeeded.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     var count = window.collListItem.get_count();
     errorMsg = "";
     //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
@@ -202,21 +242,21 @@ function onQueryDocOrderSucceeded(sender, args) {
     $("#errorValidate").html(errorMsg);
 }
 
-function padToFour(number) {
+/*function padToFour(number) {
     if (number <= 9999) { number = ("000" + number).slice(-4); }
     return number;
 }
 function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
-}
+}*/
 /**
 * Shape is an abstract base class. It is defined simply
 * to have something to inherit from for geometric 
 * subclasses
 * @constructor
 */
-function validateUrl(url) {
+/*function validateUrl(url) {
     var re = new RegExp(/^(((ftp|http|https):\/\/)|(\/))(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/);
     return url.match(re);
-}
+}*/

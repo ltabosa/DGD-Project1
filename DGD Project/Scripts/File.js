@@ -232,7 +232,6 @@ function onQuerySucceeded(sender, args) {
         var diffusionDate = "";
         var oListItem = listEnumerator.get_current();
         var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate());
-        //var diffusionDate = oListItem.get_item('DiffusionDate');
         if (!((oListItem.get_item('DiffusionDate') == null) || (oListItem.get_item('DiffusionDate') == undefined) || (oListItem.get_item('DiffusionDate') == ""))) {
             diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo((oListItem.get_item('DiffusionDate').getDate()));
         }
@@ -268,6 +267,7 @@ function onQuerySucceeded(sender, args) {
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
 }*/
@@ -278,6 +278,7 @@ function ShowDialog(ID) {
     /// Shows the dialog For Edit File.
     /// </summary>
     /// <param name="ID">The file identifier.</param>
+    /// <returns></returns>
     var options = {
         url: "../Pages/EditFile.aspx?ID=" + ID,
         //url: "../Lists/File/EditForm.aspx?ID=" + ID,
@@ -290,7 +291,7 @@ function ShowDialog(ID) {
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
     return false;
 }
-function scallback(dialogResult, returnValue) {
+/*function scallback(dialogResult, returnValue) {
     /// <summary>
     /// Scallbacks the specified dialog result.
     /// </summary>
@@ -299,7 +300,7 @@ function scallback(dialogResult, returnValue) {
     if (dialogResult == SP.UI.DialogResult.OK) {
         SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.OK);
     }
-}
+}*/
 
 function ShowDialogCopy(ID) {
     /// <summary>
@@ -320,7 +321,7 @@ function ShowDialogCopy(ID) {
 }
 
 // Methods for the ribbon
-function ModifyRibbon() {
+/*function ModifyRibbon() {
     /// <summary>
     /// Modifies the ribbon.
     /// </summary>
@@ -340,7 +341,7 @@ function ModifyRibbon() {
     else {
         AddDGDTab();
     }
-}
+}*/
 function AddDGDTab() {
     /// <summary>
     /// Adds the DGD tab in the ribbon.
@@ -412,6 +413,7 @@ function onQueryListDocTypesSucceeded(sender, args) {
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     var listEnumerator = collListItem.getEnumerator();
     var listDocTypes = "";
     var listDateCreated = "";
@@ -560,7 +562,7 @@ function onQueryFormSucceeded(sender, args) {
         }
         $("#resultsForm").html(listForm);
     }*/
-function onQueryFailed(sender, args) {
+/*function onQueryFailed(sender, args) {
         SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
         args.get_stackTrace(), true);
     }
@@ -572,4 +574,4 @@ function padToFour(number) {
 function padToTwo(number) {
     if (number <= 99) { number = ("0" + number).slice(-2); }
     return number;
-}
+}*/

@@ -6,6 +6,9 @@
     }
     $("#Submit").click(function () {
        
+        /// <summary>
+        /// Call function to create new file and update last one.
+        /// </summary>
         var internalReference = "";
 
         var documentType = $("#DocumentType").val();
@@ -51,6 +54,9 @@
         
         //Internal Reference as Basic
         function createFile(){
+            /// <summary>
+            /// Creates the file.
+            /// </summary>
             if (projectType == "Basic") {
                 //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
 
@@ -79,6 +85,9 @@
 });//ready function ends
 function retrieveFile() {
    
+    /// <summary>
+    /// Retrieves the file selected by ID.
+    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -117,11 +126,16 @@ function retrieveFile() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-function onQueryFailed(sender, args) {
+/*function onQueryFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 function onQuerySucceeded(sender, args) {
+    /// <summary>
+    /// Ons the query succeeded.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
     var listEnumerator = collListItem.getEnumerator();
     //var listInfo = "";
     while (listEnumerator.moveNext()) {
@@ -147,6 +161,10 @@ function onQuerySucceeded(sender, args) {
 }
 
 function retrieveProject(projectId) {
+    /// <summary>
+    /// Retrieves the project info.
+    /// </summary>
+    /// <param name="projectId">The project identifier.</param>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
@@ -174,13 +192,18 @@ function retrieveProject(projectId) {
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(Title, ProjectCode, Avenant, IdAgency, ProjectType)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryEditSucceeded),
-    Function.createDelegate(this, window.onQueryEditFailed));
+    Function.createDelegate(this, window.onQueryFailed));
 }
-function onQueryEditFailed(sender, args) {
+/*function onQueryEditFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 function onQueryEditSucceeded(sender, args) {
+    /// <summary>
+    /// Ons the query edit succeeded.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
     var listEnumerator = collListItem.getEnumerator();
     //var listInfo ="";
     while (listEnumerator.moveNext()) {
@@ -217,7 +240,23 @@ function onQueryEditSucceeded(sender, args) {
 
 function createListItem(projectId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status, orderNumber,version,revision) {
 
-    //var context = new SP.ClientContext.get_current();
+    /// <summary>
+    /// Creates the list item.
+    /// </summary>
+    /// <param name="projectId">The project identifier.</param>
+    /// <param name="internalReference">The internal reference.</param>
+    /// <param name="documentType">Type of the document.</param>
+    /// <param name="description">The description.</param>
+    /// <param name="dateCreated">The date created.</param>
+    /// <param name="diffusionDate">The diffusion date.</param>
+    /// <param name="externalReference">The external reference.</param>
+    /// <param name="localization">The localization.</param>
+    /// <param name="form">The form.</param>
+    /// <param name="status">The status.</param>
+    /// <param name="orderNumber">The order number.</param>
+    /// <param name="version">The version.</param>
+    /// <param name="revision">The revision.</param>
+    /// <returns></returns>
     var clientContext = new SP.ClientContext.get_current();
     var oList = clientContext.get_web().get_lists().getByTitle('File');
 
@@ -254,19 +293,29 @@ function createListItem(projectId, internalReference, documentType, description,
     clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
 }//createListItem ends
 function onQueryCreateSucceeded() {
-    //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectName;
-    //alert('Item created');
+    /// <summary>
+    /// Ons the query create succeeded.
+    /// </summary>
+    /// <returns></returns>
     updateLastFile();
-    //var popData = "";
-    //SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
 }
 function onQueryCreateFailed(sender, args) {
 
+    /// <summary>
+    /// Ons the query create failed.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 
 function updateLastFile() {
 
+    /// <summary>
+    /// Updates the last file.
+    /// </summary>
+    /// <returns></returns>
     var clientContext = new SP.ClientContext.get_current();
     // var clientContext = new SP.ClientContext(siteUrl);
     var oList = clientContext.get_web().get_lists().getByTitle('File');
@@ -280,17 +329,24 @@ function updateLastFile() {
     clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryUpdateSucceeded), Function.createDelegate(this, this.onQueryUpdateFailed));
 }//createListItem ends
 function onQueryUpdateSucceeded() {
-    //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectName;
-    //alert('Item created');
+    /// <summary>
+    /// Ons the query update succeeded.
+    /// </summary>
+    /// <returns></returns>
     var popData = "";
     SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
 }
 function onQueryUpdateFailed(sender, args) {
-
+    /// <summary>
+    /// Ons the query update failed.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 
-function padToFour(number) {
+/*function padToFour(number) {
     if (number <= 9999) { number = ("000" + number).slice(-4); }
     return number;
 }
@@ -301,4 +357,4 @@ function padToTwo(number) {
 function validateUrl(url) {
     var re = new RegExp(/^(((ftp|http|https):\/\/)|(\/))(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/);
     return url.match(re);
-}
+}*/

@@ -1,23 +1,19 @@
 ﻿$(document).ready(function () {
-    //SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGDs);
     fileId = GetUrlKeyValue('ID', false);
     if (!(fileId == "" || fileId == undefined || fileId == null)) {
         SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveFiles);
     }
     $("#Submit").click(function () {
-        //alert("Submit button: " + localStorage.getItem('description'));
         //input variables
+        /// <summary>
+        /// Get inputs on click.
+        /// </summary>
+        /// <returns></returns>
         var internalReference = "";
-
         var documentType = $("#DocumentType option:selected").text();
         var description = $('#Description').val();
-        //Take today date if the input is not set
-        //var dateCreated = $('#DateCreated').val();
         var dateCreated = document.getElementById('DateCreated').value;
-        
-        //var diffusionDate = $('#DiffusionDate').val();
         var diffusionDate = document.getElementById('DiffusionDate').value;
-        //alert(diffusionDate);
         var externalReference = $('#ExternalReference').val();
         var localization = $('#Localization').val();
         var form = $('#Form').val();
@@ -41,24 +37,13 @@
                 createFile();
             } else errorMsg = "You must enter a valid URL in localization";
         } else createFile();
-        /*if (form == "E") {
-            //valider URL
-            if (validateUrl(localization)) {
-                createFile();
-            } else errorMsg = "You must enter a valid URL.";
-        } else {
-            createFile();
-        }*/
         //Internal Reference as Basic
         function createFile(){
         if (projectType == "Basic") {
-            //SEE HOW MANY DOCTYPE WE HAVE AND TAKE THE NEXT NUMBER
-
             internalReference = idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
             updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status);
             //Internal Reference as Full
         } else if (projectType == "Full") {
-
             internalReference = documentType + "-" + padToFour(projectCode) + "-" + padToTwo(avenant) + "-" + idAgency + "-" + padToFour(orderNumber) + "-" + padToTwo(version) + "-" + padToTwo(revision);
             updateListItem(fileId, internalReference, documentType, description, dateCreated, diffusionDate, externalReference, localization, form, status);
             //Internal Reference as Full Without Project 
@@ -70,9 +55,12 @@
         }
         $("#errorValidate").html(errorMsg);
     });//click button function ends
-
 });//ready function ends
 function retrieveFiles() {
+    /// <summary>
+    /// Retrieves the file by ID.
+    /// </summary>
+    /// <returns></returns>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -111,23 +99,24 @@ function retrieveFiles() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-function onQueryFailed(sender, args) {
+/*function onQueryFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 function onQuerySucceeded(sender, args) {
+    /// <summary>
+    /// On the query succeeded.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     var listEnumerator = collListItem.getEnumerator();
-    //var listInfo = "";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
         localStorage.setItem("documentType", oListItem.get_item('DocumentType'));
         localStorage.setItem("description", oListItem.get_item('CategoryDescription'));
         localStorage.setItem("dateCreated", oListItem.get_item('_DCDateCreated'));
         localStorage.setItem("diffusionDate", oListItem.get_item('DiffusionDate'));
-        //localStorage.setItem("dateCreated", new Date(oListItem.get_item('_DCDateCreated')));
-        //if (!(oListItem.get_item('DiffusionDate')==null)||(oListItem.get_item('DiffusionDate')==undefined)||(oListItem.get_item('DiffusionDate')=="")){
-        //    localStorage.setItem("diffusionDate", new Date(oListItem.get_item('DiffusionDate')));
-        //}
         localStorage.setItem("externalReference", oListItem.get_item('ExternalReference'));
         localStorage.setItem("localization", oListItem.get_item('Location'));
         localStorage.setItem("form", oListItem.get_item('Form'));
@@ -167,25 +156,27 @@ function retrieveProject(projectId) {
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(Title, ProjectCode, Avenant, IdAgency, ProjectType)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryEditSucceeded),
-    Function.createDelegate(this, window.onQueryEditFailed));
+    Function.createDelegate(this, window.onQueryFailed));
 }
-function onQueryEditFailed(sender, args) {
+/*function onQueryEditFailed(sender, args) {
     SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
     args.get_stackTrace(), true);
-}
+}*/
 function onQueryEditSucceeded(sender, args) {
+    /// <summary>
+    /// On the query edit succeeded.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     var listEnumerator = collListItem.getEnumerator();
     //var listInfo ="";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        //alert("retrieve Project: "+localStorage.getItem('description'));
         document.getElementById('DocumentType').value = localStorage.getItem('documentType');
         document.getElementById('Description').value = localStorage.getItem('description');
-
-        //dateCreated = new Date(localStorage.getItem('dateCreated'));
         document.getElementById('DateCreated').value = localStorage.getItem('dateCreated');
         document.getElementById('DiffusionDate').value = localStorage.getItem('diffusionDate');
-
         document.getElementById('ExternalReference').value = localStorage.getItem('externalReference');
         document.getElementById('Localization').value = localStorage.getItem('localization');
         document.getElementById('Form').value = localStorage.getItem('form');
@@ -198,18 +189,26 @@ function onQueryEditSucceeded(sender, args) {
         document.getElementById('Avenant').value = oListItem.get_item('Avenant');
         document.getElementById('IdAgency').value = oListItem.get_item('IdAgency');
         document.getElementById('ProjectType').value = oListItem.get_item('ProjectType');
-        /*if (oListItem.get_item('Avenant') == null || oListItem.get_item('Avenant') == undefined || oListItem.get_item('Avenant') == "") {
-            //if (!(oListItem.get_item('ProjectType') == "Full")) {
-            $('.notShow').hide();
-        }*/
     }
 }
-
-
 //function edit file
 
 function updateListItem(fileId,internalReference,documentType,description,dateCreated,diffusionDate,externalReference,localization,form,status){
 //function updateListItem(ID) {
+    /// <summary>
+    /// Updates the list item.
+    /// </summary>
+    /// <param name="fileId">The file identifier.</param>
+    /// <param name="internalReference">The internal reference.</param>
+    /// <param name="documentType">Type of the document.</param>
+    /// <param name="description">The description.</param>
+    /// <param name="dateCreated">The date created.</param>
+    /// <param name="diffusionDate">The diffusion date.</param>
+    /// <param name="externalReference">The external reference.</param>
+    /// <param name="localization">The localization.</param>
+    /// <param name="form">The form.</param>
+    /// <param name="status">The status.</param>
+    /// <returns></returns>
     var clientContext = new SP.ClientContext.get_current();
    // var clientContext = new SP.ClientContext(siteUrl);
     var oList = clientContext.get_web().get_lists().getByTitle('File');
@@ -232,17 +231,17 @@ function updateListItem(fileId,internalReference,documentType,description,dateCr
     oListItem.set_item('Location', localization);
     oListItem.set_item('Form', form);
     oListItem.set_item('_Status', status);
-    /*
-    oListItem.set_item('OrderNumber', orderNumber);
-    oListItem.set_item('Version', 1);
-    oListItem.set_item('Revision', 1);
-    */
+
     oListItem.update();
 
     clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryUpdateSucceeded), Function.createDelegate(this, this.onQueryUpdateFailed));
 }
 
 function onQueryUpdateSucceeded() {
+    /// <summary>
+    /// Ons the query update succeeded.
+    /// </summary>
+    /// <returns></returns>
     var popData = "";
     SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK, popData);
     //alert('Item updated!');
@@ -250,11 +249,17 @@ function onQueryUpdateSucceeded() {
 
 function onQueryUpdateFailed(sender, args) {
 
+    /// <summary>
+    /// Ons the query update failed.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns></returns>
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
  
 
-function padToFour(number) {
+/*function padToFour(number) {
     if (number <= 9999) { number = ("000" + number).slice(-4); }
     return number;
 }
@@ -265,4 +270,4 @@ function padToTwo(number) {
 function validateUrl(url) {
     var re = new RegExp(/^(((ftp|http|https):\/\/)|(\/))(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/);
     return url.match(re);
-}
+}*/

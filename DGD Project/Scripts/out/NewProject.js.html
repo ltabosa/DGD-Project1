@@ -1,12 +1,40 @@
-﻿$(document).ready(function () {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: NewProject.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: NewProject.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿$(document).ready(function () {
     $('.notShow').hide();
     /** Get inputs from form.*/
     $("#Submit").click(function () {
         //input variables
-        /// <summary>
+        /// &lt;summary>
         /// Get inputs from form.
-        /// </summary>
-        /// <returns></returns>
+        /// &lt;/summary>
+        /// &lt;returns>&lt;/returns>
         var projectName = $('#ProjectName').val();
         var projectCode = $('#ProjectCode').val();
         var avenant = $('#Avenant').val();
@@ -27,9 +55,9 @@
                 return avenant.match(re);
                 }
         function getError() {
-            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)<br>";
-            if (!validateProjectCode(projectCode)) errorMsg += "Project Code must be a number<br>";
-            if (!validateAvenant(avenant)) errorMsg += "Avenant must be a number<br>";
+            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)&lt;br>";
+            if (!validateProjectCode(projectCode)) errorMsg += "Project Code must be a number&lt;br>";
+            if (!validateAvenant(avenant)) errorMsg += "Avenant must be a number&lt;br>";
         }
 
         if (projectType == "Full") {
@@ -46,7 +74,7 @@
             } 
         } else {
             $('.notShow').hide();
-            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)<br>";
+            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)&lt;br>";
             if (errorMsg == "") {
                 //alert('create project here');
                 createListItem(projectType,projectName, projectCode, avenant, idAgency);
@@ -69,15 +97,15 @@
 function createListItem(projectType,projectName, projectCode, avenant, idAgency) {
 
     //var context = new SP.ClientContext.get_current();
-    /// <summary>
+    /// &lt;summary>
     /// Creates the list item.
-    /// </summary>
-    /// <param name="projectType">Type of the project.</param>
-    /// <param name="projectName">Name of the project.</param>
-    /// <param name="projectCode">The project code.</param>
-    /// <param name="avenant">The avenant.</param>
-    /// <param name="idAgency">The identifier agency.</param>
-    /// <returns></returns>
+    /// &lt;/summary>
+    /// &lt;param name="projectType">Type of the project.&lt;/param>
+    /// &lt;param name="projectName">Name of the project.&lt;/param>
+    /// &lt;param name="projectCode">The project code.&lt;/param>
+    /// &lt;param name="avenant">The avenant.&lt;/param>
+    /// &lt;param name="idAgency">The identifier agency.&lt;/param>
+    /// &lt;returns>&lt;/returns>
     var clientContext = new SP.ClientContext.get_current();
     var oList = clientContext.get_web().get_lists().getByTitle('Projets');
 
@@ -101,10 +129,10 @@ function createListItem(projectType,projectName, projectCode, avenant, idAgency)
  * On the query succeeded return to list all projects.
  */
 function onQuerySucceeded() {
-    /// <summary>
+    /// &lt;summary>
     /// On the query succeeded return to list all projects.
-    /// </summary>
-    /// <returns></returns>
+    /// &lt;/summary>
+    /// &lt;returns>&lt;/returns>
     window.location.href = '../Pages/Default.aspx';
 }
 /**
@@ -114,12 +142,35 @@ function onQuerySucceeded() {
  */
 function onQueryFailed(sender, args) {
 
-    /// <summary>
+    /// &lt;summary>
     /// On the query failed.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The arguments.</param>
-    /// <returns></returns>
+    /// &lt;/summary>
+    /// &lt;param name="sender">The sender.&lt;/param>
+    /// &lt;param name="args">The arguments.&lt;/param>
+    /// &lt;returns>&lt;/returns>
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="createListItem.html">createListItem</a></li></ul><h3>Global</h3><ul><li><a href="global.html#onQueryFailed">onQueryFailed</a></li><li><a href="global.html#onQuerySucceeded">onQuerySucceeded</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Aug 11 2016 15:52:50 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
