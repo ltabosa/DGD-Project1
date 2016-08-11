@@ -17,7 +17,6 @@
     <link href="../Content/bootstrap.min.css" rel="Stylesheet" type="text/css" />
 
     <!-- Add your JavaScript to the following file -->
-    <script type="text/javascript" src="../Scripts/Script.js"></script>
     <script type="text/javascript" src="../Scripts/File.js"></script>
 </asp:Content>
 

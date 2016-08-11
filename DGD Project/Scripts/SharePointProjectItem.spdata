@@ -15,6 +15,5 @@
     <ProjectItemFile Source="NewProject.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="EditProject.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="CopyFile.js" Target="Scripts\" Type="ElementFile" />
-    <ProjectItemFile Source="Script.js" Target="Scripts\" Type="ElementFile" />
   </Files>
 </ProjectItem>
