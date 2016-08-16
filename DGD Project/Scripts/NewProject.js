@@ -1,12 +1,9 @@
 ﻿$(document).ready(function () {
     $('.notShow').hide();
-    /** Get inputs from form.*/
+    /** 
+     * Get inputs from form.
+    */
     $("#Submit").click(function () {
-        //input variables
-        /// <summary>
-        /// Get inputs from form.
-        /// </summary>
-        /// <returns></returns>
         var projectName = $('#ProjectName').val();
         var projectCode = $('#ProjectCode').val();
         var avenant = $('#Avenant').val();
@@ -67,17 +64,6 @@
  * @param {string} idAgency - The identifier agency.
  */
 function createListItem(projectType,projectName, projectCode, avenant, idAgency) {
-
-    //var context = new SP.ClientContext.get_current();
-    /// <summary>
-    /// Creates the list item.
-    /// </summary>
-    /// <param name="projectType">Type of the project.</param>
-    /// <param name="projectName">Name of the project.</param>
-    /// <param name="projectCode">The project code.</param>
-    /// <param name="avenant">The avenant.</param>
-    /// <param name="idAgency">The identifier agency.</param>
-    /// <returns></returns>
     var clientContext = new SP.ClientContext.get_current();
     var oList = clientContext.get_web().get_lists().getByTitle('Projets');
 
@@ -101,10 +87,6 @@ function createListItem(projectType,projectName, projectCode, avenant, idAgency)
  * On the query succeeded return to list all projects.
  */
 function onQuerySucceeded() {
-    /// <summary>
-    /// On the query succeeded return to list all projects.
-    /// </summary>
-    /// <returns></returns>
     window.location.href = '../Pages/Default.aspx';
 }
 /**
@@ -113,13 +95,6 @@ function onQuerySucceeded() {
  * @param {type} args - The arguments.
  */
 function onQueryFailed(sender, args) {
-
-    /// <summary>
-    /// On the query failed.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The arguments.</param>
-    /// <returns></returns>
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 

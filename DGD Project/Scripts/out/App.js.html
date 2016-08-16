@@ -31,13 +31,10 @@ $(document).ready(function () {
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGD);
     SP.SOD.executeOrDelayUntilScriptLoaded(ModifyRibbon, 'sp.ribbon.js');
 });
-function retrieveDGD() {
 /**
  * Retrieves the DGD project.
  */
-    /// &lt;summary>
-    /// Retrieves the DGD project.
-    /// &lt;/summary>
+function retrieveDGD() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
@@ -47,17 +44,12 @@ function retrieveDGD() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-/*function onQueryFailed(sender, args) {
-    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-    args.get_stackTrace(), true);
-}*/
+/**
+ * On the query succeeded. Lists all the projects
+ * @param {type} sender - The sender.
+ * @param {type} args - The arguments.
+ */
 function onQuerySucceeded(sender, args) {
-    /// &lt;summary>
-    /// Ons the query succeeded.
-    /// &lt;/summary>
-    /// &lt;param name="sender">The sender.&lt;/param>
-    /// &lt;param name="args">The arguments.&lt;/param>
-    /// &lt;returns>&lt;/returns>
     var listEnumerator = collListItem.getEnumerator();
     var listInfo =
         "&lt;table class='table table-striped'>" +
@@ -84,12 +76,12 @@ function onQuerySucceeded(sender, args) {
     listInfo +="&lt;/table>";
     $("#results").html(listInfo);
 }
-
+/**
+ * Shows the dialog.
+ * @param {number} ID - The project identifier.
+ * @returns {boolean} 
+ */
 function ShowDialog(ID) {
-    /// &lt;summary>
-    /// Shows the dialog.
-    /// &lt;/summary>
-    /// &lt;param name="ID">The identifier.&lt;/param>
     var options = {
         url: "../Pages/EditProject.aspx?ID=" + ID,
         allowMaximize: true,
@@ -99,35 +91,10 @@ function ShowDialog(ID) {
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
     return false;
 }
-/*function scallback(dialogResult, returnValue) {
-    if (dialogResult == SP.UI.DialogResult.OK) {
-        SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.OK);
-    }
-}*/
-
-// Methods for the ribbon
-/*function ModifyRibbon() {
-    var pm = SP.Ribbon.PageManager.get_instance();
-    pm.add_ribbonInited(function () {
-        AddDGDTab();
-    });
-    var ribbon = null;
-    try {
-        ribbon = pm.get_ribbon();
-    }
-    catch (e) { }
-    if (!ribbon) {
-        if (typeof (_ribbonStartInit) == "function")
-            _ribbonStartInit(_ribbon.initialTabId, false, null);
-    }
-    else {
-        AddDGDTab();
-    }
-}*/
+/**
+ * Adds the DGD tab.
+ */
 function AddDGDTab() {
-    /// &lt;summary>
-    /// Adds the DGD tab.
-    /// &lt;/summary>
     var sTitleHtml = "";
     var sManageHtml = "";
     sTitleHtml += "&lt;a href='../Lists/File/MyView.aspx' >' ";
@@ -140,17 +107,12 @@ function AddDGDTab() {
         'Use this tab to view and modify the DGD list',
         'DGD.Tab.Command', false, '', null);
         ribbon.addChildAtIndex(tab, 1);
-       // var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Views',
-       // 'Use this group to view a list of titles',
-       // 'DGD.Group.Command', null);
-       // tab.addChild(group);
         var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Actions',
         'Use this group to add/update/delete DGD',
         'DGD.Group.Command', null);
         tab.addChild(group);
     }
     SelectRibbonTab('DGD.Tab', true);
-    //$("span:contains('Views')").prev("span").html(sTitleHtml);
     $("span:contains('Actions')").prev("span").html(sManageHtml);
     SelectRibbonTab('Ribbon.Read', true);
 }</code></pre>
@@ -163,13 +125,13 @@ function AddDGDTab() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="global.html#createListItem">createListItem</a></li><li><a href="global.html#onQueryFailed">onQueryFailed</a></li><li><a href="padToFour.html">padToFour</a></li><li><a href="padToTwo.html">padToTwo</a></li><li><a href="scallback.html">scallback</a></li><li><a href="validateUrl.html">validateUrl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddDGDTab">AddDGDTab</a></li><li><a href="global.html#getDocOrderNumber">getDocOrderNumber</a></li><li><a href="global.html#ModifyRibbon">ModifyRibbon</a></li><li><a href="global.html#onQueryCreateFailed">onQueryCreateFailed</a></li><li><a href="global.html#onQueryCreateSucceeded">onQueryCreateSucceeded</a></li><li><a href="global.html#onQueryDocOrderSucceeded">onQueryDocOrderSucceeded</a></li><li><a href="global.html#onQueryEditSucceeded">onQueryEditSucceeded</a></li><li><a href="global.html#onQueryListDocTypesSucceeded">onQueryListDocTypesSucceeded</a></li><li><a href="global.html#onQuerySucceeded">onQuerySucceeded</a></li><li><a href="global.html#onQueryUpdateFailed">onQueryUpdateFailed</a></li><li><a href="global.html#onQueryUpdateSucceeded">onQueryUpdateSucceeded</a></li><li><a href="global.html#retrieveDGD">retrieveDGD</a></li><li><a href="global.html#retrieveDGDs">retrieveDGDs</a></li><li><a href="global.html#retrieveFile">retrieveFile</a></li><li><a href="global.html#retrieveFiles">retrieveFiles</a></li><li><a href="global.html#retrieveListDocTypes">retrieveListDocTypes</a></li><li><a href="global.html#retrieveProject">retrieveProject</a></li><li><a href="global.html#retrieveProjectDateCreated">retrieveProjectDateCreated</a></li><li><a href="global.html#retrieveProjectFilterDocType">retrieveProjectFilterDocType</a></li><li><a href="global.html#retrieveProjectFormat">retrieveProjectFormat</a></li><li><a href="global.html#ShowDialog">ShowDialog</a></li><li><a href="global.html#ShowDialogCopy">ShowDialogCopy</a></li><li><a href="global.html#updateLastFile">updateLastFile</a></li><li><a href="global.html#updateListItem">updateListItem</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Aug 11 2016 15:52:36 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Aug 12 2016 09:28:51 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

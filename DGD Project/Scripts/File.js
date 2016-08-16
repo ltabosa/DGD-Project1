@@ -1,8 +1,7 @@
-﻿$(document).ready(function () {
-    /// <summary>
-    /// When this page charges take the correct action to display the right rows.
-    /// </summary>
-    /// <returns></returns>
+﻿/**
+* When this page charges take the correct action to display the right rows.
+*/
+$(document).ready(function () {
     projectID = GetUrlKeyValue('ID', false);
     projectTitle = GetUrlKeyValue('Title', false);
     DocType = GetUrlKeyValue('DT', false);
@@ -19,10 +18,10 @@
     } else SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveProjectFilterDocType);
     SP.SOD.executeOrDelayUntilScriptLoaded(ModifyRibbon, 'sp.ribbon.js');
 });
+/**
+ * Retrieves the project files.
+ */
 function retrieveProject() {
-    /// <summary>
-    /// Retrieves the project files.
-    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -36,7 +35,7 @@ function retrieveProject() {
                 '</Eq>' +
              '</Where>' +
              '<OrderBy>' +
-                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'TRUE\' />' +
              '</OrderBy>' +
          '</Query>' +
             '<ViewFields>' +
@@ -58,11 +57,10 @@ function retrieveProject() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-//Query for filter Document Types
+/**
+ * Retrieves a filter of the document type of the project.
+ */
 function retrieveProjectFilterDocType() {
-    /// <summary>
-    /// Retrieves a filter of the document type of the project.
-    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -82,7 +80,7 @@ function retrieveProjectFilterDocType() {
                 '</And>' +
              '</Where>' +
              '<OrderBy>' +
-                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'TRUE\' />' +
              '</OrderBy>' +
          '</Query>' +
             '<ViewFields>' +
@@ -104,11 +102,10 @@ function retrieveProjectFilterDocType() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-//Query for filter Created Date
+/**
+ * Retrieves filter of the project created date.
+ */
 function retrieveProjectDateCreated() {
-    /// <summary>
-    /// Retrieves filter of the project created date.
-    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -128,7 +125,7 @@ function retrieveProjectDateCreated() {
                 '</And>' +
              '</Where>' +
              '<OrderBy>' +
-                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'TRUE\' />' +
              '</OrderBy>' +
          '</Query>' +
             '<ViewFields>' +
@@ -150,11 +147,10 @@ function retrieveProjectDateCreated() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-//Query for filter Format
+/**
+ * Retrieves filter of the format.
+ */
 function retrieveProjectFormat() {
-    /// <summary>
-    /// Retrieves filter of the format.
-    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -174,7 +170,7 @@ function retrieveProjectFormat() {
                 '</And>' +
              '</Where>' +
              '<OrderBy>' +
-                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'TRUE\' />' +
              '</OrderBy>' +
          '</Query>' +
             '<ViewFields>' +
@@ -196,12 +192,12 @@ function retrieveProjectFormat() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
+/**
+ * Ons the query succeeded.
+ * @param {type} sender - The sender.
+ * @param {type} args - The arguments.
+ */
 function onQuerySucceeded(sender, args) {
-    /// <summary>
-    /// Ons the query succeeded show the rows.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The arguments.</param>
     var listEnumerator = collListItem.getEnumerator();
     var listInfo = "<h1>" + projectTitle + "</h1>" +
     "<table class='table table-striped'>" +
@@ -261,27 +257,14 @@ function onQuerySucceeded(sender, args) {
     listInfo += "</table>";
     $("#results").html(listInfo);
 }
-/*function onQueryFailed(sender, args) {
-    /// <summary>
-    /// Ons the query failed.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The arguments.</param>
-    /// <returns></returns>
-    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-    args.get_stackTrace(), true);
-}*/
-//end function
-//new window for edit file
+/**
+ * Shows the dialog For Edit File.
+ * @param {integer} ID - The file identifier.
+ * @returns {type} 
+ */
 function ShowDialog(ID) {
-    /// <summary>
-    /// Shows the dialog For Edit File.
-    /// </summary>
-    /// <param name="ID">The file identifier.</param>
-    /// <returns></returns>
     var options = {
         url: "../Pages/EditFile.aspx?ID=" + ID,
-        //url: "../Lists/File/EditForm.aspx?ID=" + ID,
         width: 600,
         height: 600,
         allowMaximize: true,
@@ -291,23 +274,12 @@ function ShowDialog(ID) {
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
     return false;
 }
-/*function scallback(dialogResult, returnValue) {
-    /// <summary>
-    /// Scallbacks the specified dialog result.
-    /// </summary>
-    /// <param name="dialogResult">The dialog result.</param>
-    /// <param name="returnValue">The return value.</param>
-    if (dialogResult == SP.UI.DialogResult.OK) {
-        SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.OK);
-    }
-}*/
-
+/**
+ * Shows the new window for copy file and create new with diferent version or revision.
+ * @param {integer} ID - The identifier.
+ * @returns {type} 
+ */
 function ShowDialogCopy(ID) {
-    /// <summary>
-    /// Shows the new window for copy file and create new with diferent version or revision.
-    /// </summary>
-    /// <param name="ID">The identifier.</param>
-    /// <returns></returns>
     var options = {
         url: "../Pages/CopyFile.aspx?ID=" + ID,
         width: 600,
@@ -319,33 +291,10 @@ function ShowDialogCopy(ID) {
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
     return false;
 }
-
-// Methods for the ribbon
-/*function ModifyRibbon() {
-    /// <summary>
-    /// Modifies the ribbon.
-    /// </summary>
-    var pm = SP.Ribbon.PageManager.get_instance();
-    pm.add_ribbonInited(function () {
-        AddDGDTab();
-    });
-    var ribbon = null;
-    try {
-        ribbon = pm.get_ribbon();
-    }
-    catch (e) { }
-    if (!ribbon) {
-        if (typeof (_ribbonStartInit) == "function")
-            _ribbonStartInit(_ribbon.initialTabId, false, null);
-    }
-    else {
-        AddDGDTab();
-    }
-}*/
+/**
+ * Adds the DGD tab in the ribbon.
+ */
 function AddDGDTab() {
-    /// <summary>
-    /// Adds the DGD tab in the ribbon.
-    /// </summary>
     var sTitleHtml = "";
     var sManageHtml = "";
     sTitleHtml += "<a href='../Pages/Default.aspx' >' ";
@@ -372,11 +321,10 @@ function AddDGDTab() {
     $("span:contains('Actions')").prev("span").html(sManageHtml);
     SelectRibbonTab('Ribbon.Read', true);
 }
-
+/**
+ * Query to take document types, formats and created date.
+ */
 function retrieveListDocTypes() {
-    /// <summary>
-    /// Query to take document types, formats and created date .
-    /// </summary>
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
@@ -407,13 +355,12 @@ function retrieveListDocTypes() {
     Function.createDelegate(this, window.onQueryFailed));
 
 }
+/**
+ * Ons the query succeeded.
+ * @param {type} sender - The sender.
+ * @param {type} args - The arguments.
+ */
 function onQueryListDocTypesSucceeded(sender, args) {
-    /// <summary>
-    /// Ons the query list document types succeeded we create dropdown list for document type, format and created date.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The arguments.</param>
-    /// <returns></returns>
     var listEnumerator = collListItem.getEnumerator();
     var listDocTypes = "";
     var listDateCreated = "";
@@ -439,6 +386,11 @@ function onQueryListDocTypesSucceeded(sender, args) {
                 temp2.push(oListItem.get_item('_DCDateCreated'));
             }
         }
+        /**
+         * Count if the array contains the date
+         * @param {date} item - The date
+         * @param {integer} index - The index
+         */
         function myFunction(item, index) {
             if ((year == item.getFullYear()) && (month == item.getMonth()) && (day == item.getDate())) {
                 count += 1;
@@ -459,119 +411,9 @@ function onQueryListDocTypesSucceeded(sender, args) {
     };
     temp2.sort(date_sort_asc);
     for (var i = 0; i < temp2.length; i++) {
-        //document.write(i + ': ' + temp2[i] + '<br>');
         listDateCreated += "<li><a href='../Pages/File.aspx?ID=" + projectID + "&Title=" + projectTitle + "&DC=" + temp2[i] + "'>" + temp2[i].getFullYear() + "/" + padToTwo(((temp2[i].getMonth()) + 1)) + "/" + padToTwo(temp2[i].getDate()) + "</a></li>";
     }
     $("#resultsDocTypes").html(listDocTypes);
     $("#resultsForm").html(listForm);
     $("#resultsDateCreated").html(listDateCreated);
 }
-
-/*function onQueryListDocTypesFailed(sender, args) {
-    /// <summary>
-    /// Ons the query list document types failed.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The arguments.</param>
-    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-    args.get_stackTrace(), true);
-}
-
-function retrieveDateCreated() {
-    var context = new SP.ClientContext.get_current();
-    var oList = context.get_web().get_lists().getByTitle('File');
-    var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml(
-        '<View>' +
-         '<Query>' +
-            '<Where>' +
-                    '<Eq>' +
-                        '<FieldRef Name=\'Project1\'/>' +
-                        '<Value Type=\'Lookup\'>' + projectID + '</Value>' +
-                    '</Eq>' +
-             '</Where>' +
-             '<OrderBy>' +
-                '<FieldRef Name=\'_DCDateCreated\' Ascending=\'FALSE\' />' +
-             '</OrderBy>' +
-         '</Query>' +
-            '<ViewFields>' +
-                '<FieldRef Name=\'_DCDateCreated\' />' +
-            '</ViewFields>' +
-        '</View>');
-    window.collListItem = oList.getItems(camlQuery);
-    context.load(collListItem, 'Include(_DCDateCreated)');
-    context.executeQueryAsync(Function.createDelegate(this, window.onQueryDateCreatedSucceeded),
-    Function.createDelegate(this, window.onQueryDateCreatedFailed));
-
-}
-function onQueryDateCreatedSucceeded(sender, args) {
-    var listEnumerator = collListItem.getEnumerator();
-    var listDateCreated = "";
-    var temp = "";
-    while (listEnumerator.moveNext()) {
-        var oListItem = listEnumerator.get_current();
-        if (!(oListItem.get_item('_DCDateCreated') == temp)) {
-            temp = oListItem.get_item('_DCDateCreated');
-            listDateCreated += "<li><a href='#'>" + oListItem.get_item('_DCDateCreated') + "</a></li>";
-        }
-    }
-    $("#resultsDateCreated").html(listDateCreated);
-}
-function onQueryDateCreatedFailed(sender, args) {
-    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-    args.get_stackTrace(), true);
-}
-
-function retrieveFormat() {
-        var context = new SP.ClientContext.get_current();
-        var oList = context.get_web().get_lists().getByTitle('File');
-        var camlQuery = new SP.CamlQuery();
-        camlQuery.set_viewXml(
-            '<View>' +
-             '<Query>' +
-                '<Where>' +
-                        '<Eq>' +
-                            '<FieldRef Name=\'Project1\'/>' +
-                            '<Value Type=\'Lookup\'>' + projectID + '</Value>' +
-                        '</Eq>' +
-                 '</Where>' +
-                 '<OrderBy>' +
-                    '<FieldRef Name=\'Form\' Ascending=\'FALSE\' />' +
-                 '</OrderBy>' +
-             '</Query>' +
-                '<ViewFields>' +
-                    '<FieldRef Name=\'Form\' />' +
-                '</ViewFields>' +
-            '</View>');
-        window.collListItem = oList.getItems(camlQuery);
-        context.load(collListItem, 'Include(Form)');
-        context.executeQueryAsync(Function.createDelegate(this, window.onQueryFormSucceeded),
-        Function.createDelegate(this, window.onQueryFormFailed));
-
-    }
-function onQueryFormSucceeded(sender, args) {
-        var listEnumerator = collListItem.getEnumerator();
-        var listForm = "";
-        var temp = "";
-        while (listEnumerator.moveNext()) {
-            var oListItem = listEnumerator.get_current();
-            if (!(oListItem.get_item('Form') == temp)) {
-                temp = oListItem.get_item('Form');
-                listForm += "<li><a href='#'>" + oListItem.get_item('Form') + "</a></li>";
-            }
-        }
-        $("#resultsForm").html(listForm);
-    }*/
-/*function onQueryFailed(sender, args) {
-        SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-        args.get_stackTrace(), true);
-    }
-
-function padToFour(number) {
-    if (number <= 9999) { number = ("000" + number).slice(-4); }
-    return number;
-}
-function padToTwo(number) {
-    if (number <= 99) { number = ("0" + number).slice(-2); }
-    return number;
-}*/

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: File.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: File.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿/**
+* When this page charges take the correct action to display the right rows.
+*/
+$(document).ready(function () {
+    projectID = GetUrlKeyValue('ID', false);
+    projectTitle = GetUrlKeyValue('Title', false);
+    DocType = GetUrlKeyValue('DT', false);
+    DateCre = (GetUrlKeyValue('DC', false));
+    DateCre = DateCre.replace("%", " ");
+    DateCreat = String.format("{0:s}", new Date(DateCre));
+    Form = GetUrlKeyValue('FO', false);
+    if (DocType == null || DocType == undefined || DocType == "") {
+        if (DateCre == null || DateCre == undefined || DateCre == "") {
+            if (Form == null || Form == undefined || Form == "") {
+                SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveProject);
+            } else SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveProjectFormat);
+        } else SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveProjectDateCreated);
+    } else SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveProjectFilterDocType);
+    SP.SOD.executeOrDelayUntilScriptLoaded(ModifyRibbon, 'sp.ribbon.js');
+});
+/**
+ * Retrieves the project files.
+ */
+function retrieveProject() {
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('File');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+        '&lt;View>' +
+         '&lt;Query>' +
+            '&lt;Where>' +
+                '&lt;Eq>' +
+                    '&lt;FieldRef Name=\'Project1\'/>' +
+                    '&lt;Value Type=\'Lookup\'>' + projectID + '&lt;/Value>' +
+                '&lt;/Eq>' +
+             '&lt;/Where>' +
+             '&lt;OrderBy>' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+             '&lt;/OrderBy>' +
+         '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'Id\' />' +
+                '&lt;FieldRef Name=\'InternalReference\' />' +
+                '&lt;FieldRef Name=\'DocumentType\' />' +
+                '&lt;FieldRef Name=\'CategoryDescription\' />' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' />' +
+                '&lt;FieldRef Name=\'DiffusionDate\' />' +
+                '&lt;FieldRef Name=\'ExternalReference\' />' +
+                '&lt;FieldRef Name=\'Location\' />' +
+                '&lt;FieldRef Name=\'Form\' />' +
+                '&lt;FieldRef Name=\'_Status\' />' +
+                '&lt;FieldRef Name=\'Copy\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(Id, InternalReference,DocumentType,CategoryDescription,_DCDateCreated,DiffusionDate,ExternalReference,Location,Form,_Status,Copy)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
+    Function.createDelegate(this, window.onQueryFailed));
+}
+/**
+ * Retrieves a filter of the document type of the project.
+ */
+function retrieveProjectFilterDocType() {
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('File');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+        '&lt;View>' +
+         '&lt;Query>' +
+            '&lt;Where>' +
+                '&lt;And>' +
+                '&lt;Eq>' +
+                    '&lt;FieldRef Name=\'Project1\'/>' +
+                    '&lt;Value Type=\'Lookup\'>' + projectID + '&lt;/Value>' +
+                '&lt;/Eq>' +
+                '&lt;Eq>' +
+                    '&lt;FieldRef Name=\'DocumentType\'/>' +
+                    '&lt;Value Type=\'Text\'>' + DocType + '&lt;/Value>' +
+                '&lt;/Eq>' +
+                '&lt;/And>' +
+             '&lt;/Where>' +
+             '&lt;OrderBy>' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+             '&lt;/OrderBy>' +
+         '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'Id\' />' +
+                '&lt;FieldRef Name=\'InternalReference\' />' +
+                '&lt;FieldRef Name=\'DocumentType\' />' +
+                '&lt;FieldRef Name=\'CategoryDescription\' />' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' />' +
+                '&lt;FieldRef Name=\'DiffusionDate\' />' +
+                '&lt;FieldRef Name=\'ExternalReference\' />' +
+                '&lt;FieldRef Name=\'Location\' />' +
+                '&lt;FieldRef Name=\'Form\' />' +
+                '&lt;FieldRef Name=\'_Status\' />' +
+                '&lt;FieldRef Name=\'Copy\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(Id, InternalReference,DocumentType,CategoryDescription,_DCDateCreated,DiffusionDate,ExternalReference,Location,Form,_Status,Copy)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
+    Function.createDelegate(this, window.onQueryFailed));
+}
+/**
+ * Retrieves filter of the project created date.
+ */
+function retrieveProjectDateCreated() {
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('File');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+        '&lt;View>' +
+         '&lt;Query>' +
+            '&lt;Where>' +
+                '&lt;And>' +
+                '&lt;Eq>' +
+                    '&lt;FieldRef Name=\'Project1\'/>' +
+                    '&lt;Value Type=\'Lookup\'>' + projectID + '&lt;/Value>' +
+                '&lt;/Eq>' +
+                '&lt;Eq>' +
+                    '&lt;FieldRef Name=\'_DCDateCreated\'/>' +
+                    '&lt;Value IncludeTimeValue=’FALSE’ Type=\'DateTime\'>' + DateCreat + '&lt;/Value>' +
+                '&lt;/Eq>' +
+                '&lt;/And>' +
+             '&lt;/Where>' +
+             '&lt;OrderBy>' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+             '&lt;/OrderBy>' +
+         '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'Id\' />' +
+                '&lt;FieldRef Name=\'InternalReference\' />' +
+                '&lt;FieldRef Name=\'DocumentType\' />' +
+                '&lt;FieldRef Name=\'CategoryDescription\' />' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' />' +
+                '&lt;FieldRef Name=\'DiffusionDate\' />' +
+                '&lt;FieldRef Name=\'ExternalReference\' />' +
+                '&lt;FieldRef Name=\'Location\' />' +
+                '&lt;FieldRef Name=\'Form\' />' +
+                '&lt;FieldRef Name=\'_Status\' />' +
+                '&lt;FieldRef Name=\'Copy\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(Id, InternalReference,DocumentType,CategoryDescription,_DCDateCreated,DiffusionDate,ExternalReference,Location,Form,_Status,Copy)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
+    Function.createDelegate(this, window.onQueryFailed));
+}
+/**
+ * Retrieves filter of the format.
+ */
+function retrieveProjectFormat() {
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('File');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+        '&lt;View>' +
+         '&lt;Query>' +
+            '&lt;Where>' +
+                '&lt;And>' +
+                '&lt;Eq>' +
+                    '&lt;FieldRef Name=\'Project1\'/>' +
+                    '&lt;Value Type=\'Lookup\'>' + projectID + '&lt;/Value>' +
+                '&lt;/Eq>' +
+                '&lt;Eq>' +
+                    '&lt;FieldRef Name=\'Form\'/>' +
+                    '&lt;Value Type=\'Choice\'>' + Form + '&lt;/Value>' +
+                '&lt;/Eq>' +
+                '&lt;/And>' +
+             '&lt;/Where>' +
+             '&lt;OrderBy>' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'FALSE\' />' +
+             '&lt;/OrderBy>' +
+         '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'Id\' />' +
+                '&lt;FieldRef Name=\'InternalReference\' />' +
+                '&lt;FieldRef Name=\'DocumentType\' />' +
+                '&lt;FieldRef Name=\'CategoryDescription\' />' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' />' +
+                '&lt;FieldRef Name=\'DiffusionDate\' />' +
+                '&lt;FieldRef Name=\'ExternalReference\' />' +
+                '&lt;FieldRef Name=\'Location\' />' +
+                '&lt;FieldRef Name=\'Form\' />' +
+                '&lt;FieldRef Name=\'_Status\' />' +
+                '&lt;FieldRef Name=\'Copy\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(Id, InternalReference,DocumentType,CategoryDescription,_DCDateCreated,DiffusionDate,ExternalReference,Location,Form,_Status,Copy)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
+    Function.createDelegate(this, window.onQueryFailed));
+}
+/**
+ * Ons the query succeeded.
+ * @param {type} sender - The sender.
+ * @param {type} args - The arguments.
+ */
+function onQuerySucceeded(sender, args) {
+    var listEnumerator = collListItem.getEnumerator();
+    var listInfo = "&lt;h1>" + projectTitle + "&lt;/h1>" +
+    "&lt;table class='table table-striped'>" +
+        "&lt;tr>" +
+            "&lt;th>Edit&lt;/th>" +
+            "&lt;th>Copy&lt;/th>" +
+            "&lt;th>Internal Reference&lt;/th>" +
+            "&lt;th class='dropdown'>&lt;a href='/' class='dropdown-toggle' data-toggle='dropdown'>Document Type&lt;span class='caret'>&lt;/span>&lt;/a>" +
+                "&lt;ul class='dropdown-menu'>" +
+                '&lt;div id="resultsDocTypes">&lt;/div>';
+    retrieveListDocTypes();
+    listInfo += "&lt;/ul>&lt;/th>" +
+ "&lt;th>Description&lt;/th>" +
+ "&lt;th class='dropdown'>&lt;a href='/' class='dropdown-toggle' data-toggle='dropdown'>Date Created&lt;span class='caret'>&lt;/span>&lt;/a>" +
+     "&lt;ul class='dropdown-menu'>" +
+     '&lt;div id="resultsDateCreated">&lt;/div>' +
+     "&lt;/ul>&lt;/th>" +
+ "&lt;th>Diffusion Date&lt;/th>" +
+ "&lt;th>External Reference&lt;/th>" +
+ "&lt;th>Localization&lt;/th>" +
+ "&lt;th class='dropdown'>&lt;a href='/' class='dropdown-toggle' data-toggle='dropdown'>Format&lt;span class='caret'>&lt;/span>&lt;/a>" +
+ "&lt;ul class='dropdown-menu'>" +
+     '&lt;div id="resultsForm">&lt;/div>' +
+     "&lt;/ul>&lt;/th>" +
+ "&lt;th>Status&lt;/th>" +
+"&lt;/tr>";
+    while (listEnumerator.moveNext()) {
+        var diffusionDate = "";
+        var oListItem = listEnumerator.get_current();
+        var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate());
+        if (!((oListItem.get_item('DiffusionDate') == null) || (oListItem.get_item('DiffusionDate') == undefined) || (oListItem.get_item('DiffusionDate') == ""))) {
+            diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo((oListItem.get_item('DiffusionDate').getDate()));
+        }
+        if (oListItem.get_item('_Status') == "Deleted") {
+            listInfo += '&lt;tr class="bold" role="alert">';
+        } else listInfo += "&lt;tr>";
+        listInfo +=
+            "&lt;td>&lt;a href='#' onclick='ShowDialog(" + oListItem.get_id() + ")'>&lt;img src='../Images/EditIcon.png' />&lt;/a>&lt;/td>" +
+            "&lt;td>";
+        if ((oListItem.get_item('Copy') == null) || (oListItem.get_item('InternalReference') == undefined) || (oListItem.get_item('InternalReference') == "")) {
+            listInfo += "&lt;a href='#' onclick='ShowDialogCopy(" + oListItem.get_id() + ")'>&lt;img src='../Images/CopyIcon.png' />&lt;/a>";
+        }
+        listInfo += "&lt;/td>" +
+            "&lt;td>" + oListItem.get_item('InternalReference') + "&lt;/td>" +
+            "&lt;td>" + oListItem.get_item('DocumentType') + "&lt;/td>" +
+            "&lt;td>" + oListItem.get_item('CategoryDescription') + "&lt;/td>" +
+            "&lt;td>" + dateCreated + "&lt;/td>" +
+            "&lt;td>" + diffusionDate + "&lt;/td>" +
+            "&lt;td>" + oListItem.get_item('ExternalReference') + "&lt;/td>" +
+            "&lt;td>" + oListItem.get_item('Location') + "&lt;/td>" +
+            "&lt;td>" + oListItem.get_item('Form') + "&lt;/td>" +
+            "&lt;td>" + oListItem.get_item('_Status') + "&lt;/td>";
+        if (oListItem.get_item('_Status') == "Deleted") {
+            listInfo += '&lt;/tr>';
+        }
+    }
+    listInfo += "&lt;/table>";
+    $("#results").html(listInfo);
+}
+/**
+ * Shows the dialog For Edit File.
+ * @param {integer} ID - The file identifier.
+ * @returns {type} 
+ */
+function ShowDialog(ID) {
+    var options = {
+        url: "../Pages/EditFile.aspx?ID=" + ID,
+        width: 600,
+        height: 600,
+        allowMaximize: true,
+        title: "Edit File",
+        dialogReturnValueCallback: scallback
+    };
+    SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
+    return false;
+}
+/**
+ * Shows the new window for copy file and create new with diferent version or revision.
+ * @param {integer} ID - The identifier.
+ * @returns {type} 
+ */
+function ShowDialogCopy(ID) {
+    var options = {
+        url: "../Pages/CopyFile.aspx?ID=" + ID,
+        width: 600,
+        height: 600,
+        allowMaximize: true,
+        title: "Copy File",
+        dialogReturnValueCallback: scallback
+    };
+    SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
+    return false;
+}
+/**
+ * Adds the DGD tab in the ribbon.
+ */
+function AddDGDTab() {
+    var sTitleHtml = "";
+    var sManageHtml = "";
+    sTitleHtml += "&lt;a href='../Pages/Default.aspx' >' ";
+    sTitleHtml += "&lt;img src='../images/ViewIcon.png' />&lt;/a>&lt;br/>My Projects";
+    sManageHtml += "&lt;a href='../Pages/NewFile.aspx?ID=" + projectID + "&amp;Title=" + projectTitle + "' >";
+    sManageHtml += "&lt;img src='../images/CreateIcon.png' />&lt;/a>&lt;br/>New File";
+    var ribbon = SP.Ribbon.PageManager.get_instance().get_ribbon();
+    if (ribbon !== null) {
+        var tab = new CUI.Tab(ribbon, 'DGD.Tab', 'DGD',
+        'Use this tab to view and modify the DGD list',
+        'DGD.Tab.Command', false, '', null);
+        ribbon.addChildAtIndex(tab, 1);
+        var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Views',
+        'Use this group to view a list of titles',
+        'DGD.Group.Command', null);
+        tab.addChild(group);
+        var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Actions',
+        'Use this group to add/update/delete DGD',
+        'DGD.Group.Command', null);
+        tab.addChild(group);
+    }
+    SelectRibbonTab('DGD.Tab', true);
+    $("span:contains('Views')").prev("span").html(sTitleHtml);
+    $("span:contains('Actions')").prev("span").html(sManageHtml);
+    SelectRibbonTab('Ribbon.Read', true);
+}
+/**
+ * Query to take document types, formats and created date.
+ */
+function retrieveListDocTypes() {
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('File');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+        '&lt;View>' +
+         '&lt;Query>' +
+            '&lt;Where>' +
+                    '&lt;Eq>' +
+                        '&lt;FieldRef Name=\'Project1\'/>' +
+                        '&lt;Value Type=\'Lookup\'>' + projectID + '&lt;/Value>' +
+                    '&lt;/Eq>' +
+             '&lt;/Where>' +
+             '&lt;OrderBy>' +
+                '&lt;FieldRef Name=\'DocumentType\' />' +
+                '&lt;FieldRef Name=\'Form\' />' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' />' +
+             '&lt;/OrderBy>' +
+         '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'DocumentType\' />' +
+                '&lt;FieldRef Name=\'_DCDateCreated\' />' +
+                '&lt;FieldRef Name=\'Form\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(DocumentType,_DCDateCreated,Form)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQueryListDocTypesSucceeded),
+    Function.createDelegate(this, window.onQueryFailed));
+
+}
+/**
+ * Ons the query succeeded.
+ * @param {type} sender - The sender.
+ * @param {type} args - The arguments.
+ */
+function onQueryListDocTypesSucceeded(sender, args) {
+    var listEnumerator = collListItem.getEnumerator();
+    var listDocTypes = "";
+    var listDateCreated = "";
+    var listForm = "";
+    var temp1 = "";
+    var temp2 = [];
+    var temp3 = "";
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        if (!(oListItem.get_item('DocumentType') == temp1)) {
+            temp1 = oListItem.get_item('DocumentType');
+            listDocTypes += "&lt;li>&lt;a href='../Pages/File.aspx?ID=" + projectID + "&amp;Title=" + projectTitle + "&amp;DT=" + oListItem.get_item('DocumentType') + "'>" + oListItem.get_item('DocumentType') + "&lt;/a>&lt;/li>";
+        }
+        var year = oListItem.get_item('_DCDateCreated').getFullYear();
+        var month = oListItem.get_item('_DCDateCreated').getMonth();
+        var day = oListItem.get_item('_DCDateCreated').getDate();
+        var count = 0;
+        if (temp2.length == 0) {
+            temp2.push(oListItem.get_item('_DCDateCreated'));
+        } else {
+            temp2.forEach(myFunction);
+            if (count == 0) {
+                temp2.push(oListItem.get_item('_DCDateCreated'));
+            }
+        }
+        /**
+         * Count if the array contains the date
+         * @param {date} item - The date
+         * @param {integer} index - The index
+         */
+        function myFunction(item, index) {
+            if ((year == item.getFullYear()) &amp;&amp; (month == item.getMonth()) &amp;&amp; (day == item.getDate())) {
+                count += 1;
+            }
+        }
+        if (!(oListItem.get_item('Form') == temp3)) {
+            temp3 = oListItem.get_item('Form');
+            listForm += "&lt;li>&lt;a href='../Pages/File.aspx?ID=" + projectID + "&amp;Title=" + projectTitle + "&amp;FO=" + oListItem.get_item('Form') + "'>" + oListItem.get_item('Form') + "&lt;/a>&lt;/li>";
+        }
+    }
+    var date_sort_asc = function (date1, date2) {
+        // This is a comparison function that will result in dates being sorted in
+        // ASCENDING order. As you can see, JavaScript's native comparison operators
+        // can be used to compare dates. 
+        if (date1 > date2) return 1;
+        if (date1 &lt; date2) return -1;
+        return 0;
+    };
+    temp2.sort(date_sort_asc);
+    for (var i = 0; i &lt; temp2.length; i++) {
+        listDateCreated += "&lt;li>&lt;a href='../Pages/File.aspx?ID=" + projectID + "&amp;Title=" + projectTitle + "&amp;DC=" + temp2[i] + "'>" + temp2[i].getFullYear() + "/" + padToTwo(((temp2[i].getMonth()) + 1)) + "/" + padToTwo(temp2[i].getDate()) + "&lt;/a>&lt;/li>";
+    }
+    $("#resultsDocTypes").html(listDocTypes);
+    $("#resultsForm").html(listForm);
+    $("#resultsDateCreated").html(listDateCreated);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="global.html#createListItem">createListItem</a></li><li><a href="global.html#onQueryFailed">onQueryFailed</a></li><li><a href="padToFour.html">padToFour</a></li><li><a href="padToTwo.html">padToTwo</a></li><li><a href="scallback.html">scallback</a></li><li><a href="validateUrl.html">validateUrl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddDGDTab">AddDGDTab</a></li><li><a href="global.html#getDocOrderNumber">getDocOrderNumber</a></li><li><a href="global.html#ModifyRibbon">ModifyRibbon</a></li><li><a href="global.html#onQueryCreateFailed">onQueryCreateFailed</a></li><li><a href="global.html#onQueryCreateSucceeded">onQueryCreateSucceeded</a></li><li><a href="global.html#onQueryDocOrderSucceeded">onQueryDocOrderSucceeded</a></li><li><a href="global.html#onQueryEditSucceeded">onQueryEditSucceeded</a></li><li><a href="global.html#onQueryListDocTypesSucceeded">onQueryListDocTypesSucceeded</a></li><li><a href="global.html#onQuerySucceeded">onQuerySucceeded</a></li><li><a href="global.html#onQueryUpdateFailed">onQueryUpdateFailed</a></li><li><a href="global.html#onQueryUpdateSucceeded">onQueryUpdateSucceeded</a></li><li><a href="global.html#retrieveDGD">retrieveDGD</a></li><li><a href="global.html#retrieveDGDs">retrieveDGDs</a></li><li><a href="global.html#retrieveFile">retrieveFile</a></li><li><a href="global.html#retrieveFiles">retrieveFiles</a></li><li><a href="global.html#retrieveListDocTypes">retrieveListDocTypes</a></li><li><a href="global.html#retrieveProject">retrieveProject</a></li><li><a href="global.html#retrieveProjectDateCreated">retrieveProjectDateCreated</a></li><li><a href="global.html#retrieveProjectFilterDocType">retrieveProjectFilterDocType</a></li><li><a href="global.html#retrieveProjectFormat">retrieveProjectFormat</a></li><li><a href="global.html#ShowDialog">ShowDialog</a></li><li><a href="global.html#ShowDialogCopy">ShowDialogCopy</a></li><li><a href="global.html#updateLastFile">updateLastFile</a></li><li><a href="global.html#updateListItem">updateListItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Aug 12 2016 09:28:51 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

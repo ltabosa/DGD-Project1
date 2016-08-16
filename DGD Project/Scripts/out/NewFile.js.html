@@ -1,4 +1,32 @@
-﻿$(document).ready(function () {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: NewFile.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: NewFile.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿$(document).ready(function () {
     //get Id, if not exists return to projects page
     projectId = GetUrlKeyValue('ID', false);
     projectTitle = GetUrlKeyValue('Title', false);
@@ -65,7 +93,7 @@ function createListItem(projectId, internalReference, documentType, description,
         dateCreated = new Date();
     }
     oListItem.set_item('_DCDateCreated', dateCreated);
-    if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))&&(status=="Validated")) {
+    if (((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))&amp;&amp;(status=="Validated")) {
         diffusionDate = new Date();
     }
     if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
@@ -76,8 +104,8 @@ function createListItem(projectId, internalReference, documentType, description,
     oListItem.set_item('Form', form);
     oListItem.set_item('_Status', status);
     oListItem.set_item('OrderNumber', orderNumber);
-    oListItem.set_item('Version', 01);
-    oListItem.set_item('Revision', 01);
+  //  oListItem.set_item('Version', 01);
+  //  oListItem.set_item('Revision', 01);
 
     oListItem.update();
 
@@ -89,7 +117,7 @@ function createListItem(projectId, internalReference, documentType, description,
  * On the query create succeeded.
  */
 function onQueryCreateSucceeded() {
-    window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
+    window.location.href = '../Pages/File.aspx?ID=' + projectId + '&amp;Title=' + projectTitle;
 }
 /**
  * Ons the query create failed.
@@ -108,26 +136,26 @@ function retrieveDGD() {
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
     camlQuery.set_viewXml(
-        '<View>' +
-            '<Query>' +
-                '<Where>' +
-                    '<Eq>' +
-                        '<FieldRef Name=\'ID\'/>' +
-                        '<Value Type=\'Counter\'>' + projectId + '</Value>' +
-                    '</Eq>' +
-                '</Where>' +
-                '<OrderBy>' +
-                    '<FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' />' +
-                '</OrderBy>' +
-            '</Query>' +
-            '<ViewFields>' +
-                '<FieldRef Name=\'Title\' />' +
-                '<FieldRef Name=\'ProjectCode\' />' +
-                '<FieldRef Name=\'Avenant\' />' +
-                '<FieldRef Name=\'IdAgency\' />' +
-                '<FieldRef Name=\'ProjectType\' />' +
-            '</ViewFields>' +
-        '</View>');
+        '&lt;View>' +
+            '&lt;Query>' +
+                '&lt;Where>' +
+                    '&lt;Eq>' +
+                        '&lt;FieldRef Name=\'ID\'/>' +
+                        '&lt;Value Type=\'Counter\'>' + projectId + '&lt;/Value>' +
+                    '&lt;/Eq>' +
+                '&lt;/Where>' +
+                '&lt;OrderBy>' +
+                    '&lt;FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' />' +
+                '&lt;/OrderBy>' +
+            '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'Title\' />' +
+                '&lt;FieldRef Name=\'ProjectCode\' />' +
+                '&lt;FieldRef Name=\'Avenant\' />' +
+                '&lt;FieldRef Name=\'IdAgency\' />' +
+                '&lt;FieldRef Name=\'ProjectType\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(Title, ProjectCode, Avenant, IdAgency, ProjectType)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
@@ -158,19 +186,19 @@ function getDocOrderNumber(documentType) {
     var oList = context.get_web().get_lists().getByTitle('File');
     var camlQuery = new SP.CamlQuery();
     camlQuery.set_viewXml(
-        '<View>' +
-            '<Query>' +
-                '<Where>' +
-                    '<And>' +
-                        '<Eq><FieldRef Name=\'Project1\'/><Value Type=\'Number\'>' + projectId + '</Value></Eq>' +
-                        '<Eq><FieldRef Name=\'DocumentType\'/><Value Type=\'Text\'>' + documentType + '</Value></Eq>' +
-                    '</And>' +
-                '</Where>' +
-            '</Query>' +
-            '<ViewFields>' +
-                '<FieldRef Name=\'InternalReference\' />' +
-            '</ViewFields>' +
-        '</View>');
+        '&lt;View>' +
+            '&lt;Query>' +
+                '&lt;Where>' +
+                    '&lt;And>' +
+                        '&lt;Eq>&lt;FieldRef Name=\'Project1\'/>&lt;Value Type=\'Number\'>' + projectId + '&lt;/Value>&lt;/Eq>' +
+                        '&lt;Eq>&lt;FieldRef Name=\'DocumentType\'/>&lt;Value Type=\'Text\'>' + documentType + '&lt;/Value>&lt;/Eq>' +
+                    '&lt;/And>' +
+                '&lt;/Where>' +
+            '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'InternalReference\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(InternalReference)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryDocOrderSucceeded),
@@ -192,7 +220,7 @@ function onQueryDocOrderSucceeded(sender, args) {
     //Validation if the URL is valid in case of form eletronic
     if (localization == null || localization == undefined || localization == "") {
         if (status == "Validated") {
-            errorMsg = "You must fill the field <b>Localization</b>";
+            errorMsg = "You must fill the field &lt;b>Localization&lt;/b>";
         } else createFile();
     }else if (form == "E") {
         if (validateUrl(localization)) {
@@ -214,4 +242,26 @@ function onQueryDocOrderSucceeded(sender, args) {
         }
     }
     $("#errorValidate").html(errorMsg);
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="global.html#createListItem">createListItem</a></li><li><a href="global.html#onQueryFailed">onQueryFailed</a></li><li><a href="padToFour.html">padToFour</a></li><li><a href="padToTwo.html">padToTwo</a></li><li><a href="scallback.html">scallback</a></li><li><a href="validateUrl.html">validateUrl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddDGDTab">AddDGDTab</a></li><li><a href="global.html#getDocOrderNumber">getDocOrderNumber</a></li><li><a href="global.html#ModifyRibbon">ModifyRibbon</a></li><li><a href="global.html#onQueryCreateFailed">onQueryCreateFailed</a></li><li><a href="global.html#onQueryCreateSucceeded">onQueryCreateSucceeded</a></li><li><a href="global.html#onQueryDocOrderSucceeded">onQueryDocOrderSucceeded</a></li><li><a href="global.html#onQueryEditSucceeded">onQueryEditSucceeded</a></li><li><a href="global.html#onQueryListDocTypesSucceeded">onQueryListDocTypesSucceeded</a></li><li><a href="global.html#onQuerySucceeded">onQuerySucceeded</a></li><li><a href="global.html#onQueryUpdateFailed">onQueryUpdateFailed</a></li><li><a href="global.html#onQueryUpdateSucceeded">onQueryUpdateSucceeded</a></li><li><a href="global.html#retrieveDGD">retrieveDGD</a></li><li><a href="global.html#retrieveDGDs">retrieveDGDs</a></li><li><a href="global.html#retrieveFile">retrieveFile</a></li><li><a href="global.html#retrieveFiles">retrieveFiles</a></li><li><a href="global.html#retrieveListDocTypes">retrieveListDocTypes</a></li><li><a href="global.html#retrieveProject">retrieveProject</a></li><li><a href="global.html#retrieveProjectDateCreated">retrieveProjectDateCreated</a></li><li><a href="global.html#retrieveProjectFilterDocType">retrieveProjectFilterDocType</a></li><li><a href="global.html#retrieveProjectFormat">retrieveProjectFormat</a></li><li><a href="global.html#ShowDialog">ShowDialog</a></li><li><a href="global.html#ShowDialogCopy">ShowDialogCopy</a></li><li><a href="global.html#updateLastFile">updateLastFile</a></li><li><a href="global.html#updateListItem">updateListItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Aug 12 2016 09:28:51 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

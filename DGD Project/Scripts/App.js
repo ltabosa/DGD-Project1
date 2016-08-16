@@ -3,13 +3,10 @@ $(document).ready(function () {
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGD);
     SP.SOD.executeOrDelayUntilScriptLoaded(ModifyRibbon, 'sp.ribbon.js');
 });
-function retrieveDGD() {
 /**
  * Retrieves the DGD project.
  */
-    /// <summary>
-    /// Retrieves the DGD project.
-    /// </summary>
+function retrieveDGD() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
@@ -19,17 +16,12 @@ function retrieveDGD() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
-/*function onQueryFailed(sender, args) {
-    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-    args.get_stackTrace(), true);
-}*/
+/**
+ * On the query succeeded. Lists all the projects
+ * @param {type} sender - The sender.
+ * @param {type} args - The arguments.
+ */
 function onQuerySucceeded(sender, args) {
-    /// <summary>
-    /// Ons the query succeeded.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The arguments.</param>
-    /// <returns></returns>
     var listEnumerator = collListItem.getEnumerator();
     var listInfo =
         "<table class='table table-striped'>" +
@@ -56,12 +48,12 @@ function onQuerySucceeded(sender, args) {
     listInfo +="</table>";
     $("#results").html(listInfo);
 }
-
+/**
+ * Shows the dialog.
+ * @param {number} ID - The project identifier.
+ * @returns {boolean} 
+ */
 function ShowDialog(ID) {
-    /// <summary>
-    /// Shows the dialog.
-    /// </summary>
-    /// <param name="ID">The identifier.</param>
     var options = {
         url: "../Pages/EditProject.aspx?ID=" + ID,
         allowMaximize: true,
@@ -71,35 +63,10 @@ function ShowDialog(ID) {
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
     return false;
 }
-/*function scallback(dialogResult, returnValue) {
-    if (dialogResult == SP.UI.DialogResult.OK) {
-        SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.OK);
-    }
-}*/
-
-// Methods for the ribbon
-/*function ModifyRibbon() {
-    var pm = SP.Ribbon.PageManager.get_instance();
-    pm.add_ribbonInited(function () {
-        AddDGDTab();
-    });
-    var ribbon = null;
-    try {
-        ribbon = pm.get_ribbon();
-    }
-    catch (e) { }
-    if (!ribbon) {
-        if (typeof (_ribbonStartInit) == "function")
-            _ribbonStartInit(_ribbon.initialTabId, false, null);
-    }
-    else {
-        AddDGDTab();
-    }
-}*/
+/**
+ * Adds the DGD tab.
+ */
 function AddDGDTab() {
-    /// <summary>
-    /// Adds the DGD tab.
-    /// </summary>
     var sTitleHtml = "";
     var sManageHtml = "";
     sTitleHtml += "<a href='../Lists/File/MyView.aspx' >' ";
@@ -112,17 +79,12 @@ function AddDGDTab() {
         'Use this tab to view and modify the DGD list',
         'DGD.Tab.Command', false, '', null);
         ribbon.addChildAtIndex(tab, 1);
-       // var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Views',
-       // 'Use this group to view a list of titles',
-       // 'DGD.Group.Command', null);
-       // tab.addChild(group);
         var group = new CUI.Group(ribbon, 'DGD.Tab.Group', 'Actions',
         'Use this group to add/update/delete DGD',
         'DGD.Group.Command', null);
         tab.addChild(group);
     }
     SelectRibbonTab('DGD.Tab', true);
-    //$("span:contains('Views')").prev("span").html(sTitleHtml);
     $("span:contains('Actions')").prev("span").html(sManageHtml);
     SelectRibbonTab('Ribbon.Read', true);
 }

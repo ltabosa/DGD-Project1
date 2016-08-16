@@ -1,4 +1,32 @@
-﻿$(document).ready(function () {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: EditProject.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: EditProject.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿$(document).ready(function () {
     projectId = GetUrlKeyValue('ID', false);
     if (!(projectId == "" || projectId == undefined || projectId == null)) {
         SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveDGDs);
@@ -45,9 +73,9 @@
          * Gets the error from validation data
          */
         function getError() {
-            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)<br>";
-            if (!validateProjectCode(projectCode)) errorMsg += "Project Code must be a number<br>";
-            if (!validateAvenant(avenant)) errorMsg += "Avenant must be a number<br>";
+            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)&lt;br>";
+            if (!validateProjectCode(projectCode)) errorMsg += "Project Code must be a number&lt;br>";
+            if (!validateAvenant(avenant)) errorMsg += "Avenant must be a number&lt;br>";
         }
 
         if (projectType == "Full") {
@@ -63,7 +91,7 @@
             }
         } else {
             $('.notShow').hide();
-            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)<br>";
+            if (!validateAgency(idAgency)) errorMsg += "Not a correct format for ID Agency (e.g. A9)&lt;br>";
             if (errorMsg == "") {
                 updateListItem(projectName, projectCode, avenant, idAgency);
             }
@@ -79,26 +107,26 @@ function retrieveDGDs() {
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
     camlQuery.set_viewXml(
-        '<View>' +
-            '<Query>' +
-                '<Where>' +
-                    '<Eq>' +
-                        '<FieldRef Name=\'ID\'/>' +
-                        '<Value Type=\'Counter\'>' + projectId + '</Value>' +
-                    '</Eq>' +
-                '</Where>' +
-                '<OrderBy>' +
-                    '<FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' />' +
-                '</OrderBy>' +
-            '</Query>' +
-            '<ViewFields>' +
-                '<FieldRef Name=\'Title\' />' +
-                '<FieldRef Name=\'ProjectCode\' />' +
-                '<FieldRef Name=\'Avenant\' />' +
-                '<FieldRef Name=\'IdAgency\' />' +
-                '<FieldRef Name=\'ProjectType\' />' +
-            '</ViewFields>' +
-        '</View>');
+        '&lt;View>' +
+            '&lt;Query>' +
+                '&lt;Where>' +
+                    '&lt;Eq>' +
+                        '&lt;FieldRef Name=\'ID\'/>' +
+                        '&lt;Value Type=\'Counter\'>' + projectId + '&lt;/Value>' +
+                    '&lt;/Eq>' +
+                '&lt;/Where>' +
+                '&lt;OrderBy>' +
+                    '&lt;FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' />' +
+                '&lt;/OrderBy>' +
+            '&lt;/Query>' +
+            '&lt;ViewFields>' +
+                '&lt;FieldRef Name=\'Title\' />' +
+                '&lt;FieldRef Name=\'ProjectCode\' />' +
+                '&lt;FieldRef Name=\'Avenant\' />' +
+                '&lt;FieldRef Name=\'IdAgency\' />' +
+                '&lt;FieldRef Name=\'ProjectType\' />' +
+            '&lt;/ViewFields>' +
+        '&lt;/View>');
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(Title, ProjectCode, Avenant, IdAgency, ProjectType)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQueryEditSucceeded),
@@ -162,3 +190,26 @@ function onQueryUpdateSucceeded() {
 function onQueryUpdateFailed(sender, args) {
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="global.html#createListItem">createListItem</a></li><li><a href="global.html#onQueryFailed">onQueryFailed</a></li><li><a href="padToFour.html">padToFour</a></li><li><a href="padToTwo.html">padToTwo</a></li><li><a href="scallback.html">scallback</a></li><li><a href="validateUrl.html">validateUrl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddDGDTab">AddDGDTab</a></li><li><a href="global.html#getDocOrderNumber">getDocOrderNumber</a></li><li><a href="global.html#ModifyRibbon">ModifyRibbon</a></li><li><a href="global.html#onQueryCreateFailed">onQueryCreateFailed</a></li><li><a href="global.html#onQueryCreateSucceeded">onQueryCreateSucceeded</a></li><li><a href="global.html#onQueryDocOrderSucceeded">onQueryDocOrderSucceeded</a></li><li><a href="global.html#onQueryEditSucceeded">onQueryEditSucceeded</a></li><li><a href="global.html#onQueryListDocTypesSucceeded">onQueryListDocTypesSucceeded</a></li><li><a href="global.html#onQuerySucceeded">onQuerySucceeded</a></li><li><a href="global.html#onQueryUpdateFailed">onQueryUpdateFailed</a></li><li><a href="global.html#onQueryUpdateSucceeded">onQueryUpdateSucceeded</a></li><li><a href="global.html#retrieveDGD">retrieveDGD</a></li><li><a href="global.html#retrieveDGDs">retrieveDGDs</a></li><li><a href="global.html#retrieveFile">retrieveFile</a></li><li><a href="global.html#retrieveFiles">retrieveFiles</a></li><li><a href="global.html#retrieveListDocTypes">retrieveListDocTypes</a></li><li><a href="global.html#retrieveProject">retrieveProject</a></li><li><a href="global.html#retrieveProjectDateCreated">retrieveProjectDateCreated</a></li><li><a href="global.html#retrieveProjectFilterDocType">retrieveProjectFilterDocType</a></li><li><a href="global.html#retrieveProjectFormat">retrieveProjectFormat</a></li><li><a href="global.html#ShowDialog">ShowDialog</a></li><li><a href="global.html#ShowDialogCopy">ShowDialogCopy</a></li><li><a href="global.html#updateLastFile">updateLastFile</a></li><li><a href="global.html#updateListItem">updateListItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Aug 12 2016 09:28:51 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
