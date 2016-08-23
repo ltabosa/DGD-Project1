@@ -27,22 +27,28 @@ function onQuerySucceeded(sender, args) {
         "<table class='table table-striped'>" +
             "<tr>" +
                 "<th class='col-md-1'></th>" +
+                "<th>Agency</th>" +
                 "<th>Project Name</th>" +
                 "<th>Project Code</th>" +
-                "<th>Avenant</th>" +
-                "<th>Id Agency</th>" +
+                "<th>Project Amendment</th>" +
             "</tr>";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
+        if (oListItem.get_item('ProjectCode')) {
+            var projCod = padToFour(oListItem.get_item('ProjectCode'));
+        }else projCod="n/a";
+        if (oListItem.get_item('Avenant')) {
+            var aven = padToTwo(oListItem.get_item('Avenant'));
+        } else aven = "n/a";
         listInfo +=
         "<tr>" +
         "<td class='col-md-1'><a href='#' onclick='ShowDialog(" + oListItem.get_id() + ")'><img src='../Images/EditIcon.png' /></a></td>" +
+        "<td>" + oListItem.get_item('IdAgency') + "</td>" +
         "<td>" +
             "<a href='../Pages/File.aspx?ID=" + oListItem.get_id() + "&Title=" + oListItem.get_item('Title') + "'>" + oListItem.get_item('Title') + "</a>"+
         "</td>" +
-        "<td>" + oListItem.get_item('ProjectCode') + "</td>" +
-        "<td>" + oListItem.get_item('Avenant') + "</td>" +
-        "<td>" + oListItem.get_item('IdAgency') + "</td>" +
+        "<td>" + projCod + "</td>" +
+        "<td>" + aven + "</td>" +
         "</tr>";
     }
     listInfo +="</table>";

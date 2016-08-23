@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="form-group row notShow" >
-            <label class="col-sm-2" for="Avenant">Avenant:</label>
+            <label class="col-sm-2" for="Avenant">Amendment:</label>
             <div class="col-sm-4">
                 <input type="number" name="Avenant" id="Avenant" class="form-control" />
             </div>

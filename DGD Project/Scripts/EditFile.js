@@ -11,12 +11,15 @@
         var internalReference = "";
         var documentType = $("#DocumentType option:selected").text();
         var description = $('#Description').val();
-        var dateCreated = document.getElementById('DateCreated').value;
+        var dateCreated = dateCreate;
         var diffusionDate = document.getElementById('DiffusionDate').value;
         var externalReference = $('#ExternalReference').val();
         var localization = $('#Localization').val();
         var form = $('#Form').val();
         var status = $('#Status').val();
+        if (status == "Deleted") {
+            localization = "n/a";
+        }
         var idAgency = $('#IdAgency').val();
         var projectType = $('#ProjectType').val();
         var avenant = $('#Avenant').val();
@@ -31,7 +34,7 @@
             if (status == "Validated") {
                 errorMsg = "You must fill the field <b>Localization</b>";
             } else createFile();
-        }else if (form == "E") {
+        }else if ((form == "E") && (status!="Deleted")) {
             if (validateUrl(localization)) {
                 createFile();
             } else errorMsg = "You must enter a valid URL in localization";
@@ -111,7 +114,7 @@ function onQuerySucceeded(sender, args) {
         var oListItem = listEnumerator.get_current();
         localStorage.setItem("documentType", oListItem.get_item('DocumentType'));
         localStorage.setItem("description", oListItem.get_item('CategoryDescription'));
-        localStorage.setItem("dateCreated", oListItem.get_item('_DCDateCreated'));
+        dateCreate = oListItem.get_item('_DCDateCreated');
         localStorage.setItem("diffusionDate", oListItem.get_item('DiffusionDate'));
         localStorage.setItem("externalReference", oListItem.get_item('ExternalReference'));
         localStorage.setItem("localization", oListItem.get_item('Location'));
@@ -168,7 +171,7 @@ function onQueryEditSucceeded(sender, args) {
         var oListItem = listEnumerator.get_current();
         document.getElementById('DocumentType').value = localStorage.getItem('documentType');
         document.getElementById('Description').value = localStorage.getItem('description');
-        document.getElementById('DateCreated').value = localStorage.getItem('dateCreated');
+        //document.getElementById('DateCreated').value = localStorage.getItem('dateCreated');
         document.getElementById('DiffusionDate').value = localStorage.getItem('diffusionDate');
         document.getElementById('ExternalReference').value = localStorage.getItem('externalReference');
         document.getElementById('Localization').value = localStorage.getItem('localization');

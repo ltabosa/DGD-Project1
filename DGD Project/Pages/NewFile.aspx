@@ -34,7 +34,8 @@
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
 
     <form action="/" method="post" class="form-horizontal">
-        <div class="form-group row">
+        <div class="form-group row"></div>
+        <div class="form-group row notShow">
             <label for="DocumentType" class="col-sm-2">Document Type:</label>
             <div class="col-sm-4">
                 <select name="DocumentType" id="DocumentType" class="form-control">
@@ -50,7 +51,6 @@
                     <option value="GUI" label="Guideline">GUI</option>
                     <option value="QUO" label="Internal Quotation">QUO</option>
                     <option value="INC" label="Incoming Document">INC</option>
-
                     <option value="MP" label="Management Plan">MP</option>
                     <option value="MAT" label="Matrix">MAT</option>
                     <option value="MOM" label="Minutes of Meeting">MOM</option>
@@ -116,47 +116,15 @@
                 </select>
             </div>
         </div>
-       <div class="form-group row">
-            <div class="col-sm-4">
+
                 <input type="hidden" name="ProjectName" id="ProjectName" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-4">
                 <input type="hidden" name="ProjectCode" id="ProjectCode" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-4">
                 <input type="hidden" name="Avenant" id="Avenant" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-4">
                 <input type="hidden" name="ProjectType" id="ProjectType" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-4">
                 <input type="hidden" name="IdAgency" id="IdAgency" class="form-control" />
-            </div>
-        </div>
-         <!--
-        <div class="form-group row">
-            <label class="col-sm-2" for="ProjectType">Project Type:</label>
-            <div class="col-sm-4">
-                <select name="ProjectType" id="ProjectType" class="form-control">
-                    <option selected="selected">Basic</option>
-                    <option>Full</option>
-                    <option>Full Without Project</option>
-                </select>
-            </div>
-        </div>
-        -->
+
         <div id="ProjectTypeDiv"></div>
         <p id="errorValidate" class="bg-danger"></p>
-        
-
         <input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" />
         
     </form>

@@ -68,12 +68,6 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2" for="DateCreated">Date Created:</label>
-            <div class="col-sm-4">
-                <input type="date" name="DateCreated" id="DateCreated" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group row">
             <label class="col-sm-2" for="DiffusionDate">Diffusion Date:</label>
             <div class="col-sm-4">
                 <input type="date" name="DiffusionDate" id="DiffusionDate" class="form-control" />
@@ -111,7 +105,7 @@
                 </select>
             </div>
         </div>
-        
+                <input type="hidden" name="DateCreated" id="DateCreated" class="form-control" />
                 <input type="hidden" name="OrderNumber" id="OrderNumber" class="form-control" />
                 <input type="hidden" name="Version" id="Version" class="form-control" />
                 <input type="hidden" name="Revision" id="Revision" class="form-control" />

@@ -13,12 +13,41 @@
      */
     $("#Submit").click(function () {
         //input variables
+        var error = "";
         internalReference = "";
         documentType = $("#DocumentType option:selected").text();
         description = $('#Description').val();
-        //Take today date if the input is not set
         dateCreated = document.getElementById('DateCreated').value;
+        //Validate the date created
+        if (!((dateCreated == undefined) || (dateCreated == null) || (dateCreated == ""))) {
+            dateCreated = new Date(dateCreated);
+            var yearCreated = dateCreated.getFullYear();
+            var monthCreated = dateCreated.getMonth();
+            var dayCreated = dateCreated.getDate() + 1;
+            dateCreated = new Date(yearCreated, monthCreated, dayCreated);
+            var d = new Date();
+            if (yearCreated == d.getFullYear()) {
+                if (monthCreated == d.getMonth()) {
+                    if (dayCreated > d.getDate()) error = "The <b>date created</b> can not be greater than today's date.<br>";
+                } else if (monthCreated > d.getMonth()) error = "The <b>date created</b> can not be greater than today's date.<br>";
+            } else if (yearCreated > d.getFullYear()) error = "The <b>date created</b> can not be greater than today's date.<br>";
+        } else dateCreated = new Date();
+        console.log(dateCreated);
         diffusionDate = document.getElementById('DiffusionDate').value;
+        //Validate the diffusion date
+        if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
+            diffusionDate = new Date(diffusionDate);
+            var yearDiffusion = diffusionDate.getFullYear();
+            var monthDiffusion = diffusionDate.getMonth();
+            var dayDiffusion = diffusionDate.getDate() + 1;
+            diffusionDate = new Date(yearDiffusion, monthDiffusion, dayDiffusion);
+            if (yearDiffusion == dateCreated.getFullYear()) {
+                if (monthDiffusion == dateCreated.getMonth()) {
+                    if (dayDiffusion < dateCreated.getDate()) error += "The <b>diffusion date</b> can not be less than <b>date created</b>.<br>";
+                } else if (monthDiffusion < dateCreated.getMonth()) error += "The <b>diffusion date</b> can not be less than <b>date created</b>.<br>";
+            } else if (yearDiffusion < dateCreated.getFullYear()) error += "The <b>diffusion date</b> can not be less than date <b>created</b>.<br>";
+        }
+        console.log(diffusionDate);
         externalReference = $('#ExternalReference').val();
         localization = $('#Localization').val();
         form = $('#Form').val();
@@ -30,7 +59,12 @@
         projectName = $('#ProjectName').val();
         revision = 1;
         version = 1;
-        getDocOrderNumber(documentType);
+        //validate description
+        if (!description) {
+            error += "You must fill the field <b>description</b>.";
+        }
+        if (error=="") getDocOrderNumber(documentType);
+        $("#errorValidate").html(error);
     });//click button function ends
 
 });//ready function ends
@@ -147,6 +181,9 @@ function onQuerySucceeded(sender, args) {
         document.getElementById('Avenant').value = oListItem.get_item('Avenant');
         document.getElementById('IdAgency').value = oListItem.get_item('IdAgency');
         document.getElementById('ProjectType').value = oListItem.get_item('ProjectType');
+        if (oListItem.get_item('ProjectType') == "Basic") {
+            $('.notShow').hide();
+        }
     }
 }
 /**

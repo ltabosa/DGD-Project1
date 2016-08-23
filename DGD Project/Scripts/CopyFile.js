@@ -9,15 +9,29 @@
      */
     $("#Submit").click(function () {
         var internalReference = "";
-
+        var errorMsg = "";
         var documentType = $("#DocumentType").val();
         var description = $('#Description').val();
         //Take today date if the input is not set
-        //var dateCreated = $('#DateCreated').val();
         var dateCreated = document.getElementById('DateCreated').value;
-        //var diffusionDate = $('#DiffusionDate').val();
         var diffusionDate = document.getElementById('DiffusionDate').value;
-        //alert(diffusionDate);
+        //Validate the date created
+        if (!((dateCreated == undefined) || (dateCreated == null) || (dateCreated == ""))) {
+            dateCreated = new Date(dateCreated);
+            var yearCreated = dateCreated.getFullYear();
+            var monthCreated = dateCreated.getMonth();
+            var dayCreated = dateCreated.getDate() + 1;
+            dateCreated = new Date(yearCreated, monthCreated, dayCreated);
+            //source date
+            var d = new Date(localStorage.getItem('dateCreated'));
+            if (yearCreated == d.getFullYear()) {
+                if (monthCreated == d.getMonth()) {
+                    if (dayCreated < d.getDate()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
+                } else if (monthCreated < d.getMonth()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
+            } else if (yearCreated < d.getFullYear()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
+        } else dateCreated = new Date();
+        console.log(d);
+        console.log(dateCreated);
         var externalReference = $('#ExternalReference').val();
         var localization = $('#Localization').val();
         var form = $('#Form').val();
@@ -32,9 +46,7 @@
         var revision = parseInt($('#Revision').val(),10);
         var version = parseInt($('#Version').val(),10);
         var versionOuRevision = document.querySelector('input[name=versionRevision]:checked').value;//$('input[name="versionRevision"]:checked').val();
-        var errorMsg = "";
-        //alert(versionOuRevision);
-
+       
         if (versionOuRevision == "version") {
             version += 1;
             revision = 1;
@@ -43,13 +55,10 @@
         //Validation if the URL is valid in case of form eletronic
         if (localization == null || localization == undefined || localization == "") {
             if (status == "Validated") {
-                errorMsg = "You must fill the field <b>Localization</b>";
-            } else createFile();
-        }else if (form == "E") {
-            if (validateUrl(localization)) {
-                createFile();
-            } else errorMsg = "You must enter a valid URL in localization";
-        } else createFile();
+                errorMsg += "You must fill the field <b>Localization</b>";
+            } 
+        }
+        if (errorMsg == "") createFile();
         /**
          * Creates the file.
          */
@@ -126,7 +135,6 @@ function onQuerySucceeded(sender, args) {
         localStorage.setItem("externalReference", oListItem.get_item('ExternalReference'));
         localStorage.setItem("localization", oListItem.get_item('Location'));
         localStorage.setItem("form", oListItem.get_item('Form'));
-        localStorage.setItem("status", oListItem.get_item('_Status'));
         localStorage.setItem("orderNumber", oListItem.get_item('OrderNumber'));
         localStorage.setItem("version", oListItem.get_item('Version'));
         localStorage.setItem("revision", oListItem.get_item('Revision'));
@@ -184,7 +192,6 @@ function onQueryEditSucceeded(sender, args) {
         document.getElementById('ExternalReference').value = localStorage.getItem('externalReference');
         document.getElementById('Localization').value = localStorage.getItem('localization');
         document.getElementById('Form').value = localStorage.getItem('form');
-        document.getElementById('Status').value = localStorage.getItem('status');
         document.getElementById('OrderNumber').value = localStorage.getItem('orderNumber');
         document.getElementById('Version').value = localStorage.getItem('version');
         document.getElementById('Revision').value = localStorage.getItem('revision');
@@ -273,6 +280,7 @@ function updateLastFile() {
     this.oListItem = oList.getItemById(fileId);
 
     oListItem.set_item('Copy', true);
+    oListItem.set_item('_Status', 'Archived');
 
     oListItem.update();
 

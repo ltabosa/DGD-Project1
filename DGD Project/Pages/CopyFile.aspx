@@ -61,17 +61,8 @@
                 <input type="text" name="Localization" id="Localization" class="form-control" />
             </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-2" for="Status">Status:</label>
-            <div class="col-sm-4">
-                <select name="Status" id="Status" class="form-control">
-                    <option selected="selected">In Progress</option>
-                    <option>Validated</option>
-                    <option>Archived</option>
-                    <option>Deleted</option>
-                </select>
-            </div>
-        </div>
+       
+                <input type="hidden" name="Status" id="Status" class="form-control" value="In Progress" />
                 <input type="hidden" name="DocumentType" id="DocumentType" class="form-control" />
                 <input type="hidden" name="ExternalReference" id="ExternalReference" value="n/a" class="form-control" />
                 <input type="hidden" name="Form" id="Form" class="form-control" />

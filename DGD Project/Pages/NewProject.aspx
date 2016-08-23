@@ -45,13 +45,13 @@
             </div>
         </div>
         <div class="form-group row notShow" >
-            <label class="col-sm-2" for="Avenant">Avenant:</label>
+            <label class="col-sm-2" for="Avenant">Amendment:</label>
             <div class="col-sm-4">
                 <input type="number" name="Avenant" id="Avenant" class="form-control" />
             </div>
         </div>    
         <div class="form-group row">
-            <label class="col-sm-2" for="IdAgency">Id Agency:</label>
+            <label class="col-sm-2" for="IdAgency">Agency:</label>
             <div class="col-sm-4">
                 <input type="text" name="IdAgency" id="IdAgency" placeholder="e.g. X0" class="form-control" />
             </div>
@@ -60,9 +60,9 @@
             <label class="col-sm-2" for="ProjectType">Project Type:</label>
             <div class="col-sm-4">
                 <select name="ProjectType" id="ProjectType" class="form-control">
-                    <option selected="selected">Basic</option>
-                    <option>Full</option>
-                    <option>Full Without Project</option>
+                    <option selected="selected" label="Basic: MX-DDDD-VV-RR">Basic</option>
+                    <option label="Extended: TTT-MX-DDDD-VV-RR">Extended</option>
+                    <option label="Full: TTT-PPPP-AA-MX-DDDD-VV-RR">Full</option>
                 </select>
             </div>
         </div>
