@@ -29,7 +29,8 @@
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
      <form action="/" method="post" class="form-horizontal">
-        <div class="form-group row">
+        <div class="form-group row"></div>
+        <div class="form-group row notShow">
             <label for="DocumentType" class="col-sm-2">Document Type:</label>
             <div class="col-sm-4">
                 <select name="DocumentType" id="DocumentType" class="form-control">

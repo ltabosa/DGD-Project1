@@ -10,9 +10,9 @@ function retrieveDGD() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Projets');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /><FieldRef Name=\'ProjectCode\' /><FieldRef Name=\'Avenant\' /><FieldRef Name=\'IdAgency\' /></ViewFields></View>');
+    camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /><FieldRef Name=\'ProjectCode\' /><FieldRef Name=\'Avenant\' /><FieldRef Name=\'IdAgency\' /><FieldRef Name=\'ProjectType\' /></ViewFields></View>');
     window.collListItem = oList.getItems(camlQuery);
-    context.load(collListItem, 'Include(IdAgency, Id, Title, Avenant, ProjectCode)');
+    context.load(collListItem, 'Include(IdAgency, Id, Title, Avenant, ProjectCode, ProjectType)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
@@ -45,7 +45,7 @@ function onQuerySucceeded(sender, args) {
         "<td class='col-md-1'><a href='#' onclick='ShowDialog(" + oListItem.get_id() + ")'><img src='../Images/EditIcon.png' /></a></td>" +
         "<td>" + oListItem.get_item('IdAgency') + "</td>" +
         "<td>" +
-            "<a href='../Pages/File.aspx?ID=" + oListItem.get_id() + "&Title=" + oListItem.get_item('Title') + "'>" + oListItem.get_item('Title') + "</a>"+
+            "<a href='../Pages/File.aspx?ID=" + oListItem.get_id() + "&Title=" + oListItem.get_item('Title') + "&ProjType=" + oListItem.get_item('ProjectType') + "'>" + oListItem.get_item('Title') + "</a>" +
         "</td>" +
         "<td>" + projCod + "</td>" +
         "<td>" + aven + "</td>" +

@@ -6,22 +6,8 @@
 
 
 
-
-
       <ContentType ID="0x01007bc79ca084624bd484674c862869761f" Name="ListFieldsContentType">
         <FieldRefs>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -53,6 +39,7 @@
           <FieldRef ID="{48d0b15e-6166-40a9-b618-876e88247849}" Name="Version" />
           <FieldRef ID="{cca9511c-3139-435c-8dbc-e81027cc71f6}" Name="Revision" />
           <FieldRef ID="{7b87be81-d662-41f9-ac3e-226c00e14e5d}" Name="Copy" />
+          <FieldRef ID="{7c7b885a-e62e-4f4a-95cb-7b3c43ed395c}" Name="Date1" />
         </FieldRefs>
       </ContentType>
       <ContentTypeRef ID="0x01">
@@ -61,18 +48,6 @@
       <ContentTypeRef ID="0x0120" />
     </ContentTypes>
     <Fields>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -108,9 +83,6 @@
 
 
 
-
-
-
           <CHOICE>In Progress</CHOICE>
           <CHOICE>Validated</CHOICE>
           <CHOICE>Archived</CHOICE>
@@ -122,12 +94,11 @@
       <Field Name="Version" ID="{48d0b15e-6166-40a9-b618-876e88247849}" DisplayName="Version" Type="Number" />
       <Field Name="Revision" ID="{cca9511c-3139-435c-8dbc-e81027cc71f6}" DisplayName="Revision" Type="Number" />
       <Field Name="Copy" ID="{7b87be81-d662-41f9-ac3e-226c00e14e5d}" DisplayName="Copy" Type="Boolean" />
+      <Field Name="Date1" ID="{7c7b885a-e62e-4f4a-95cb-7b3c43ed395c}" DisplayName="Date" Type="DateTime" />
     </Fields>
 
 
     <Views>
-
-
 
 
 
@@ -139,10 +110,12 @@
         <ViewFields>
 
 
+
           <FieldRef Name="LinkTitleNoMenu"></FieldRef>
         </ViewFields>
         <Query>
           <OrderBy>
+
 
 
             <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
@@ -188,6 +161,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <FieldRef Name="LinkTitle"></FieldRef>
           <FieldRef Name="InternalReference" />
           <FieldRef Name="CategoryDescription" />
@@ -203,9 +191,11 @@
           <FieldRef Name="Version" />
           <FieldRef Name="Revision" />
           <FieldRef Name="Copy" />
+          <FieldRef Name="Date1" />
         </ViewFields>
         <Query>
           <OrderBy>
+
 
 
             <FieldRef Name="ID"></FieldRef>
@@ -218,6 +208,15 @@
       </View>
       <View BaseViewID="2" Name="b673ef5a-6099-4d0d-a514-efa226d1b143" DisplayName="MyView" Type="HTML" WebPartZoneID="Main" SetupPath="pages\viewpage.aspx" Url="MyView.aspx">
         <ViewFields>
+
+
+
+
+
+
+
+
+
 
 
 

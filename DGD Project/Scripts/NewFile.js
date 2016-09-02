@@ -32,7 +32,6 @@
                 } else if (monthCreated > d.getMonth()) error = "The <b>date created</b> can not be greater than today's date.<br>";
             } else if (yearCreated > d.getFullYear()) error = "The <b>date created</b> can not be greater than today's date.<br>";
         } else dateCreated = new Date();
-        console.log(dateCreated);
         diffusionDate = document.getElementById('DiffusionDate').value;
         //Validate the diffusion date
         if (!((diffusionDate == undefined) || (diffusionDate == null) || (diffusionDate == ""))) {
@@ -47,7 +46,6 @@
                 } else if (monthDiffusion < dateCreated.getMonth()) error += "The <b>diffusion date</b> can not be less than <b>date created</b>.<br>";
             } else if (yearDiffusion < dateCreated.getFullYear()) error += "The <b>diffusion date</b> can not be less than date <b>created</b>.<br>";
         }
-        console.log(diffusionDate);
         externalReference = $('#ExternalReference').val();
         localization = $('#Localization').val();
         form = $('#Form').val();
@@ -112,6 +110,9 @@ function createListItem(projectId, internalReference, documentType, description,
     oListItem.set_item('OrderNumber', orderNumber);
     oListItem.set_item('Version', 01);
     oListItem.set_item('Revision', 01);
+    //save today date
+    var dateToday = new Date();
+    oListItem.set_item('Date1', dateToday);
 
     oListItem.update();
 

@@ -16,12 +16,17 @@
         var externalReference = $('#ExternalReference').val();
         var localization = $('#Localization').val();
         var form = $('#Form').val();
-        var status = $('#Status').val();
+        if ($('#Status').val() == "" || $('#Status').val() == undefined || $('#Status').val() == null) {
+            var status = localStorage.getItem('status');
+        } else var status = $('#Status').val();
+            //console.log(localStorage.getItem('status'));
+        //var status = $('#Status').val();
         if (status == "Deleted") {
             localization = "n/a";
         }
         var idAgency = $('#IdAgency').val();
         var projectType = $('#ProjectType').val();
+
         var avenant = $('#Avenant').val();
         var projectCode = $('#ProjectCode').val();
         var projectName = $('#ProjectName').val();
@@ -174,9 +179,12 @@ function onQueryEditSucceeded(sender, args) {
         //document.getElementById('DateCreated').value = localStorage.getItem('dateCreated');
         document.getElementById('DiffusionDate').value = localStorage.getItem('diffusionDate');
         document.getElementById('ExternalReference').value = localStorage.getItem('externalReference');
-        document.getElementById('Localization').value = localStorage.getItem('localization');
+        if (localStorage.getItem('localization') == "" || localStorage.getItem('localization') == null || localStorage.getItem('localization') == "null" || localStorage.getItem('localization') == undefined) {
+            document.getElementById('Localization').value = "";
+        }else document.getElementById('Localization').value = localStorage.getItem('localization');
         document.getElementById('Form').value = localStorage.getItem('form');
         document.getElementById('Status').value = localStorage.getItem('status');
+        
         document.getElementById('OrderNumber').value = localStorage.getItem('orderNumber');
         document.getElementById('Version').value = localStorage.getItem('version');
         document.getElementById('Revision').value = localStorage.getItem('revision');
@@ -185,6 +193,9 @@ function onQueryEditSucceeded(sender, args) {
         document.getElementById('Avenant').value = oListItem.get_item('Avenant');
         document.getElementById('IdAgency').value = oListItem.get_item('IdAgency');
         document.getElementById('ProjectType').value = oListItem.get_item('ProjectType');
+        if (oListItem.get_item('ProjectType') == "Basic") {
+            $('.notShow').hide();
+        }
     }
 }
 /**
@@ -223,6 +234,9 @@ function updateListItem(fileId,internalReference,documentType,description,dateCr
     oListItem.set_item('Location', localization);
     oListItem.set_item('Form', form);
     oListItem.set_item('_Status', status);
+    //save today modification date
+    var dateToday = new Date();
+    oListItem.set_item('Date1', dateToday);
 
     oListItem.update();
 

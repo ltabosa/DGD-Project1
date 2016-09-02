@@ -4,6 +4,9 @@
 $(document).ready(function () {
     projectID = GetUrlKeyValue('ID', false);
     projectTitle = GetUrlKeyValue('Title', false);
+    if (GetUrlKeyValue('ProjType', false)) localStorage.setItem("projectType", GetUrlKeyValue('ProjType', false));
+    
+    //projectType = GetUrlKeyValue('ProjType', false);
     DocType = GetUrlKeyValue('DT', false);
     DateCre = (GetUrlKeyValue('DC', false));
     DateCre = DateCre.replace("%", " ");
@@ -35,7 +38,7 @@ function retrieveProject() {
                 '</Eq>' +
              '</Where>' +
              '<OrderBy>' +
-                '<FieldRef Name=\'_DCDateCreated\' ' + 'Ascending=\'TRUE\' />' +
+                '<FieldRef Name=\'Date1\' ' + 'Ascending=\'TRUE\' />' +
              '</OrderBy>' +
          '</Query>' +
             '<ViewFields>' +
@@ -199,13 +202,14 @@ function retrieveProjectFormat() {
  */
 function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
+    
     var listInfo = "<h1>" + projectTitle + "</h1>" +
     "<table class='table table-striped'>" +
         "<tr>" +
             "<th>Edit</th>" +
             "<th>Copy</th>" +
             "<th>Internal Reference</th>" +
-            "<th class='dropdown'><a href='/' class='dropdown-toggle' data-toggle='dropdown'>Document Type<span class='caret'></span></a>" +
+            "<th class='dropdown notShow'><a href='/' class='dropdown-toggle' data-toggle='dropdown'>Document Type<span class='caret'></span></a>" +
                 "<ul class='dropdown-menu'>" +
                 '<div id="resultsDocTypes"></div>';
     retrieveListDocTypes();
@@ -227,6 +231,7 @@ function onQuerySucceeded(sender, args) {
     while (listEnumerator.moveNext()) {
         var diffusionDate = "";
         var oListItem = listEnumerator.get_current();
+        var local = "";
         var dateCreated = oListItem.get_item('_DCDateCreated').getFullYear() + "/" + padToTwo(((oListItem.get_item('_DCDateCreated').getMonth()) + 1)) + "/" + padToTwo(oListItem.get_item('_DCDateCreated').getDate());
         if (!((oListItem.get_item('DiffusionDate') == null) || (oListItem.get_item('DiffusionDate') == undefined) || (oListItem.get_item('DiffusionDate') == ""))) {
             diffusionDate = oListItem.get_item('DiffusionDate').getFullYear() + "/" + padToTwo(((oListItem.get_item('DiffusionDate').getMonth()) + 1)) + "/" + padToTwo((oListItem.get_item('DiffusionDate').getDate()));
@@ -240,22 +245,28 @@ function onQuerySucceeded(sender, args) {
         if ((oListItem.get_item('Copy') == null) || (oListItem.get_item('InternalReference') == undefined) || (oListItem.get_item('InternalReference') == "")) {
             listInfo += "<a href='#' onclick='ShowDialogCopy(" + oListItem.get_id() + ")'><img src='../Images/CopyIcon.png' /></a>";
         }
+        if (!((oListItem.get_item('Location') == null) || (oListItem.get_item('Location') == undefined) || (oListItem.get_item('Location') == ""))) {
+            local = oListItem.get_item('Location');
+        }
         listInfo += "</td>" +
             "<td>" + oListItem.get_item('InternalReference') + "</td>" +
-            "<td>" + oListItem.get_item('DocumentType') + "</td>" +
+            "<td class='notShow'>" + oListItem.get_item('DocumentType') + "</td>" +
             "<td>" + oListItem.get_item('CategoryDescription') + "</td>" +
             "<td>" + dateCreated + "</td>" +
             "<td>" + diffusionDate + "</td>" +
             "<td>" + oListItem.get_item('ExternalReference') + "</td>" +
-            "<td>" + oListItem.get_item('Location') + "</td>" +
+            "<td>" + local + "</td>" +
             "<td>" + oListItem.get_item('Form') + "</td>" +
             "<td>" + oListItem.get_item('_Status') + "</td>";
         if (oListItem.get_item('_Status') == "Deleted") {
             listInfo += '</tr>';
         }
     }
+    
     listInfo += "</table>";
     $("#results").html(listInfo);
+    if (localStorage.getItem('projectType') == 'Basic') $('.notShow').hide();
+    console.log(projectType);
 }
 /**
  * Shows the dialog For Edit File.
@@ -417,3 +428,4 @@ function onQueryListDocTypesSucceeded(sender, args) {
     $("#resultsForm").html(listForm);
     $("#resultsDateCreated").html(listDateCreated);
 }
+

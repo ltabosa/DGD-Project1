@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    
+    //localStorage.clear('dateCreated');
     fileId = GetUrlKeyValue('ID', false);
     if (!(fileId == "" || fileId == undefined || fileId == null)) {
         SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieveFile);
@@ -15,25 +15,41 @@
         //Take today date if the input is not set
         var dateCreated = document.getElementById('DateCreated').value;
         var diffusionDate = document.getElementById('DiffusionDate').value;
+        
         //Validate the date created
         if (!((dateCreated == undefined) || (dateCreated == null) || (dateCreated == ""))) {
             dateCreated = new Date(dateCreated);
-            var yearCreated = dateCreated.getFullYear();
-            var monthCreated = dateCreated.getMonth();
-            var dayCreated = dateCreated.getDate() + 1;
-            dateCreated = new Date(yearCreated, monthCreated, dayCreated);
-            //source date
-            var d = new Date(localStorage.getItem('dateCreated'));
-            if (yearCreated == d.getFullYear()) {
-                if (monthCreated == d.getMonth()) {
-                    if (dayCreated < d.getDate()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
-                } else if (monthCreated < d.getMonth()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
-            } else if (yearCreated < d.getFullYear()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
-        } else dateCreated = new Date();
-        console.log(d);
+            yearCreated = dateCreated.getFullYear();
+             monthCreated = dateCreated.getMonth();
+             dayCreated = dateCreated.getDate() + 1;
+        } else {
+            dateCreated = new Date();
+             yearCreated = dateCreated.getFullYear();
+             monthCreated = dateCreated.getMonth();
+             dayCreated = dateCreated.getDate();
+        }
+        //validation date created
+        dateCreated = new Date(yearCreated, monthCreated, dayCreated);
+        dateCreated.setHours(1);
+        var d = new Date(dateSource);
+        //source date
+        //var d = new Date(localStorage.getItem('dateCreated'));
+        if (yearCreated == d.getFullYear()) {
+            if (monthCreated == d.getMonth()) {
+                if (dateCreated.getDate() < d.getDate()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
+            } else if (monthCreated < d.getMonth()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
+        } else if (yearCreated < d.getFullYear()) errorMsg = "The <b>date created</b> can not be less than <b>source date created</b>.<br>";
+
+        //validation for the future date
+        var dateNow = new Date();
+
+        console.log(dateCreated.getDate());
+        console.log(d.getDate());
         console.log(dateCreated);
+        console.log(d);
         var externalReference = $('#ExternalReference').val();
         var localization = $('#Localization').val();
+        if (localization == "null") localization = "";
         var form = $('#Form').val();
         var status = $('#Status').val();
         var idAgency = $('#IdAgency').val();
@@ -128,6 +144,7 @@ function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
+        dateSource = oListItem.get_item('_DCDateCreated');
         localStorage.setItem("documentType", oListItem.get_item('DocumentType'));
         localStorage.setItem("description", oListItem.get_item('CategoryDescription'));
         localStorage.setItem("dateCreated", oListItem.get_item('_DCDateCreated'));
@@ -249,6 +266,8 @@ function createListItem(projectId, internalReference, documentType, description,
     oListItem.set_item('OrderNumber', orderNumber);
     oListItem.set_item('Version', version);
     oListItem.set_item('Revision', revision);
+    var dateToday = new Date();
+    oListItem.set_item('Date1', dateToday);
 
     oListItem.update();
 
