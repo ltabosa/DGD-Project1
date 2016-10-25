@@ -30,10 +30,13 @@
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
      <form action="/" method="post" class="form-horizontal">
         <div class="form-group row"></div>
-        <div class="form-group row notShow">
-            <label for="DocumentType" class="col-sm-2">Document Type:</label>
+        
+         <div class="form-group row notShow">
+            <!--
+             <label for="DocumentType" class="col-sm-2">Document Type:</label>
             <div class="col-sm-4">
-                <select name="DocumentType" id="DocumentType" class="form-control">
+                
+                 <select name="DocumentType" id="DocumentType" class="form-control">
                     <option value="AR" label="Analysis Report">AR</option>
                     <option value="AUD" label="Audit">AUD</option>
                     <option value="BID" label="BID proposal">BID</option>
@@ -60,7 +63,9 @@
                     <option value="TPL" label="Template">TPL</option>
                     <option value="TR" label="Test Report">TR</option>
                 </select>
+               
             </div>
+                -->
         </div>
         <div class="form-group row">
             <label class="col-sm-2" for="Description">Description:</label>
@@ -106,6 +111,7 @@
                 </select>
             </div>
         </div>
+                <input type="hidden" name="DocumentType" id="DocumentType" class="form-control" />
                 <input type="hidden" name="DateCreated" id="DateCreated" class="form-control" />
                 <input type="hidden" name="OrderNumber" id="OrderNumber" class="form-control" />
                 <input type="hidden" name="Version" id="Version" class="form-control" />

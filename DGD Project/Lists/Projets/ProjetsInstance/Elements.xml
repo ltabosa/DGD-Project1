@@ -1,21 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <ListInstance Title="Projets" OnQuickLaunch="TRUE" TemplateType="100" Url="Lists/Projets" Description="My List Instance">
-    <Data>
-      <Rows>
-        <Row>
-          <Field Name="Title">TBD</Field>
-          <Field Name="ProjectCode">29</Field>
-          <Field Name="Avenant">01</Field>
-          <Field Name="IdAgency">M9</Field>
-          <Field Name="ProjectType">Full</Field>
-        </Row>
-        <Row>
-          <Field Name="Title">DGD</Field>
-          <Field Name="IdAgency">S2</Field>
-          <Field Name="ProjectType">Basic</Field>
-        </Row>
-      </Rows>
-    </Data>
+    
   </ListInstance>
 </Elements>

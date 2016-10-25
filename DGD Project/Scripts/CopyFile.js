@@ -42,6 +42,12 @@
 
         //validation for the future date
         var dateNow = new Date();
+        if (yearCreated == dateNow.getFullYear()) {
+            if (monthCreated == dateNow.getMonth()) {
+                if (dateCreated.getDate() > dateNow.getDate()) errorMsg = "The <b>date created</b> can not be greater than <b>today</b>.<br>";
+            } else if (monthCreated > dateNow.getMonth()) errorMsg = "The <b>date created</b> can not be greater than <b>today</b>.<br>";
+        } else if (yearCreated > dateNow.getFullYear()) errorMsg = "The <b>date created</b> can not be greater than <b>today</b>.<br>";
+
 
         console.log(dateCreated.getDate());
         console.log(d.getDate());

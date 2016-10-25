@@ -9,7 +9,8 @@
     $("#Submit").click(function () {
         //input variables
         var internalReference = "";
-        var documentType = $("#DocumentType option:selected").text();
+       // var documentType = $("#DocumentType option:selected").text();
+        var documentType = $("#DocumentType").val();
         var description = $('#Description').val();
         var dateCreated = dateCreate;
         var diffusionDate = document.getElementById('DiffusionDate').value;

@@ -1,46 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <ListInstance Title="File" OnQuickLaunch="TRUE" TemplateType="100" Url="Lists/File" Description="My List Instance">
-    <Data>
-      <Rows>
-        <Row>
-          <Field Name="InternalReference">AR-0029-01-M9-0001-01-01</Field>
-          <Field Name="DocumentType">AR</Field>
-          <Field Name="Project1">1</Field>
-          <Field Name="CategoryDescription">Small Description</Field>
-          <Field Name="_DCDateCreated">2016-08-03</Field>
-          <Field Name="Form">E</Field>
-          <Field Name="_Status">In Progress</Field>
-          <Field Name="OrderNumber">0001</Field>
-          <Field Name="Version">01</Field>
-          <Field Name="Revision">01</Field>
-        </Row>
-        <Row>
-          <Field Name="InternalReference">AR-0029-01-M9-0001-01-01</Field>
-          <Field Name="DocumentType">AR</Field>
-          <Field Name="Project1">1</Field>
-          <Field Name="CategoryDescription">Small Description Edited One</Field>
-          <Field Name="_DCDateCreated">2016-08-03</Field>
-          <Field Name="Form">E</Field>
-          <Field Name="_Status">In Progress</Field>
-          <Field Name="OrderNumber">0002</Field>
-          <Field Name="Version">01</Field>
-          <Field Name="Revision">01</Field>
-        </Row>
-        <Row>
-          <Field Name="InternalReference">AR-0029-01-M9-0003-01-01</Field>
-          <Field Name="DocumentType">AR</Field>
-          <Field Name="Project1">1</Field>
-          <Field Name="CategoryDescription">Small Description Edited Two</Field>
-          <Field Name="_DCDateCreated">2016-08-03</Field>
-          <Field Name="Form">E</Field>
-          <Field Name="_Status">In Progress</Field>
-          <Field Name="OrderNumber">0003</Field>
-          <Field Name="Version">01</Field>
-          <Field Name="Revision">01</Field>
-          <Field Name="Copy">TRUE</Field>
-        </Row>
-      </Rows>
-    </Data>
+    
   </ListInstance>
 </Elements>
